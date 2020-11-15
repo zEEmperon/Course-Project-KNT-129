@@ -17,6 +17,10 @@ public:
     virtual void Add()=0;
     virtual void Del()=0;
 
+    QDate getDate(){return date;};
+    string getType(){return type;};
+    string getName(){return name;};
+
     friend class Schedule;
 
 };
@@ -28,13 +32,16 @@ protected:
     QTime timeBeg;
     QTime timeEnd;
     string place;
-
 public:
     Study(QDate d, QTime b, QTime e, string n, string p);
     ~Study(){};
     void Add(){};
     void Del(){};
     bool IsFree(){return false;};
+
+    QTime getTimeBeg(){return timeBeg;};
+    QTime getTimeEnd(){return timeEnd;};
+    string getPlace(){return place;};
 
     void Show();
 
@@ -56,6 +63,11 @@ public:
     void Del(){};
     bool IsFree(){return false;};
     void Notification(){};
+
+    QTime getTimeBeg(){return timeBeg;};
+    QTime getTimeEnd(){return timeEnd;};
+    string getPlace(){return place;};
+    QTime getTimeNotific(){return timeNotification;};
 
     void Show();
 
@@ -83,6 +95,11 @@ public:
     void Activate();
     void Deactivate();
 
+    QTime getTimeDeadline(){return timeDeadline;};
+    int getPrior(){return priority;};
+    QTime getTimeNotific(){return timeNotification;};
+    int getWorkTime(){return time_minut;};
+
     void Show();
 
     friend class Schedule;
@@ -99,6 +116,8 @@ public:
     void Add(){};
     void Del(){};
     void Notification(){};
+
+    QTime getTimeNotific(){return timeNotification;};
 
     void Show();
 
