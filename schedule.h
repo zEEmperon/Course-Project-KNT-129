@@ -20,10 +20,10 @@ public:
     void FromSchedule();
 
     //методи додавання подій
-    void AddStudy(QDate d, QTime b, QTime e, string n, string p);
-    void AddMeet(QDate d, QTime b, QTime e, string n, string p, QTime notific);
-    void AddTask(QDate ddl, QTime tdl, int p, string n, QTime notific);
-    void AddBD(QDate d, string n, QTime notific);
+    void AddStudy(QDateTime d, QTime b, QTime e, QString n, QString p, quint64 t_event_id);
+    void AddMeet(QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific, quint64 t_event_id);
+    void AddTask(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, quint64 t_event_id, quint64 p_id);
+    void AddBD(QDateTime d, QString n, QDateTime notific, quint64 t_event_id);
 
     //перевірка, чи вільний обраний проміжок часу
     bool isBusy(QDate d, QTime b, QTime e);
@@ -38,15 +38,15 @@ public:
     void SortBD(int b, int e);
 
     //сповіщення про події
-    void MeetNotific(QTime curr_time);
-    void TaskNotific(QTime curr_time);
-    void BDNotific(QTime curr_time);
+    void MeetNotific(QDateTime curr_time);
+    void TaskNotific(QDateTime curr_time);
+    void BDNotific(QDateTime curr_time);
 
     //методи редагування подій
-    void ChangeStudy(int i, QDate d, QTime b, QTime e, string n, string p);
-    void ChangeMeet(int i, QDate d, QTime b, QTime e, string n, string p, QTime notific);
-    void ChangeTask(int i, QDate ddl, QTime tdl, int p, string n, QTime notific);
-    void ChangeBD(int i, QDate d, string n, QTime notific);
+    void ChangeStudy(int i, QDateTime d, QTime b, QTime e, QString n, QString p);
+    void ChangeMeet(int i, QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific);
+    void ChangeTask(int i, QDateTime tdl, quint16 p, QString n, QDateTime notific);
+    void ChangeBD(int i, QDateTime d, QString n, QDateTime notific);
 
 };
 
