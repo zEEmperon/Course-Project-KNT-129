@@ -15,6 +15,9 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_calendarPersonalLife_clicked(const QDate &date);
+
 private:
     Ui::MainWindow *ui;
 };
