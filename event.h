@@ -8,21 +8,27 @@ using namespace std;
 class Event
 {
 protected:
-    QDate date;
-    string type;
-    string name;
+    quint64 id;
+    quint64 type_event_id;
+    QDateTime date;
+    QString type;
+    QString name;
 public:
-    Event(QDate d, string n);
+    Event(QDateTime d, QString n, quint64 t_event_id);
     virtual ~Event(){};
     virtual void Add()=0;
     virtual void Del()=0;
 
-    QDate getDate(){return date;};
-    string getType(){return type;};
-    string getName(){return name;};
+    QDateTime getDate(){return date;};
+    QString getType(){return type;};
+    QString getName(){return name;};
+
+    void SetID( quint64 new_id );
+
+    quint64 GetID(){return id;};
+    quint64 GetTypeID(){return type_event_id;};
 
     friend class Schedule;
-
 };
 
 //клас занять
@@ -31,9 +37,9 @@ class Study: public Event
 protected:
     QTime timeBeg;
     QTime timeEnd;
-    string place;
+    QString place;
 public:
-    Study(QDate d, QTime b, QTime e, string n, string p);
+    Study(QDateTime d, QTime b, QTime e, QString n, QString p, quint64 t_event_id);
     ~Study(){};
     void Add(){};
     void Del(){};
@@ -41,11 +47,12 @@ public:
 
     QTime getTimeBeg(){return timeBeg;};
     QTime getTimeEnd(){return timeEnd;};
-    string getPlace(){return place;};
+    QString getPlace(){return place;};
 
     void Show();
 
     friend class Schedule;
+
 };
 
 //клас зустрічей
@@ -54,10 +61,10 @@ class Meet: public Event
 protected:
     QTime timeBeg;
     QTime timeEnd;
-    string place;
-    QTime timeNotification;
+    QString place;
+    QDateTime timeNotification;
 public:
-    Meet(QDate d, QTime b, QTime e, string n, string p, QTime notific);
+    Meet(QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific, quint64 t_event_id);
     ~Meet(){};
     void Add(){};
     void Del(){};
@@ -66,8 +73,8 @@ public:
 
     QTime getTimeBeg(){return timeBeg;};
     QTime getTimeEnd(){return timeEnd;};
-    string getPlace(){return place;};
-    QTime getTimeNotific(){return timeNotification;};
+    QString getPlace(){return place;};
+    QDateTime getTimeNotific(){return timeNotification;};
 
     void Show();
 
@@ -78,16 +85,17 @@ public:
 class Task: public Event
 {
 protected:
-    QTime timeDeadline;
-    int priority;
-    QTime timeNotification;
-    int time_minut=0;
+    QDateTime timeDeadline;
+    quint16 priority;
+    quint64 priority_id;
+    QDateTime timeNotification;
+    quint64 time_minut=0;
 
     bool isActive = false;
     QDateTime startAct;
     QDateTime endAct;
 public:
-    Task(QDate ddl, QTime tdl, int p, string n, QTime notific);
+    Task(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, quint64 t_event_id, quint64 p_id);
     ~Task(){};
     void Add(){};
     void Del(){};
@@ -95,12 +103,17 @@ public:
     void Activate();
     void Deactivate();
 
-    QTime getTimeDeadline(){return timeDeadline;};
+    QDateTime getTimeDeadline(){return timeDeadline;};
     int getPrior(){return priority;};
-    QTime getTimeNotific(){return timeNotification;};
+    QDateTime getTimeNotific(){return timeNotification;};
     int getWorkTime(){return time_minut;};
 
     void Show();
+
+    void SetIsActive( bool is_active );
+    void SetWorkTime( quint64 new_work_time );
+
+    quint64 GetPriorityID(){return priority_id;};
 
     friend class Schedule;
 };
@@ -109,15 +122,15 @@ public:
 class Birthday: public Event
 {
 protected:
-    QTime timeNotification;
+    QDateTime timeNotification;
 public:
-    Birthday(QDate d, string n, QTime notific);
+    Birthday(QDateTime d, QString n, QDateTime notific, quint64 t_event_id);
     ~Birthday(){};
     void Add(){};
     void Del(){};
     void Notification(){};
 
-    QTime getTimeNotific(){return timeNotification;};
+    QDateTime getTimeNotific(){return timeNotification;};
 
     void Show();
 

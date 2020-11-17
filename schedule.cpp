@@ -31,26 +31,26 @@ void Schedule::FromSchedule()
 }
 
 // додавання події
-void Schedule::AddStudy(QDate d, QTime b, QTime e, string n, string p)
+void Schedule::AddStudy(QDateTime d, QTime b, QTime e, QString n, QString p, quint64 t_event_id)
 {
-    Study* s = new Study(d, b, e, n, p);
-    if (!isBusy(d, b, e))   //сюда и в meet можно исключение
+    Study* s = new Study(d, b, e, n, p, t_event_id);
+    if (!isBusy(d.date(), b, e))   //сюда и в meet можно исключение
         study_arr.push_back(s);
 }
-void Schedule::AddMeet(QDate d, QTime b, QTime e, string n, string p, QTime notific)
+void Schedule::AddMeet(QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific, quint64 t_event_id)
 {
-    Meet* m = new Meet(d, b, e, n, p, notific);
-    if (!isBusy(d, b, e))
+    Meet* m = new Meet(d, b, e, n, p, notific, t_event_id);
+    if (!isBusy(d.date(), b, e))
         meet_arr.push_back(m);
 }
-void Schedule::AddTask(QDate ddl, QTime tdl, int p, string n, QTime notific)
+void Schedule::AddTask(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, quint64 t_event_id, quint64 p_id)
 {
-    Task* t = new Task(ddl, tdl, p, n, notific);
+    Task* t = new Task(d, tdl, p, n, notific, t_event_id, p_id);
     task_arr.push_back(t);
 }
-void Schedule::AddBD(QDate d, string n, QTime notific)
+void Schedule::AddBD(QDateTime d, QString n, QDateTime notific, quint64 t_event_id)
 {
-    Birthday* b = new Birthday(d, n, notific);
+    Birthday* b = new Birthday(d, n, notific, t_event_id);
     bd_arr.push_back(b);
 }
 
@@ -61,7 +61,7 @@ bool Schedule::isBusy(QDate d, QTime b, QTime e)
     int i = 0;
     while (!found_busy && i<n)
     {
-        if ((study_arr[i]->date == d) && ((b>=study_arr[i]->timeBeg && b<=study_arr[i]->timeEnd) || (e>=study_arr[i]->timeBeg && e<=study_arr[i]->timeEnd)))
+        if ((study_arr[i]->date.date() == d) && ((b>=study_arr[i]->timeBeg && b<=study_arr[i]->timeEnd) || (e>=study_arr[i]->timeBeg && e<=study_arr[i]->timeEnd)))
             found_busy = true;
         i++;
     }
@@ -71,7 +71,7 @@ bool Schedule::isBusy(QDate d, QTime b, QTime e)
         i = 0;
         while (!found_busy && i<n)
         {
-            if ((meet_arr[i]->date == d) && ((b>=meet_arr[i]->timeBeg && b<=meet_arr[i]->timeEnd) || (e>=meet_arr[i]->timeBeg && e<=meet_arr[i]->timeEnd)))
+            if ((meet_arr[i]->date.date() == d) && ((b>=meet_arr[i]->timeBeg && b<=meet_arr[i]->timeEnd) || (e>=meet_arr[i]->timeBeg && e<=meet_arr[i]->timeEnd)))
                 found_busy = true;
             i++;
         }
@@ -194,32 +194,32 @@ void Schedule::SortBD(int b, int e)
 }
 
 
-void Schedule::MeetNotific(QTime curr_time)
+void Schedule::MeetNotific(QDateTime curr_time)
 {
     int n = int(meet_arr.size());
-    QDate curr_date = QDate::currentDate();
+    QDate curr_date = QDate::currentDate();//QDateTime::currentDateTime();//
     for (int i=0; i<n; i++)
-        if ((meet_arr[i]->date == curr_date || (meet_arr[i]->date).addDays(-3) == curr_date) && meet_arr[i]->timeNotification == curr_time)
+        if ((meet_arr[i]->date.date() == curr_date || (meet_arr[i]->date.date()).addDays(-3) == curr_date) && meet_arr[i]->timeNotification == curr_time)
             cout << "Notification";
 }
-void Schedule::TaskNotific(QTime curr_time)
+void Schedule::TaskNotific(QDateTime curr_time)
 {
     int n = int(task_arr.size());
     QDate curr_date = QDate::currentDate();
     for (int i=0; i<n; i++)
-        if ((task_arr[i]->date == curr_date || (task_arr[i]->date).addDays(-3) == curr_date) && task_arr[i]->timeNotification == curr_time)
+        if ((task_arr[i]->date.date() == curr_date || (task_arr[i]->date.date()).addDays(-3) == curr_date) && task_arr[i]->timeNotification == curr_time)
             cout << "Notification";
 }
-void Schedule::BDNotific(QTime curr_time)
+void Schedule::BDNotific(QDateTime curr_time)
 {
     int n = int(bd_arr.size());
     QDate curr_date = QDate::currentDate();
     for (int i=0; i<n; i++)
-        if ((bd_arr[i]->date == curr_date || (bd_arr[i]->date).addDays(-3) == curr_date) && bd_arr[i]->timeNotification == curr_time)
+        if ((bd_arr[i]->date.date() == curr_date || (bd_arr[i]->date.date()).addDays(-3) == curr_date) && bd_arr[i]->timeNotification == curr_time)
             cout << "Notification";
 }
 
-void Schedule::ChangeStudy(int i, QDate d, QTime b, QTime e, string n, string p)
+void Schedule::ChangeStudy(int i, QDateTime d, QTime b, QTime e, QString n, QString p)
 {
     study_arr[i]->date = d;
     study_arr[i]->timeBeg = b;
@@ -227,7 +227,7 @@ void Schedule::ChangeStudy(int i, QDate d, QTime b, QTime e, string n, string p)
     study_arr[i]->name = n;
     study_arr[i]->place = p;
 }
-void Schedule::ChangeMeet(int i, QDate d, QTime b, QTime e, string n, string p, QTime notific)
+void Schedule::ChangeMeet(int i, QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific)
 {
     meet_arr[i]->date = d;
     meet_arr[i]->timeBeg = b;
@@ -236,15 +236,14 @@ void Schedule::ChangeMeet(int i, QDate d, QTime b, QTime e, string n, string p, 
     meet_arr[i]->place = p;
     meet_arr[i]->timeNotification = notific;
 }
-void Schedule::ChangeTask(int i, QDate ddl, QTime tdl, int p, string n, QTime notific)
+void Schedule::ChangeTask(int i, QDateTime tdl, quint16 p, QString n, QDateTime notific)
 {
-    task_arr[i]->date = ddl;
     task_arr[i]->timeDeadline = tdl;
     task_arr[i]->priority = p;
     task_arr[i]->name = n;
     task_arr[i]->timeNotification = notific;
 }
-void Schedule::ChangeBD(int i, QDate d, string n, QTime notific)
+void Schedule::ChangeBD(int i, QDateTime d, QString n, QDateTime notific)
 {
     bd_arr[i]->date = d;
     bd_arr[i]->name = n;
