@@ -18,6 +18,10 @@ public:
 private slots:
     void on_calendarPersonalLife_clicked(const QDate &date);
 
+    void on_buttonRemovePersonalLife_clicked();
+
+    void on_buttonAddPersonalLife_clicked();
+
 private:
     Ui::MainWindow *ui;
 };
