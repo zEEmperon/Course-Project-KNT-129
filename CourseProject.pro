@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     dbmanager.cpp \
+    editpltablewindow.cpp \
     event.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -18,11 +19,13 @@ SOURCES += \
 HEADERS += \
     db_data.h \
     dbmanager.h \
+    editpltablewindow.h \
     event.h \
     mainwindow.h \
     schedule.h
 
 FORMS += \
+    editpltablewindow.ui \
     mainwindow.ui
 
 # Default rules for deployment.
