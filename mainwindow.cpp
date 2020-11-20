@@ -1,6 +1,15 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "editpltablewindow.h"
+#include "dbmanager.h"
+#include "event.h"
+#include "schedule.h"
+#include<vector>
+
+#include<QDebug>
+
+
+using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -8,13 +17,39 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    DBManager dbm;
+
+    QDate d = QDate::currentDate();
+
+    QDateTime start = QDateTime::currentDateTime().addDays(-30);
+    QDateTime end = QDateTime::currentDateTime().addDays(30);
+
+    sch = new Schedule(dbm.GetStudy(start, end), dbm.GetMeet(start, end), dbm.GetTask(start, end), dbm.GetBirthday(start, end));
+
+    vector<Study> today_study;
+    sch->GetStudy(today_study, d);
+    vector<Meet> today_meet;
+    sch->GetMeet(today_meet, d);
+    vector<Birthday> today_bd;
+    sch->GetBD(today_bd, d);
+
     ui->tableTodayPesonalLife->setColumnCount(2);
     ui->tableTodayPesonalLife->setColumnWidth(0,125);
     ui->tableTodayPesonalLife->setColumnWidth(1,125);
     ui->tableTodayPesonalLife->setHorizontalHeaderLabels({"Час","Подія"});
     ui->tableTodayPesonalLife->horizontalHeader()->setVisible(true);
     ui->tableTodayPesonalLife->verticalHeader()->setVisible(false);
-    ui->tableTodayPesonalLife->setRowCount(8/*тут должно быть указано число, которое представляет кол-во событий личной жизни в данный день*/); //DB loading
+    ui->tableTodayPesonalLife->setRowCount(int(today_meet.size())+int(today_bd.size())); //DB loading
+
+    for (int i=0; i<int(today_meet.size()); i++)
+    {
+        ui->tableTodayPesonalLife->setItem(i, 0, new QTableWidgetItem(today_meet[i].getTimeBeg().toString("HH:mm")));
+        ui->tableTodayPesonalLife->setItem(i, 1, new QTableWidgetItem(today_meet[i].getName()));
+    }
+    for (int i=0; i<int(today_bd.size()); i++)
+    {
+        ui->tableTodayPesonalLife->setItem(int(today_meet.size())+i, 1, new QTableWidgetItem(today_bd[i].getName()));
+    }
 
     ui->tableTodayUniversity->setColumnCount(2);
     ui->tableTodayUniversity->setColumnWidth(0,125);
@@ -22,7 +57,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTodayUniversity->setHorizontalHeaderLabels({"Час","Пара"});
     ui->tableTodayUniversity->horizontalHeader()->setVisible(true);
     ui->tableTodayUniversity->verticalHeader()->setVisible(false);
-    ui->tableTodayUniversity->setRowCount(8/*тут должно быть указано число, которое представляет кол-во событий личной жизни в данный день*/); //DB loading
+    ui->tableTodayUniversity->setRowCount(int(today_study.size())); //DB loading
+
+
+    for (int i=0; i<int(today_study.size()); i++)
+    {
+        ui->tableTodayUniversity->setItem(i, 0, new QTableWidgetItem(today_study[i].getTimeBeg().toString("HH:mm")));
+        ui->tableTodayUniversity->setItem(i, 1, new QTableWidgetItem(today_study[i].getName()));
+    }
 
     ui->tablePersonalLifeEvents->setColumnCount(2);
     ui->tablePersonalLifeEvents->setColumnWidth(0,125);
@@ -33,12 +75,11 @@ MainWindow::MainWindow(QWidget *parent)
     ui->textEdit->setText(QDate::currentDate().toString("dd.MM.yyyy"));
     ui->dateEdit->setMinimumDate(QDate::currentDate());
 
-
-
 }
 
 MainWindow::~MainWindow()
 {
+    delete sch;
     delete ui;
 }
 
@@ -46,7 +87,30 @@ MainWindow::~MainWindow()
 void MainWindow::on_calendarPersonalLife_clicked(const QDate &date)
 {
     ui->textEdit->setText(date.toString("dd.MM.yyyy"));
-    ui->tablePersonalLifeEvents->setRowCount(5/*тут должно быть указано число, которое представляет кол-во событий личной жизни в данный день*/); //DB loading
+
+    vector<Study> study;
+    sch->GetStudy(study, date);
+    vector<Meet> meet;
+    sch->GetMeet(meet, date);
+    vector<Birthday> bd;
+    sch->GetBD(bd, date);
+
+    ui->tablePersonalLifeEvents->setRowCount(int(study.size())+int(meet.size())+int(bd.size())); //DB loading
+
+    for (int i=0; i<int(study.size()); i++)
+    {
+        ui->tablePersonalLifeEvents->setItem(i, 0, new QTableWidgetItem(study[i].getTimeBeg().toString("HH:mm")));
+        ui->tablePersonalLifeEvents->setItem(i, 1, new QTableWidgetItem(study[i].getName()));
+    }
+    for (int i=0; i<int(meet.size()); i++)
+    {
+        ui->tablePersonalLifeEvents->setItem(int(study.size())+i, 0, new QTableWidgetItem(meet[i].getTimeBeg().toString("HH:mm")));
+        ui->tablePersonalLifeEvents->setItem(int(study.size())+i, 1, new QTableWidgetItem(meet[i].getName()));
+    }
+    for (int i=0; i<int(bd.size()); i++)
+    {
+        ui->tablePersonalLifeEvents->setItem(int(study.size())+int(meet.size())+i, 1, new QTableWidgetItem(bd[i].getName()));
+    }
 }
 
 void MainWindow::on_buttonRemovePersonalLife_clicked()

@@ -2,55 +2,45 @@
 #include <iostream>
 using namespace std;
 
-Schedule::Schedule(){}
-Schedule::~Schedule(){}
-
-// розподіл подій з загального вектору до векторів за класами
-void Schedule::FromSchedule()
+Schedule::Schedule(vector<Study> Studies, vector<Meet> Meetings, vector<Task> Tasks, vector<Birthday> BDs)
 {
-    int n = int(schedule_arr.size());
-    for (int i=0; i<n; i++)
-    {
-        if (schedule_arr[i]->type == "study"){
-            Study* s = (Study*)schedule_arr[i];
-            study_arr.push_back(s);
-        }
-        if (schedule_arr[i]->type == "meet"){
-            Meet* m = (Meet*)schedule_arr[i];
-            meet_arr.push_back(m);
-        }
-        if (schedule_arr[i]->type == "task"){
-            Task* t = (Task*)schedule_arr[i];
-            task_arr.push_back(t);
-        }
-        if (schedule_arr[i]->type == "birthday"){
-            Birthday* bd = (Birthday*)schedule_arr[i];
-            bd_arr.push_back(bd);
-        }
-    }
+    study_arr.resize(Studies.size());
+    meet_arr.resize(Meetings.size());
+    task_arr.resize(Tasks.size());
+    bd_arr.resize(BDs.size());
+
+    for (int i=0; i<int(study_arr.size()); i++)
+        study_arr[i] = Studies[i];
+    for (int i=0; i<int(meet_arr.size()); i++)
+        meet_arr[i] = Meetings[i];
+    for (int i=0; i<int(task_arr.size()); i++)
+        task_arr[i] = Tasks[i];
+    for (int i=0; i<int(bd_arr.size()); i++)
+        bd_arr[i] = BDs[i];
 }
+Schedule::~Schedule(){}
 
 // додавання події
 void Schedule::AddStudy(QDateTime d, QTime b, QTime e, QString n, QString p, quint64 t_event_id)
 {
-    Study* s = new Study(d, b, e, n, p, t_event_id);
+    Study s(d, b, e, n, p, t_event_id);
     if (!isBusy(d.date(), b, e))   //сюда и в meet можно исключение
         study_arr.push_back(s);
 }
 void Schedule::AddMeet(QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific, quint64 t_event_id)
 {
-    Meet* m = new Meet(d, b, e, n, p, notific, t_event_id);
+    Meet m(d, b, e, n, p, notific, t_event_id);
     if (!isBusy(d.date(), b, e))
         meet_arr.push_back(m);
 }
 void Schedule::AddTask(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, quint64 t_event_id, quint64 p_id)
 {
-    Task* t = new Task(d, tdl, p, n, notific, t_event_id, p_id);
+    Task t(d, tdl, p, n, notific, t_event_id, p_id);
     task_arr.push_back(t);
 }
 void Schedule::AddBD(QDateTime d, QString n, QDateTime notific, quint64 t_event_id)
 {
-    Birthday* b = new Birthday(d, n, notific, t_event_id);
+    Birthday b(d, n, notific, t_event_id);
     bd_arr.push_back(b);
 }
 
@@ -61,7 +51,7 @@ bool Schedule::isBusy(QDate d, QTime b, QTime e)
     int i = 0;
     while (!found_busy && i<n)
     {
-        if ((study_arr[i]->date.date() == d) && ((b>=study_arr[i]->timeBeg && b<=study_arr[i]->timeEnd) || (e>=study_arr[i]->timeBeg && e<=study_arr[i]->timeEnd)))
+        if ((study_arr[i].date.date() == d) && ((b>=study_arr[i].timeBeg && b<=study_arr[i].timeEnd) || (e>=study_arr[i].timeBeg && e<=study_arr[i].timeEnd)))
             found_busy = true;
         i++;
     }
@@ -71,7 +61,7 @@ bool Schedule::isBusy(QDate d, QTime b, QTime e)
         i = 0;
         while (!found_busy && i<n)
         {
-            if ((meet_arr[i]->date.date() == d) && ((b>=meet_arr[i]->timeBeg && b<=meet_arr[i]->timeEnd) || (e>=meet_arr[i]->timeBeg && e<=meet_arr[i]->timeEnd)))
+            if ((meet_arr[i].date.date() == d) && ((b>=meet_arr[i].timeBeg && b<=meet_arr[i].timeEnd) || (e>=meet_arr[i].timeBeg && e<=meet_arr[i].timeEnd)))
                 found_busy = true;
             i++;
         }
@@ -81,38 +71,22 @@ bool Schedule::isBusy(QDate d, QTime b, QTime e)
 }
 
 // видалення векторів
-void Schedule::Delete()
-{
-    int n;// = int(schedule_arr.size());
-    //for (int i=0; i<n; i++) delete schedule_arr[i];
-
-    n = int(study_arr.size());
-    for (int i=0; i<n; i++) delete study_arr[i];
-
-    n = int(meet_arr.size());
-    for (int i=0; i<n; i++) delete meet_arr[i];
-
-    n = int(task_arr.size());
-    for (int i=0; i<n; i++) delete task_arr[i];
-
-    n = int(bd_arr.size());
-    for (int i=0; i<n; i++) delete bd_arr[i];
-}
+void Schedule::Delete(){}
 
 // сортування вектору занять
 void Schedule::SortStudy(int b, int e)
 {
     int l=b, r=e;
-    Study* st = study_arr[(l+r)/2];
+    Study st = study_arr[(l+r)/2];
     while (l<=r)
     {
-        while ((study_arr[l]->date < st->date)||(study_arr[l]->date == st->date && study_arr[l]->timeBeg < st->timeBeg))
+        while ((study_arr[l].date < st.date)||(study_arr[l].date == st.date && study_arr[l].timeBeg < st.timeBeg))
             l++;
-        while ((study_arr[l]->date > st->date)||(study_arr[l]->date == st->date && study_arr[l]->timeBeg > st->timeBeg))
+        while ((study_arr[l].date > st.date)||(study_arr[l].date == st.date && study_arr[l].timeBeg > st.timeBeg))
             r--;
         if (l<=r)
         {
-            Study* temp = study_arr[l+1];
+            Study temp = study_arr[l+1];
             study_arr[l+1] = study_arr[r-1];
             study_arr[r-1] = temp;
         }
@@ -125,16 +99,16 @@ void Schedule::SortStudy(int b, int e)
 void Schedule::SortMeet(int b, int e)
 {
     int l=b, r=e;
-    Meet* m = meet_arr[(l+r)/2];
+    Meet m = meet_arr[(l+r)/2];
     while (l<=r)
     {
-        while ((meet_arr[l]->date < m->date)||(meet_arr[l]->date == m->date && meet_arr[l]->timeBeg < m->timeBeg))
+        while ((meet_arr[l].date < m.date)||(meet_arr[l].date == m.date && meet_arr[l].timeBeg < m.timeBeg))
             l++;
-        while ((meet_arr[l]->date > m->date)||(meet_arr[l]->date == m->date && meet_arr[l]->timeBeg > m->timeBeg))
+        while ((meet_arr[l].date > m.date)||(meet_arr[l].date == m.date && meet_arr[l].timeBeg > m.timeBeg))
             r--;
         if (l<=r)
         {
-            Meet* temp = meet_arr[l+1];
+            Meet temp = meet_arr[l+1];
             meet_arr[l+1] = meet_arr[r-1];
             meet_arr[r-1] = temp;
         }
@@ -147,20 +121,20 @@ void Schedule::SortMeet(int b, int e)
 void Schedule::SortTask(int b, int e)
 {
     int l=b, r=e;
-    Task* task = task_arr[(l+r)/2];
+    Task task = task_arr[(l+r)/2];
     while (l<=r)
     {
-        while ((task_arr[l]->date < task->date)||
-               (task_arr[l]->date == task->date && task_arr[l]->timeDeadline < task->timeDeadline)||
-               (task_arr[l]->date == task->date && task_arr[l]->timeDeadline == task->timeDeadline && task[l].priority > task[r].priority))
+        while ((task_arr[l].date < task.date)||
+               (task_arr[l].date == task.date && task_arr[l].timeDeadline < task.timeDeadline)||
+               (task_arr[l].date == task.date && task_arr[l].timeDeadline == task.timeDeadline && task_arr[l].priority > task_arr[r].priority))
             l++;
-        while ((task_arr[l]->date > task->date)||
-               (task_arr[l]->date == task->date && task_arr[l]->timeDeadline > task->timeDeadline)||
-               (task_arr[l]->date == task->date && task_arr[l]->timeDeadline == task->timeDeadline && task[l].priority < task[r].priority))
+        while ((task_arr[l].date > task.date)||
+               (task_arr[l].date == task.date && task_arr[l].timeDeadline > task.timeDeadline)||
+               (task_arr[l].date == task.date && task_arr[l].timeDeadline == task.timeDeadline && task_arr[l].priority < task_arr[r].priority))
             r--;
         if (l<=r)
         {
-            Task* temp = task_arr[l+1];
+            Task temp = task_arr[l+1];
             task_arr[l+1] = task_arr[r-1];
             task_arr[r-1] = temp;
         }
@@ -173,16 +147,16 @@ void Schedule::SortTask(int b, int e)
 void Schedule::SortBD(int b, int e)
 {
     int l=b, r=e;
-    Birthday* m = bd_arr[(l+r)/2];
+    Birthday m = bd_arr[(l+r)/2];
     while (l<=r)
     {
-        while (bd_arr[l]->date < m->date)
+        while (bd_arr[l].date.date() < m.date.date())
             l++;
-        while (bd_arr[r]->date > m->date)
+        while (bd_arr[r].date.date() > m.date.date())
             r--;
         if (l<=r)
         {
-            Birthday* temp = bd_arr[l+1];
+            Birthday temp = bd_arr[l+1];
             bd_arr[l+1] = bd_arr[r-1];
             bd_arr[r-1] = temp;
         }
@@ -199,7 +173,7 @@ void Schedule::MeetNotific(QDateTime curr_time)
     int n = int(meet_arr.size());
     QDate curr_date = QDate::currentDate();//QDateTime::currentDateTime();//
     for (int i=0; i<n; i++)
-        if ((meet_arr[i]->date.date() == curr_date || (meet_arr[i]->date.date()).addDays(-3) == curr_date) && meet_arr[i]->timeNotification == curr_time)
+        if ((meet_arr[i].date.date() == curr_date || (meet_arr[i].date.date()).addDays(-3) == curr_date) && meet_arr[i].timeNotification == curr_time)
             cout << "Notification";
 }
 void Schedule::TaskNotific(QDateTime curr_time)
@@ -207,7 +181,7 @@ void Schedule::TaskNotific(QDateTime curr_time)
     int n = int(task_arr.size());
     QDate curr_date = QDate::currentDate();
     for (int i=0; i<n; i++)
-        if ((task_arr[i]->date.date() == curr_date || (task_arr[i]->date.date()).addDays(-3) == curr_date) && task_arr[i]->timeNotification == curr_time)
+        if ((task_arr[i].date.date() == curr_date || (task_arr[i].date.date()).addDays(-3) == curr_date) && task_arr[i].timeNotification == curr_time)
             cout << "Notification";
 }
 void Schedule::BDNotific(QDateTime curr_time)
@@ -215,37 +189,86 @@ void Schedule::BDNotific(QDateTime curr_time)
     int n = int(bd_arr.size());
     QDate curr_date = QDate::currentDate();
     for (int i=0; i<n; i++)
-        if ((bd_arr[i]->date.date() == curr_date || (bd_arr[i]->date.date()).addDays(-3) == curr_date) && bd_arr[i]->timeNotification == curr_time)
+        if ((bd_arr[i].date.date() == curr_date || (bd_arr[i].date.date()).addDays(-3) == curr_date) && bd_arr[i].timeNotification == curr_time)
             cout << "Notification";
 }
 
 void Schedule::ChangeStudy(int i, QDateTime d, QTime b, QTime e, QString n, QString p)
 {
-    study_arr[i]->date = d;
-    study_arr[i]->timeBeg = b;
-    study_arr[i]->timeEnd = e;
-    study_arr[i]->name = n;
-    study_arr[i]->place = p;
+    study_arr[i].date = d;
+    study_arr[i].timeBeg = b;
+    study_arr[i].timeEnd = e;
+    study_arr[i].name = n;
+    study_arr[i].place = p;
 }
 void Schedule::ChangeMeet(int i, QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific)
 {
-    meet_arr[i]->date = d;
-    meet_arr[i]->timeBeg = b;
-    meet_arr[i]->timeEnd = e;
-    meet_arr[i]->name = n;
-    meet_arr[i]->place = p;
-    meet_arr[i]->timeNotification = notific;
+    meet_arr[i].date = d;
+    meet_arr[i].timeBeg = b;
+    meet_arr[i].timeEnd = e;
+    meet_arr[i].name = n;
+    meet_arr[i].place = p;
+    meet_arr[i].timeNotification = notific;
 }
 void Schedule::ChangeTask(int i, QDateTime tdl, quint16 p, QString n, QDateTime notific)
 {
-    task_arr[i]->timeDeadline = tdl;
-    task_arr[i]->priority = p;
-    task_arr[i]->name = n;
-    task_arr[i]->timeNotification = notific;
+    task_arr[i].timeDeadline = tdl;
+    task_arr[i].priority = p;
+    task_arr[i].name = n;
+    task_arr[i].timeNotification = notific;
 }
 void Schedule::ChangeBD(int i, QDateTime d, QString n, QDateTime notific)
 {
-    bd_arr[i]->date = d;
-    bd_arr[i]->name = n;
-    bd_arr[i]->timeNotification = notific;
+    bd_arr[i].date = d;
+    bd_arr[i].name = n;
+    bd_arr[i].timeNotification = notific;
+}
+
+
+void Schedule::GetStudy(vector<Study>& stud, QDate needed_date)
+{
+    stud.resize(0);
+
+    QDateTime start_interval(needed_date, QTime(0, 0, 0));
+    QDateTime end_interval(needed_date, QTime(23, 59, 59));
+
+    for (int i=0; i<int(study_arr.size()); i++)
+        if ((study_arr[i].getDate() >= start_interval) && (study_arr[i].getDate() <= end_interval))
+            stud.push_back(study_arr[i]);
+}
+void Schedule::GetMeet(vector<Meet>& meet, QDate needed_date)
+{
+    meet.resize(0);
+
+    QDateTime start_interval(needed_date, QTime(0, 0, 0));
+    QDateTime end_interval(needed_date, QTime(23, 59, 59));
+
+    for (int i=0; i<int(meet_arr.size()); i++)
+        //if ((meet_arr[i]->date).date() == needed_date)
+        if ((meet_arr[i].getDate() >= start_interval) && (meet_arr[i].getDate() <= end_interval))
+            meet.push_back(meet_arr[i]);
+}
+void Schedule::GetTask(vector<Task>& task, QDate needed_date)
+{
+    task.resize(0);
+
+    QDateTime start_interval(needed_date, QTime(0, 0, 0));
+    QDateTime end_interval(needed_date, QTime(23, 59, 59));
+
+    for (int i=0; i<int(task_arr.size()); i++)
+        //if ((task_arr[i]->date).date() == needed_date)
+        if ((task_arr[i].getDate() >= start_interval) && (task_arr[i].getDate() <= end_interval))
+            task.push_back(task_arr[i]);
+}
+void Schedule::GetBD(vector<Birthday>& bd, QDate needed_date)
+{
+    bd.resize(0);
+
+    QDateTime start_interval(needed_date, QTime(0, 0, 0));
+    QDateTime end_interval(needed_date, QTime(23, 59, 59));
+
+    for (int i=0; i<int(bd_arr.size()); i++)
+        //if ((bd_arr[i]->date).date() == needed_date)
+        if ((bd_arr[i].getDate() >= start_interval) && (bd_arr[i].getDate() <= end_interval))
+            bd.push_back(bd_arr[i]);
 }

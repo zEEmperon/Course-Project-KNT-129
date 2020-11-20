@@ -14,6 +14,7 @@ protected:
     QString type;
     QString name;
 public:
+    Event();
     Event(QDateTime d, QString n, quint64 t_event_id);
     virtual ~Event(){};
     virtual void Add()=0;
@@ -39,6 +40,7 @@ protected:
     QTime timeEnd;
     QString place;
 public:
+    Study();
     Study(QDateTime d, QTime b, QTime e, QString n, QString p, quint64 t_event_id);
     ~Study(){};
     void Add(){};
@@ -50,6 +52,8 @@ public:
     QString getPlace(){return place;};
 
     void Show();
+
+    Study& operator=(const Study &to_copy);
 
     friend class Schedule;
 
@@ -64,6 +68,7 @@ protected:
     QString place;
     QDateTime timeNotification;
 public:
+    Meet();
     Meet(QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific, quint64 t_event_id);
     ~Meet(){};
     void Add(){};
@@ -77,6 +82,8 @@ public:
     QDateTime getTimeNotific(){return timeNotification;};
 
     void Show();
+
+    Meet& operator=(const Meet &to_copy);
 
     friend class Schedule;
 };
@@ -95,6 +102,7 @@ protected:
     QDateTime startAct;
     QDateTime endAct;
 public:
+    Task();
     Task(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, quint64 t_event_id, quint64 p_id);
     ~Task(){};
     void Add(){};
@@ -115,6 +123,8 @@ public:
 
     quint64 GetPriorityID(){return priority_id;};
 
+    Task& operator=(const Task &to_copy);
+
     friend class Schedule;
 };
 
@@ -124,6 +134,7 @@ class Birthday: public Event
 protected:
     QDateTime timeNotification;
 public:
+    Birthday();
     Birthday(QDateTime d, QString n, QDateTime notific, quint64 t_event_id);
     ~Birthday(){};
     void Add(){};
@@ -133,6 +144,8 @@ public:
     QDateTime getTimeNotific(){return timeNotification;};
 
     void Show();
+
+    Birthday& operator=(const Birthday &to_copy);
 
     friend class Schedule;
 };

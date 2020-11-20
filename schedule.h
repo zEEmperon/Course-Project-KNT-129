@@ -7,17 +7,17 @@
 class Schedule
 {
 private:
-    vector <Event* > schedule_arr;
-    vector <Study* > study_arr;
-    vector <Meet* > meet_arr;
-    vector <Task* > task_arr;
-    vector <Birthday* > bd_arr;
+    //vector <Event* > schedule_arr;
+    vector <Study> study_arr;
+    vector <Meet> meet_arr;
+    vector <Task> task_arr;
+    vector <Birthday> bd_arr;
 public:
-    Schedule();
+    Schedule(vector<Study> Studies, vector<Meet> Meetings, vector<Task> Tasks, vector<Birthday> BDs);
     ~Schedule();
 
     //метод "розбиття" загального вектору подій на 4 вектори за класами
-    void FromSchedule();
+    //void FromSchedule();
 
     //методи додавання подій
     void AddStudy(QDateTime d, QTime b, QTime e, QString n, QString p, quint64 t_event_id);
@@ -47,6 +47,12 @@ public:
     void ChangeMeet(int i, QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific);
     void ChangeTask(int i, QDateTime tdl, quint16 p, QString n, QDateTime notific);
     void ChangeBD(int i, QDateTime d, QString n, QDateTime notific);
+
+    //методи отримання подій на сьогоднішній день
+    void GetStudy(vector<Study>& stud, QDate needed_date);
+    void GetMeet(vector<Meet>& meet, QDate needed_date);
+    void GetTask(vector<Task>& task, QDate needed_date);
+    void GetBD(vector<Birthday>& bd, QDate needed_date);
 
 };
 
