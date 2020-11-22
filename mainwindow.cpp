@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "editpltablewindow.h"
-#include "dbmanager.h"
 #include "event.h"
 #include "schedule.h"
 #include<vector>
@@ -17,14 +16,14 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    DBManager dbm;
+    dbm = new DBManager();
 
     QDate d = QDate::currentDate();
 
     QDateTime start = QDateTime::currentDateTime().addDays(-30);
     QDateTime end = QDateTime::currentDateTime().addDays(30);
 
-    sch = new Schedule(dbm.GetStudy(start, end), dbm.GetMeet(start, end), dbm.GetTask(start, end), dbm.GetBirthday(start, end));
+    sch = new Schedule(dbm->GetStudy(start, end), dbm->GetMeet(start, end), dbm->GetTask(start, end), dbm->GetBirthday(start, end));
 
     vector<Study> today_study;
     sch->GetStudy(today_study, d);
@@ -80,6 +79,12 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete sch;
+    if( dbm )
+    {
+        delete dbm;
+        dbm = nullptr;
+        QSqlDatabase::removeDatabase( "tasklist" );
+    }
     delete ui;
 }
 

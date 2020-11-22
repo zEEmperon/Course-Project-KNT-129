@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "schedule.h"
+#include "dbmanager.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -26,5 +27,6 @@ private slots:
 private:
     Ui::MainWindow *ui;
     Schedule* sch;
+    DBManager* dbm;
 };
 #endif // MAINWINDOW_H
