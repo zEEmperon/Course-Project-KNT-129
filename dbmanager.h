@@ -39,8 +39,8 @@ public:
     void ActivateTask( Task& item );
     void DeactivateTask( Task&item );
 
-//    void ExportData_CSV( const QString& file_name );
-//    void ExportData_JSON( const QString& file_name );
+    void ExportData_CSV( const QString& file_name, QChar delimeter );
+    void ExportData_JSON( const QString& file_name );
 };
 
 #endif // DBMANAGER_H

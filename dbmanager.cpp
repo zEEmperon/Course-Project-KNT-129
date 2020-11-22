@@ -2,6 +2,7 @@
 #include <QDebug>
 #include <QDir>
 #include <QSqlQuery>
+#include <QSqlError>
 #include <QTextCodec>
 #include <stdexcept>
 
@@ -28,6 +29,7 @@ DBManager::~DBManager()
 {
     qDebug() << __func__ << " +";
 
+ExportData_CSV("test.csv", ';');
     if( m_db.isOpen() )
         m_db.close();
 
@@ -519,11 +521,88 @@ void DBManager::DeactivateTask( Task &item )
         throw std::runtime_error( QString("DeactivateTask error!").toStdString() );
     }
 
-    qDebug() << __func__ << " -" << QDateTime().toTime_t();
+    qDebug() << __func__ << " -";
 }
 
 //----------------------------------------------------------------------------
-//void ExportData_CSV( QString& file_name )
+void DBManager::ExportData_CSV( const QString &file_name, QChar delimeter )
+{
+    qDebug() << __func__ << " +";
+
+    QString str = QString("select Task_list.ID, Type_task.Name as type_name, Task_list.Name,"
+                          " (CASE Task_list.Place"
+                          "       WHEN Task_list.Place IS NULL THEN ''"
+                          "       ELSE Task_list.Place END) as place,"
+                          " (CASE Task_list.Work_time"
+                          "       WHEN Task_list.Work_time IS NULL THEN 0"
+                          "       ELSE Task_list.Work_time END) as worktime,"
+                          " (CASE Task_list.Date_start"
+                          "       WHEN Task_list.Date_start IS NULL THEN 0"
+                          "       ELSE Task_list.Date_start END) as date_start,"
+                          " (CASE Task_list.Date_end"
+                          "       WHEN Task_list.Date_end IS NULL THEN 0"
+                          "       ELSE Task_list.Date_end END) as date_end,"
+                          " (CASE Task_list.Priority"
+                          "       WHEN Task_list.Priority IS NULL THEN ''"
+                          "       ELSE (select Priority.Name from Priority where Priority.ID=Task_list.Priority) END) as priority_name,"
+                          " (CASE Task_list.Priority"
+                          "       WHEN Task_list.Priority IS NULL THEN 0"
+                          "       ELSE (select Priority.Weight from Priority where Priority.ID=Task_list.Priority) END) as priority_weight,"
+                          " (CASE Task_list.Time_notification"
+                          "       WHEN Task_list.Time_notification IS NULL THEN 0"
+                          "       ELSE Task_list.Time_notification END) as time_notification"
+                          "  from Task_list, Type_task"
+                          " where Task_list.Type_task = Type_task.ID"
+                          "   and Deleted = 0"
+                          " order by Task_list.Type_task, date_start, date_end asc, priority_weight desc");
+
+    QSqlQuery query( m_db );
+
+    if( query.exec( str ) )
+    {
+        QFile file( file_name );
+
+        if ( !file.open(QIODevice::WriteOnly | QIODevice::Text) )
+                throw std::runtime_error( QString("ExportData_CSV: OpenFile error for %1!").arg( file_name ).toStdString() );
+
+        QTextStream out( &file );
+
+        while( query.next() )
+        {
+            QString item = QString( "%1%11\"%2\"%11%3%11%4%11\"%5\"%11%6%11\"%7\"%11\"%8\"%11%9%11%10" ).
+                                   arg( query.value(0).toULongLong() ).
+                                   arg( QString::fromUtf8( query.value(1).toByteArray().data() ) ).
+                                   arg( query.value(5).toULongLong() ? QDateTime::fromTime_t( query.value(5).toULongLong() ).toString("yyyy.MM.dd hh:mm:ss")
+                                                                     : "NULL" ).
+                                   arg( query.value(6).toULongLong() ? QDateTime::fromTime_t( query.value(6).toULongLong() ).toString("yyyy.MM.dd hh:mm:ss")
+                                                                     : "NULL" ).
+                                   arg( query.value(2).toString() ).
+                                   arg( query.value(8).toULongLong() ).
+                                   arg( query.value(7).toString() ).
+                                   arg( query.value(3).toString() ).
+                                   arg( query.value(9).toULongLong() ? QDateTime::fromTime_t( query.value(9).toULongLong() ).toString("yyyy.MM.dd hh:mm:ss")
+                                                                     : "NULL" ).
+                                   arg( query.value(4).toULongLong() ).
+                                   arg( delimeter );
+
+            out << item << '\n';
+        }
+        file.close();
+    }
+    else
+    {
+        qDebug() <<  query.lastError().text();
+        qDebug() <<  query.lastError().databaseText();
+        qDebug() <<  query.lastError().driverText();
+    }
+
+    qDebug() << __func__ << " -";
+}
 
 //----------------------------------------------------------------------------
-//void ExportData_JSON( QString& file_name )
+void DBManager::ExportData_JSON( const QString& file_name )
+{
+    qDebug() << __func__ << " +";
+
+    qDebug() << __func__ << " -";
+}
