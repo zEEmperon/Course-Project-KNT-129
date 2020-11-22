@@ -17,7 +17,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTabWidget" name="tabToday">
+   <widget class="QTabWidget" name="tabWidget">
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -30,9 +30,9 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>3</number>
     </property>
-    <widget class="QWidget" name="tab_3">
+    <widget class="QWidget" name="tabToday">
      <attribute name="title">
       <string>Сьогодні</string>
      </attribute>
@@ -1181,6 +1181,137 @@ QTableWidget::item:selected{
       </property>
       <property name="text">
        <string>Видалити</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QWidget" name="tab">
+     <attribute name="title">
+      <string>Задачі</string>
+     </attribute>
+     <widget class="QTableWidget" name="tableTasks">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>30</y>
+        <width>611</width>
+        <height>471</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QHeaderView::section {
+    background-color: #ff911c;
+    padding: 4px;
+    font-size: 9pt;
+color: #ffffff;
+    border-style: none;
+    border-bottom: 1px solid #ffffff;
+    border-right: 1px solid #ffffff;
+}
+
+QHeaderView::section:horizontal
+{
+    border-top: 1px solid #ffffff;
+}
+
+QHeaderView::section:vertical
+{
+    border-left: 1px solid #ffffff;
+}
+QTableWidget {
+    gridline-color: #ffffff;
+}
+QTableWidget QTableCornerButton::section {
+    border: 1px solid #ffffff;
+}
+QTableWidget::item{ 
+    background-color: #ffebb0; 
+}
+QTableWidget::item:selected{
+ background-color: #ffd65e;
+ }</string>
+      </property>
+      <property name="selectionBehavior">
+       <enum>QAbstractItemView::SelectRows</enum>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonBeginDo">
+      <property name="geometry">
+       <rect>
+        <x>110</x>
+        <y>522</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+     color: #ffffff;
+     font-weight: bold;
+     border: 1px solid #8f8f91;
+     border-radius: 6px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #ffebb0, stop: 1  #ff911c);
+     min-width: 80px;
+ }
+
+ QPushButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0  #ff911c, stop: 1 #ffebb0);
+ }
+
+ QPushButton:flat {
+     border: none; /* для плоской кнопки границы нет */
+ }
+
+ QPushButton:default {
+     border-color: navy; /* делаем кнопку по умолчанию выпуклой */
+ }
+
+
+</string>
+      </property>
+      <property name="text">
+       <string>Почати роботу</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="pushButton_2">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>520</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+     color: #ffffff;
+     font-weight: bold;
+     border: 1px solid #8f8f91;
+     border-radius: 6px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #ffebb0, stop: 1  #ff911c);
+     min-width: 80px;
+ }
+
+ QPushButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0  #ff911c, stop: 1 #ffebb0);
+ }
+
+ QPushButton:flat {
+     border: none; /* для плоской кнопки границы нет */
+ }
+
+ QPushButton:default {
+     border-color: navy; /* делаем кнопку по умолчанию выпуклой */
+ }
+
+
+</string>
+      </property>
+      <property name="text">
+       <string>Закінчити роботу</string>
       </property>
      </widget>
     </widget>

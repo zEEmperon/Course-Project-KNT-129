@@ -59,6 +59,15 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTodayUniversity->verticalHeader()->setVisible(false);
     ui->tableTodayUniversity->setRowCount(int(today_study.size())); //DB loading
 
+    ui->tableTasks->setColumnCount(3);
+    ui->tableTasks->setColumnWidth(0,209);
+    ui->tableTasks->setColumnWidth(1,200);
+    ui->tableTasks->setColumnWidth(2,200);
+    ui->tableTasks->setHorizontalHeaderLabels({"Задача","Дедлайн","Витрачено часу"});
+    ui->tableTasks->horizontalHeader()->setVisible(true);
+    ui->tableTasks->verticalHeader()->setVisible(false);
+    ui->tableTasks->setRowCount(int(today_study.size())); //DB loading
+
 
     for (int i=0; i<int(today_study.size()); i++)
     {
