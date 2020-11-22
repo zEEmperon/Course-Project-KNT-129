@@ -13,7 +13,7 @@ private:
 
 public:
     DBManager();
-    ~DBManager(); //todo: delete m_db_manager; m_db_manager = nullptr; QSqlDatabase::removeDatabase( "tasklist" );
+    ~DBManager();
 
     vector <PriorityData> GetPriorityList( void );
     vector <TypeData> GetTypeTask( void );
