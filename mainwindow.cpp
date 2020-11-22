@@ -17,6 +17,19 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    ui->lcdHoursBIG->display((int)QTime::currentTime().hour()/10);
+    ui->lcdHoursLIT->display(QTime::currentTime().hour()%10);
+    ui->lcdMinutesBIG->display((int)QTime::currentTime().minute()/10);
+    ui->lcdMinutesLIT->display(QTime::currentTime().minute()%10);
+    ui->lcdSecondsBIG->display((int)QTime::currentTime().second()/10);
+    ui->lcdSecondsLIT->display(QTime::currentTime().second()%10);
+
+//timer
+    timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), SLOT(slotUpdateDateTime()));
+    timer->start(1000);
+    //slotUpdateDateTime();
+
     dbm = new DBManager();
 
     QDate d = QDate::currentDate();
@@ -151,4 +164,16 @@ void MainWindow::on_actionExport_triggered()
             tr("Data Base (*.db)"));
 //ВЕРОНИКА
 //Получаем полный путь для сохранения файла + имя файла с расширением. Теперь нужно окрыть файловый поток и сохранить базу данных
+}
+void MainWindow::slotUpdateDateTime(){
+
+    if(timer->isActive()){
+
+        ui->lcdHoursBIG->display((int)QTime::currentTime().hour()/10);
+        ui->lcdHoursLIT->display(QTime::currentTime().hour()%10);
+        ui->lcdMinutesBIG->display((int)QTime::currentTime().minute()/10);
+        ui->lcdMinutesLIT->display(QTime::currentTime().minute()%10);
+        ui->lcdSecondsBIG->display((int)QTime::currentTime().second()/10);
+        ui->lcdSecondsLIT->display(QTime::currentTime().second()%10);
+    }
 }

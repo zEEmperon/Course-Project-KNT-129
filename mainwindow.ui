@@ -30,18 +30,18 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tabToday">
      <attribute name="title">
       <string>Сьогодні</string>
      </attribute>
-     <widget class="QLCDNumber" name="lcdMinutes">
+     <widget class="QLCDNumber" name="lcdMinutesBIG">
       <property name="geometry">
        <rect>
         <x>280</x>
-        <y>450</y>
-        <width>81</width>
+        <y>440</y>
+        <width>51</width>
         <height>81</height>
        </rect>
       </property>
@@ -57,16 +57,16 @@
        <bool>false</bool>
       </property>
       <property name="digitCount">
-       <number>2</number>
+       <number>1</number>
       </property>
       <property name="segmentStyle">
        <enum>QLCDNumber::Flat</enum>
       </property>
       <property name="value" stdset="0">
-       <double>16.000000000000000</double>
+       <double>99.000000000000000</double>
       </property>
       <property name="intValue" stdset="0">
-       <number>16</number>
+       <number>99</number>
       </property>
      </widget>
      <widget class="QLabel" name="label_6">
@@ -235,12 +235,12 @@ QTableWidget::item:selected{
        <bool>false</bool>
       </attribute>
      </widget>
-     <widget class="QLCDNumber" name="lcdHours">
+     <widget class="QLCDNumber" name="lcdHoursBIG">
       <property name="geometry">
        <rect>
-        <x>200</x>
-        <y>450</y>
-        <width>81</width>
+        <x>170</x>
+        <y>440</y>
+        <width>51</width>
         <height>81</height>
        </rect>
       </property>
@@ -256,24 +256,24 @@ QTableWidget::item:selected{
        <bool>false</bool>
       </property>
       <property name="digitCount">
-       <number>2</number>
+       <number>1</number>
       </property>
       <property name="segmentStyle">
        <enum>QLCDNumber::Flat</enum>
       </property>
       <property name="value" stdset="0">
-       <double>22.000000000000000</double>
+       <double>99.000000000000000</double>
       </property>
       <property name="intValue" stdset="0">
-       <number>22</number>
+       <number>99</number>
       </property>
      </widget>
-     <widget class="QLCDNumber" name="lcdSeconds">
+     <widget class="QLCDNumber" name="lcdSecondsBIG">
       <property name="geometry">
        <rect>
-        <x>360</x>
-        <y>450</y>
-        <width>81</width>
+        <x>390</x>
+        <y>440</y>
+        <width>51</width>
         <height>81</height>
        </rect>
       </property>
@@ -289,23 +289,23 @@ QTableWidget::item:selected{
        <bool>false</bool>
       </property>
       <property name="digitCount">
-       <number>2</number>
+       <number>1</number>
       </property>
       <property name="segmentStyle">
        <enum>QLCDNumber::Flat</enum>
       </property>
       <property name="value" stdset="0">
-       <double>10.000000000000000</double>
+       <double>99.000000000000000</double>
       </property>
       <property name="intValue" stdset="0">
-       <number>10</number>
+       <number>99</number>
       </property>
      </widget>
      <widget class="QLabel" name="label_7">
       <property name="geometry">
        <rect>
-        <x>280</x>
-        <y>450</y>
+        <x>260</x>
+        <y>440</y>
         <width>21</width>
         <height>71</height>
        </rect>
@@ -322,8 +322,8 @@ QTableWidget::item:selected{
      <widget class="QLabel" name="label_17">
       <property name="geometry">
        <rect>
-        <x>360</x>
-        <y>450</y>
+        <x>370</x>
+        <y>440</y>
         <width>21</width>
         <height>71</height>
        </rect>
@@ -335,6 +335,105 @@ QTableWidget::item:selected{
       </property>
       <property name="text">
        <string>:</string>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdHoursLIT">
+      <property name="geometry">
+       <rect>
+        <x>210</x>
+        <y>440</y>
+        <width>51</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MT Extra</family>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="smallDecimalPoint">
+       <bool>false</bool>
+      </property>
+      <property name="digitCount">
+       <number>1</number>
+      </property>
+      <property name="segmentStyle">
+       <enum>QLCDNumber::Flat</enum>
+      </property>
+      <property name="value" stdset="0">
+       <double>99.000000000000000</double>
+      </property>
+      <property name="intValue" stdset="0">
+       <number>99</number>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdMinutesLIT">
+      <property name="geometry">
+       <rect>
+        <x>320</x>
+        <y>440</y>
+        <width>51</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MT Extra</family>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="smallDecimalPoint">
+       <bool>false</bool>
+      </property>
+      <property name="digitCount">
+       <number>1</number>
+      </property>
+      <property name="segmentStyle">
+       <enum>QLCDNumber::Flat</enum>
+      </property>
+      <property name="value" stdset="0">
+       <double>99.000000000000000</double>
+      </property>
+      <property name="intValue" stdset="0">
+       <number>99</number>
+      </property>
+     </widget>
+     <widget class="QLCDNumber" name="lcdSecondsLIT">
+      <property name="geometry">
+       <rect>
+        <x>430</x>
+        <y>440</y>
+        <width>51</width>
+        <height>81</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>MT Extra</family>
+       </font>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="smallDecimalPoint">
+       <bool>false</bool>
+      </property>
+      <property name="digitCount">
+       <number>1</number>
+      </property>
+      <property name="segmentStyle">
+       <enum>QLCDNumber::Flat</enum>
+      </property>
+      <property name="value" stdset="0">
+       <double>99.000000000000000</double>
+      </property>
+      <property name="intValue" stdset="0">
+       <number>99</number>
       </property>
      </widget>
     </widget>
@@ -1274,7 +1373,7 @@ QTableWidget::item:selected{
        <string>Почати роботу</string>
       </property>
      </widget>
-     <widget class="QPushButton" name="pushButton_2">
+     <widget class="QPushButton" name="buttonEndDo">
       <property name="geometry">
        <rect>
         <x>380</x>

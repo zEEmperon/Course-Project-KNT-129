@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "schedule.h"
 #include "dbmanager.h"
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -12,6 +13,12 @@ QT_END_NAMESPACE
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
+
+private:
+    Ui::MainWindow *ui;
+    Schedule* sch;
+    DBManager* dbm;
+    QTimer*timer;
 
 public:
     MainWindow(QWidget *parent = nullptr);
@@ -26,9 +33,8 @@ private slots:
 
     void on_actionExport_triggered();
 
-private:
-    Ui::MainWindow *ui;
-    Schedule* sch;
-    DBManager* dbm;
+    void slotUpdateDateTime();
+
+
 };
 #endif // MAINWINDOW_H
