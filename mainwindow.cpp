@@ -3,6 +3,7 @@
 #include "editpltablewindow.h"
 #include "event.h"
 #include "schedule.h"
+#include "QFileDialog"
 #include<vector>
 
 #include<QDebug>
@@ -53,7 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTodayUniversity->setColumnCount(2);
     ui->tableTodayUniversity->setColumnWidth(0,125);
     ui->tableTodayUniversity->setColumnWidth(1,125);
-    ui->tableTodayUniversity->setHorizontalHeaderLabels({"Час","Пара"});
+    ui->tableTodayUniversity->setHorizontalHeaderLabels({"Час","Заняття"});
     ui->tableTodayUniversity->horizontalHeader()->setVisible(true);
     ui->tableTodayUniversity->verticalHeader()->setVisible(false);
     ui->tableTodayUniversity->setRowCount(int(today_study.size())); //DB loading
@@ -121,7 +122,7 @@ void MainWindow::on_calendarPersonalLife_clicked(const QDate &date)
 void MainWindow::on_buttonRemovePersonalLife_clicked()
 {
    //удаление события из таблицы и базы данных
-   /* QList<QTableWidgetItem*>selItemsList =*/ ui->tablePersonalLifeEvents->selectedItems();
+   /* QList<QTableWidgetItem*>selItemsList = ui->tablePersonalLifeEvents->selectedItems();*/
 
 }
 
@@ -132,4 +133,13 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
     w->show();
 
     //добавление события в таблицу и базу данных
+}
+
+void MainWindow::on_actionExport_triggered()
+{
+    QString fileName = QFileDialog::getSaveFileName(this,
+            tr("Save Data Base"), "dataBase",
+            tr("Data Base (*.db)"));
+//ВЕРОНИКА
+//Получаем полный путь для сохранения файла + имя файла с расширением. Теперь нужно окрыть файловый поток и сохранить базу данных
 }

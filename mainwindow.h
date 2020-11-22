@@ -24,6 +24,8 @@ private slots:
 
     void on_buttonAddPersonalLife_clicked();
 
+    void on_actionExport_triggered();
+
 private:
     Ui::MainWindow *ui;
     Schedule* sch;
