@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/rc">
+        <file alias="clockIcon">clockIcon.png</file>
+    </qresource>
+</RCC>

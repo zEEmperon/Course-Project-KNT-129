@@ -5,6 +5,7 @@
 #include "schedule.h"
 #include "QFileDialog"
 #include<vector>
+#include <QCheckBox>
 
 #include<QDebug>
 
@@ -16,6 +17,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/rc/clockIcon"));//application icon
+
+    ui->labelTodayDate->setText("Сьогодні "+QDate::currentDate().toString("dd.MM.yyyy"));
+
 
     ui->lcdHoursBIG->display((int)QTime::currentTime().hour()/10);
     ui->lcdHoursLIT->display(QTime::currentTime().hour()%10);
@@ -45,6 +50,21 @@ MainWindow::MainWindow(QWidget *parent)
     sch->GetMeet(today_meet, d);
     vector<Birthday> today_bd;
     sch->GetBD(today_bd, d);
+
+    ui->tableHomeWork->setColumnCount(2);
+    ui->tableHomeWork->setColumnWidth(0,125);
+    ui->tableHomeWork->setColumnWidth(1,50);
+    ui->tableHomeWork->setHorizontalHeaderLabels({"Завдання","Стан"});
+    ui->tableHomeWork->horizontalHeader()->setVisible(true);
+    ui->tableHomeWork->verticalHeader()->setVisible(false);
+    int rowCount = 4;//DB loading ДОБАВИТЬ КОЛ-ВО ДЗ ИЗ БД
+    ui->tableHomeWork->setRowCount(rowCount);
+
+    for(int i = 0; i < rowCount; i++){
+        ui->tableHomeWork->setCellWidget(i, 1, new QCheckBox);
+    }//добавляем check box к каждой ячейке
+
+
 
     ui->tableTodayPesonalLife->setColumnCount(2);
     ui->tableTodayPesonalLife->setColumnWidth(0,125);
@@ -79,7 +99,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTasks->setHorizontalHeaderLabels({"Задача","Дедлайн","Витрачено часу"});
     ui->tableTasks->horizontalHeader()->setVisible(true);
     ui->tableTasks->verticalHeader()->setVisible(false);
-    ui->tableTasks->setRowCount(int(today_study.size())); //DB loading
+    ui->tableTasks->setRowCount(12); //DB loading ЗАГРУЗКА ЗАДАЧ
 
 
     for (int i=0; i<int(today_study.size()); i++)
@@ -109,6 +129,7 @@ MainWindow::~MainWindow()
         QSqlDatabase::removeDatabase( "tasklist" );
     }
     delete ui;
+    delete timer;
 }
 
 
@@ -150,11 +171,12 @@ void MainWindow::on_buttonRemovePersonalLife_clicked()
 
 void MainWindow::on_buttonAddPersonalLife_clicked()
 {
-    EditPLTableWindow *w = new EditPLTableWindow;
-    //w->setAttribute(Qt::WA_DeleteOnClose);
-    w->show();
+    EditPLTableWindow *editPLWindow = new EditPLTableWindow;
+    //editPLWindow->setAttribute(Qt::WA_DeleteOnClose);
+    editPLWindow->show();
 
     //добавление события в таблицу и базу данных
+    delete editPLWindow;
 }
 
 void MainWindow::on_actionExport_triggered()
