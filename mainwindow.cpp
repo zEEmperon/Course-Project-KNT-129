@@ -160,8 +160,14 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
 void MainWindow::on_actionExport_triggered()
 {
     QString fileName = QFileDialog::getSaveFileName(this,
-            tr("Save Data Base"), "dataBase",
-            tr("Data Base (*.db)"));
+            tr("Save DataBase"), "dataBase",
+            tr("CSV file (*.csv);;JSON file (*.json)"));
+    if(fileName.contains(".csv")){
+        //сохранение csv
+    }
+    else if(fileName.contains(".json")){
+        //сохранение json
+    }
 //ВЕРОНИКА
 //Получаем полный путь для сохранения файла + имя файла с расширением. Теперь нужно окрыть файловый поток и сохранить базу данных
 }
