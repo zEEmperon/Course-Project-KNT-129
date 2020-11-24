@@ -70,9 +70,6 @@ bool Schedule::isBusy(QDate d, QTime b, QTime e)
     return found_busy;
 }
 
-// видалення векторів
-void Schedule::Delete(){}
-
 // сортування вектору занять
 void Schedule::SortStudy(int b, int e)
 {
@@ -248,16 +245,16 @@ void Schedule::GetMeet(vector<Meet>& meet, QDate needed_date)
         if ((meet_arr[i].getDate() >= start_interval) && (meet_arr[i].getDate() <= end_interval))
             meet.push_back(meet_arr[i]);
 }
-void Schedule::GetTask(vector<Task>& task, QDate needed_date)
+void Schedule::GetTask(vector<Task>& task)
 {
     task.resize(0);
 
-    QDateTime start_interval(needed_date, QTime(0, 0, 0));
-    QDateTime end_interval(needed_date, QTime(23, 59, 59));
+    //QDateTime start_interval(needed_date, QTime(0, 0, 0));
+    //QDateTime end_interval(needed_date, QTime(23, 59, 59));
 
     for (int i=0; i<int(task_arr.size()); i++)
         //if ((task_arr[i]->date).date() == needed_date)
-        if ((task_arr[i].getDate() >= start_interval) && (task_arr[i].getDate() <= end_interval))
+        //if ((task_arr[i].getDate() >= start_interval) && (task_arr[i].getDate() <= end_interval))
             task.push_back(task_arr[i]);
 }
 void Schedule::GetBD(vector<Birthday>& bd, QDate needed_date)
@@ -271,4 +268,100 @@ void Schedule::GetBD(vector<Birthday>& bd, QDate needed_date)
         //if ((bd_arr[i]->date).date() == needed_date)
         if ((bd_arr[i].getDate() >= start_interval) && (bd_arr[i].getDate() <= end_interval))
             bd.push_back(bd_arr[i]);
+}
+
+int Schedule::FindStudy(QString n, QTime time, QDate date)
+{
+    int i = -1;
+    bool found = false;
+    while (!found && i<int(study_arr.size()))
+    {
+        i++;
+        if (study_arr[i].name == n && (study_arr[i].timeBeg.hour() == time.hour() && study_arr[i].timeBeg.minute() == time.minute()) && study_arr[i].date.date() == date)
+            found = true;
+    }
+    return i;
+}
+
+int Schedule::FindMeet(QString n, QTime time, QDate date)
+{
+    int i = -1;
+    bool found = false;
+    while (!found && i<int(meet_arr.size()))
+    {
+        i++;
+        if (meet_arr[i].name == n && (meet_arr[i].timeBeg.hour() == time.hour() && meet_arr[i].timeBeg.minute() == time.minute()) && meet_arr[i].date.date() == date)
+            found = true;
+    }
+    return i;
+}
+
+int Schedule::FindTask(QString n, QDate tdl)
+{
+    int i = -1;
+    bool found = false;
+    while (!found && i<int(task_arr.size()))
+    {
+        i++;
+        if (task_arr[i].name == n && task_arr[i].timeDeadline.date() == tdl)
+            found = true;
+    }
+    return i;
+}
+
+int Schedule::FindBD(QString n)
+{
+    int i = -1;
+    bool found = false;
+    while (!found && i<int(bd_arr.size()))
+    {
+        i++;
+        if (bd_arr[i].name == n)
+            found = true;
+    }
+    return i;
+}
+
+quint64 Schedule::DeleteStudy(int i)
+{
+    quint64 id = study_arr[i].GetID();
+    for (int j=i; j<int(study_arr.size())-1; j++)
+        study_arr[j] = study_arr[j+1];
+    study_arr.pop_back();
+    return id;
+}
+quint64 Schedule::DeleteMeet(int i)
+{
+    quint64 id = study_arr[i].GetID();
+    for (int j=i; j<int(meet_arr.size())-1; j++)
+        meet_arr[j] = meet_arr[j+1];
+    meet_arr.pop_back();
+    return id;
+}
+quint64 Schedule::DeleteTask(int i)
+{
+    quint64 id = study_arr[i].GetID();
+    for (int j=i; j<int(task_arr.size())-1; j++)
+        task_arr[j] = task_arr[j+1];
+    task_arr.pop_back();
+    return id;
+}
+quint64 Schedule::DeleteBD(int i)
+{
+    quint64 id = study_arr[i].GetID();
+    for (int j=i; j<int(bd_arr.size())-1; j++)
+        bd_arr[j] = bd_arr[j+1];
+    bd_arr.pop_back();
+    return id;
+}
+
+Task& Schedule::ActivateTask(int i)
+{
+    task_arr[i].Activate();
+    return task_arr[i];
+}
+Task& Schedule::DeactivateTask(int i)
+{
+    task_arr[i].Deactivate();
+    return task_arr[i];
 }

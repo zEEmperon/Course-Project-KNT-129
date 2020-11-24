@@ -494,7 +494,6 @@ void DBManager::ActivateTask( Task &item )
                            " where Task_list.ID in (%2)" ).
                            arg( item.getDate().toTime_t() ).arg( item.GetID());
 
-    qDebug() << str;
     if( !query.exec( str ) )
     {
         throw std::runtime_error( QString("ActivateTask error!").toStdString() );

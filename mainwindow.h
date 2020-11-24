@@ -35,6 +35,7 @@ private slots:
 
     void slotUpdateDateTime();
 
-
+    void on_buttonBeginDo_clicked();
+    void on_buttonEndDo_clicked();
 };
 #endif // MAINWINDOW_H

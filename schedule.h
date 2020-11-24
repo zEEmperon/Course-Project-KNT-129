@@ -28,9 +28,6 @@ public:
     //перевірка, чи вільний обраний проміжок часу
     bool isBusy(QDate d, QTime b, QTime e);
 
-    //видалення елементів
-    void Delete();
-
     //методи сортування
     void SortStudy(int b, int e);
     void SortMeet(int b, int e);
@@ -51,8 +48,23 @@ public:
     //методи отримання подій на сьогоднішній день
     void GetStudy(vector<Study>& stud, QDate needed_date);
     void GetMeet(vector<Meet>& meet, QDate needed_date);
-    void GetTask(vector<Task>& task, QDate needed_date);
+    void GetTask(vector<Task>& task);
     void GetBD(vector<Birthday>& bd, QDate needed_date);
+
+
+    int FindStudy(QString n, QTime time, QDate date);
+    int FindMeet(QString n, QTime time, QDate date);
+    int FindTask(QString n, QDate tdl);
+    int FindBD(QString n);
+
+    //видалення елементів
+    quint64 DeleteStudy(int i);
+    quint64 DeleteMeet(int i);
+    quint64 DeleteTask(int i);
+    quint64 DeleteBD(int i);
+
+    Task& ActivateTask(int i);
+    Task& DeactivateTask(int i);
 
 };
 
