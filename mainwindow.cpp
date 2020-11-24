@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent)
     dbm = new DBManager();
 
     QDate d = QDate::currentDate();
+    //QDate d(2020, 11, 15);
 
     QDateTime start = QDateTime::currentDateTime().addDays(-30);
     QDateTime end = QDateTime::currentDateTime().addDays(30);
@@ -50,6 +51,8 @@ MainWindow::MainWindow(QWidget *parent)
     sch->GetMeet(today_meet, d);
     vector<Birthday> today_bd;
     sch->GetBD(today_bd, d);
+    vector<Task> task;
+    sch->GetTask(task);
 
     ui->tableHomeWork->setColumnCount(2);
     ui->tableHomeWork->setColumnWidth(0,125);
@@ -65,14 +68,14 @@ MainWindow::MainWindow(QWidget *parent)
     }//добавляем check box к каждой ячейке
 
 
-
     ui->tableTodayPesonalLife->setColumnCount(2);
     ui->tableTodayPesonalLife->setColumnWidth(0,125);
     ui->tableTodayPesonalLife->setColumnWidth(1,125);
     ui->tableTodayPesonalLife->setHorizontalHeaderLabels({"Час","Подія"});
     ui->tableTodayPesonalLife->horizontalHeader()->setVisible(true);
     ui->tableTodayPesonalLife->verticalHeader()->setVisible(false);
-    ui->tableTodayPesonalLife->setRowCount(int(today_meet.size())+int(today_bd.size())); //DB loading
+    //ui->tableTodayPesonalLife->setRowCount(int(today_meet.size())+int(today_bd.size())); //DB loading
+    ui->tableTodayPesonalLife->setRowCount(8);
 
     for (int i=0; i<int(today_meet.size()); i++)
     {
@@ -90,7 +93,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTodayUniversity->setHorizontalHeaderLabels({"Час","Заняття"});
     ui->tableTodayUniversity->horizontalHeader()->setVisible(true);
     ui->tableTodayUniversity->verticalHeader()->setVisible(false);
-    ui->tableTodayUniversity->setRowCount(int(today_study.size())); //DB loading
+    //ui->tableTodayUniversity->setRowCount(int(today_study.size())); //DB loading
+    ui->tableTodayUniversity->setRowCount(8);
+
+    for (int i=0; i<int(today_study.size()); i++)
+    {
+        ui->tableTodayUniversity->setItem(i, 0, new QTableWidgetItem(today_study[i].getTimeBeg().toString("HH:mm")));
+        ui->tableTodayUniversity->setItem(i, 1, new QTableWidgetItem(today_study[i].getName()));
+    }
 
     ui->tableTasks->setColumnCount(3);
     ui->tableTasks->setColumnWidth(0,209);
@@ -101,11 +111,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTasks->verticalHeader()->setVisible(false);
     ui->tableTasks->setRowCount(12); //DB loading ЗАГРУЗКА ЗАДАЧ
 
-
-    for (int i=0; i<int(today_study.size()); i++)
+    for (int i=0; i<int(task.size()); i++)
     {
-        ui->tableTodayUniversity->setItem(i, 0, new QTableWidgetItem(today_study[i].getTimeBeg().toString("HH:mm")));
-        ui->tableTodayUniversity->setItem(i, 1, new QTableWidgetItem(today_study[i].getName()));
+        ui->tableTasks->setItem(i, 0, new QTableWidgetItem(task[i].getName()));
+        ui->tableTasks->setItem(i, 1, new QTableWidgetItem(task[i].getTimeDeadline().toString("dd.MM.yyyy")));
+        int w, h, m;
+        w = task[i].getWorkTime();
+        h = w/60;
+        m = w - 60*h;
+        QString w_time = QString::number(h) + QString(":") + QString::number(m);
+        ui->tableTasks->setItem(i, 2, new QTableWidgetItem(w_time));
     }
 
     ui->tablePersonalLifeEvents->setColumnCount(2);
@@ -116,6 +131,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tablePersonalLifeEvents->verticalHeader()->setVisible(false);
     ui->textEdit->setText(QDate::currentDate().toString("dd.MM.yyyy"));
     ui->dateEdit->setMinimumDate(QDate::currentDate());
+
+    ui->tablePersonalLifeEvents->setRowCount(5);
 
 }
 
@@ -165,8 +182,53 @@ void MainWindow::on_calendarPersonalLife_clicked(const QDate &date)
 void MainWindow::on_buttonRemovePersonalLife_clicked()
 {
    //удаление события из таблицы и базы данных
-   /* QList<QTableWidgetItem*>selItemsList = ui->tablePersonalLifeEvents->selectedItems();*/
+   QDate date = ui->calendarPersonalLife->selectedDate();
 
+   QList<QTableWidgetItem*>selItemsList = ui->tablePersonalLifeEvents->selectedItems();
+
+   vector <quint64> to_delete;
+
+   int amount = int(selItemsList.size())/2;
+   int current = 0;
+
+   for (int l = 0; l<amount; l++)
+   {
+       QString str_time = selItemsList[current]->text();
+       QString name = selItemsList[current+1]->text();
+
+       if (str_time == "")
+       {
+           int i = sch->FindBD(name);
+           to_delete.push_back(sch->DeleteBD(i));
+       }
+       else
+       {
+           int dot = str_time.indexOf(":", 0);
+           QString hour =  str_time.left(dot);
+           QString minut =  str_time.mid(dot+1, 2);
+           QTime time(hour.toInt(), minut.toInt());
+
+           int i = sch->FindStudy(name, time, date);
+           if (i!=-1)
+               to_delete.push_back(sch->DeleteStudy(i));
+           else
+           {
+               i = sch->FindMeet(name, time, date);
+               if (i!=-1)
+                   to_delete.push_back(sch->DeleteMeet(i));
+           }
+       }
+       current += 2;
+    }
+
+   dbm->DeleteData(to_delete);
+
+   QModelIndexList selectedRows = ui->tablePersonalLifeEvents->selectionModel()->selectedRows();
+   while (!selectedRows.empty())
+   {
+        ui->tablePersonalLifeEvents->removeRow(selectedRows[0].row());
+        selectedRows = ui->tablePersonalLifeEvents->selectionModel()->selectedRows();
+   }
 }
 
 void MainWindow::on_buttonAddPersonalLife_clicked()
@@ -203,5 +265,55 @@ void MainWindow::slotUpdateDateTime(){
         ui->lcdMinutesLIT->display(QTime::currentTime().minute()%10);
         ui->lcdSecondsBIG->display((int)QTime::currentTime().second()/10);
         ui->lcdSecondsLIT->display(QTime::currentTime().second()%10);
+    }
+}
+
+
+void MainWindow::on_buttonBeginDo_clicked()
+{
+    QList<QTableWidgetItem*>selItemsList = ui->tableTasks->selectedItems();
+
+    int amount = int(selItemsList.size())/3;
+    int current = 0;
+
+    for (int l = 0; l<amount; l++)
+    {
+        QString task_name = selItemsList[current]->text();
+
+        QString str_time_deadline = selItemsList[current+1]->text();
+        int dot = str_time_deadline.indexOf(".", 0);
+        QString date =  str_time_deadline.left(dot);
+        QString month =  str_time_deadline.mid(dot+1, 2);
+        QString year =  str_time_deadline.right(4);
+        QDate tdl(year.toInt(), month.toInt(), date.toInt());
+
+        int task_num = sch->FindTask(task_name, tdl);
+        dbm->ActivateTask(sch->ActivateTask(task_num));
+
+        current+=3;
+    }
+}
+
+void MainWindow::on_buttonEndDo_clicked()
+{
+    QList<QTableWidgetItem*>selItemsList = ui->tableTasks->selectedItems();
+
+    int amount = int(selItemsList.size())/3;
+    int current = 0;
+
+    for (int l = 0; l<amount; l++)
+    {
+        QString task_name = selItemsList[current]->text();
+
+        QString str_time_deadline = selItemsList[current+1]->text();
+        int dot = str_time_deadline.indexOf(".", 0);
+        QString date =  str_time_deadline.left(dot);
+        QString month =  str_time_deadline.mid(dot+1, 2);
+        QString year =  str_time_deadline.right(4);
+        QDate tdl(year.toInt(), month.toInt(), date.toInt());
+
+        int task_num = sch->FindTask(task_name, tdl);
+        dbm->DeactivateTask(sch->DeactivateTask(task_num));
+        current+=3;
     }
 }

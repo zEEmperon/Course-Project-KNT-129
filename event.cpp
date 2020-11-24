@@ -131,9 +131,11 @@ Task& Task::operator=(const Task &to_copy)
 //методи обліку часу роботи над завданнями
 void Task::Activate()
 {
-    isActive = true;
-    startAct = QDateTime::currentDateTime();
-    date = QDateTime::currentDateTime();
+    if(!isActive){ //сюда можно исключение, если задача не активирована
+        isActive = true;
+        startAct = QDateTime::currentDateTime();
+        date = QDateTime::currentDateTime();
+    }
 }
 
 void Task::Deactivate()
