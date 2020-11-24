@@ -88,9 +88,8 @@ Meet& Meet::operator=(const Meet &to_copy)
 
 // Task
 Task::Task(): Event(){}
-Task::Task(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, quint64 t_event_id, quint64 p_id): Event(QDateTime(), n, t_event_id)
+Task::Task(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, quint64 t_event_id, quint64 p_id): Event(d, n, t_event_id)
 {
-    d = QDateTime();
     timeDeadline = tdl;
     priority = p;
     priority_id = p_id;
