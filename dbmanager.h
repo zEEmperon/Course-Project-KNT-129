@@ -39,6 +39,18 @@ public:
     void ActivateTask( Task& item );
     void DeactivateTask( Task&item );
 
+    vector <Lessons> GetLessons( void );
+    vector <Hometask> GetHometask( QDate day );
+
+    void AddLesson( Lessons& item );
+    void AddHometask( Hometask& item );
+
+    void DeleteLesson( Lessons& item );
+    void DeleteHometask( Hometask& item );
+
+    void ModifyLesson( Lessons& item );
+    void ModifyHometask( Hometask& item );
+
     void ExportData_CSV( const QString& file_name, QChar delimeter );
     void ExportData_JSON( const QString& file_name );
 };

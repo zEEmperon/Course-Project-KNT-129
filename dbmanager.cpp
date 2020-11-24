@@ -523,6 +523,194 @@ void DBManager::DeactivateTask( Task &item )
 }
 
 //----------------------------------------------------------------------------
+vector <Lessons> DBManager::GetLessons( void )
+{
+    qDebug() << __func__ << " +";
+
+    QString str = QString("select ID, Name, Week_day, Lesson_number from Schedule order by ID asc");
+
+    vector <Lessons> result;
+    QSqlQuery query( m_db );
+
+    if( query.exec( str ) )
+    {
+        Lessons item;
+        while( query.next() )
+        {
+            item.id = query.value(0).toULongLong();
+            item.name = QString::fromUtf8( query.value(1).toByteArray().data() );
+            item.week_day = query.value(2).toUInt();
+            item.lesson_number = query.value(3).toUInt();
+            result.push_back( item );
+        }
+    }
+    else
+        throw std::runtime_error( QString("Select from lessons error!").toStdString() );
+
+    qDebug() << __func__ << " -";
+
+    return result;
+}
+
+//----------------------------------------------------------------------------
+vector <Hometask> DBManager::GetHometask( QDate day )
+{
+    qDebug() << __func__ << " +";
+
+    QString str = QString("select ID, Name, Delivery_day, Completed"
+                          "  from Hometask"
+                          " where Delivery_day = %1"
+                          " order by ID asc").arg( QDateTime( day ).toSecsSinceEpoch() );
+
+    vector <Hometask> result;
+    QSqlQuery query( m_db );
+
+    if( query.exec( str ) )
+    {
+        Hometask item;
+        while( query.next() )
+        {
+            item.id = query.value(0).toULongLong();
+            item.name = QString::fromUtf8( query.value(1).toByteArray().data() );
+            item.delivery_day = QDateTime::fromSecsSinceEpoch( query.value(2).toULongLong() ).date();
+            query.value(3).toUInt() ? item.completed = true : item.completed = false;
+            result.push_back( item );
+        }
+    }
+    else
+        throw std::runtime_error( QString("Select from hometask error!").toStdString() );
+
+    qDebug() << __func__ << " -";
+
+    return result;
+}
+
+//----------------------------------------------------------------------------
+void DBManager::AddLesson( Lessons &item )
+{
+    qDebug() << __func__ << " +";
+
+    QSqlQuery query( m_db );
+    QString str = QString( "insert into Schedule"
+                           " (Name, Week_day, Lesson_number)"
+                           " values (\"%1\", %2, %3)" ).
+                           arg( item.name ).arg( item.week_day ).
+                           arg( item.lesson_number );
+
+    if( !query.exec( str ) )
+    {
+        throw std::runtime_error( QString("AddLesson error!").toStdString() );
+    }
+
+    item.id = query.lastInsertId().toULongLong();
+
+    qDebug() << __func__ << " -";
+}
+
+//----------------------------------------------------------------------------
+void DBManager::AddHometask( Hometask &item )
+{
+    qDebug() << __func__ << " +";
+
+    QSqlQuery query( m_db );
+    QString str = QString( "insert into Hometask"
+                           " (Name, Delivery_day, Completed)"
+                           " values (\"%1\", %2, %3)" ).
+                           arg( item.name ).arg( QDateTime( item.delivery_day ).toSecsSinceEpoch() ).
+                           arg( item.completed ? 1 : 0 );
+
+    if( !query.exec( str ) )
+    {
+        throw std::runtime_error( QString("AddHometask error!").toStdString() );
+    }
+
+    item.id = query.lastInsertId().toULongLong();
+
+    qDebug() << __func__ << " -";
+}
+
+//----------------------------------------------------------------------------
+void DBManager::ModifyLesson( Lessons &item )
+{
+    qDebug() << __func__ << " +";
+
+    QSqlQuery query( m_db );
+    QString str = QString( "update Schedule"
+                           "   set Name = \"%1\","
+                           "       Week_day = %2,"
+                           "       Lesson_number = %3"
+                           " where ID = %4" ).
+                           arg( item.name ).arg( item.week_day ).
+                           arg( item.lesson_number ).arg( item.id );
+
+    if( !query.exec( str ) )
+    {
+        throw std::runtime_error( QString("ModifyLesson error!").toStdString() );
+    }
+
+    qDebug() << __func__ << " -";
+}
+
+//----------------------------------------------------------------------------
+void DBManager::ModifyHometask( Hometask &item )
+{
+    qDebug() << __func__ << " +";
+
+    QSqlQuery query( m_db );
+    QString str = QString( "update Hometask"
+                           "   set Name = \"%1\","
+                           "       Delivery_day = %2,"
+                           "       Completed = %3"
+                           " where ID = %4" ).
+                           arg( item.name ).arg( QDateTime( item.delivery_day ).toSecsSinceEpoch() ).
+                           arg( item.completed ? 1 : 0 ).arg( item.id );
+
+    qDebug() << str;
+
+    if( !query.exec( str ) )
+    {
+        throw std::runtime_error( QString("ModifyHometask error!").toStdString() );
+    }
+
+    qDebug() << __func__ << " -";
+}
+
+//----------------------------------------------------------------------------
+void DBManager::DeleteLesson( Lessons &item )
+{
+    qDebug() << __func__ << " +";
+
+    QSqlQuery query( m_db );
+    QString str = QString( "delete from Schedule"
+                           " where ID = %1" ).arg( item.id );
+
+    if( !query.exec( str ) )
+    {
+        throw std::runtime_error( QString("DeleteLesson error!").toStdString() );
+    }
+
+    qDebug() << __func__ << " -";
+}
+
+//----------------------------------------------------------------------------
+void DBManager::DeleteHometask( Hometask &item )
+{
+    qDebug() << __func__ << " +";
+
+    QSqlQuery query( m_db );
+    QString str = QString( "delete from Hometask"
+                           " where ID = %1" ).arg( item.id );
+
+    if( !query.exec( str ) )
+    {
+        throw std::runtime_error( QString("DeleteHometask error!").toStdString() );
+    }
+
+    qDebug() << __func__ << " -";
+}
+
+
+//----------------------------------------------------------------------------
 void DBManager::ExportData_CSV( const QString &file_name, QChar delimeter )
 {
     qDebug() << __func__ << " +";
