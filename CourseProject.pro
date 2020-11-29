@@ -9,23 +9,24 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    addeventdialog.cpp \
     dbmanager.cpp \
-    editpltablewindow.cpp \
     event.cpp \
     main.cpp \
     mainwindow.cpp \
     schedule.cpp
 
 HEADERS += \
+    addeventdialog.h \
     db_data.h \
     dbmanager.h \
-    editpltablewindow.h \
     event.h \
+    eventsEnum.h \
     mainwindow.h \
     schedule.h
 
 FORMS += \
-    editpltablewindow.ui \
+    addeventdialog.ui \
     mainwindow.ui
 
 # Default rules for deployment.

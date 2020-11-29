@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "schedule.h"
 #include "dbmanager.h"
+#include "addeventdialog.h"
 #include <QTimer>
 
 QT_BEGIN_NAMESPACE

@@ -1,11 +1,11 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "editpltablewindow.h"
 #include "event.h"
 #include "schedule.h"
 #include "QFileDialog"
 #include<vector>
 #include <QCheckBox>
+#include<QMessageBox>
 
 #include<QDebug>
 
@@ -103,7 +103,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     ui->tableTasks->setColumnCount(3);
-    ui->tableTasks->setColumnWidth(0,209);
+    ui->tableTasks->setColumnWidth(0,210);
     ui->tableTasks->setColumnWidth(1,200);
     ui->tableTasks->setColumnWidth(2,200);
     ui->tableTasks->setHorizontalHeaderLabels({"Задача","Дедлайн","Витрачено часу"});
@@ -233,12 +233,13 @@ void MainWindow::on_buttonRemovePersonalLife_clicked()
 
 void MainWindow::on_buttonAddPersonalLife_clicked()
 {
-    EditPLTableWindow *editPLWindow = new EditPLTableWindow;
-    //editPLWindow->setAttribute(Qt::WA_DeleteOnClose);
-    editPLWindow->show();
+    AddEventDialog dialog;
+    //dialog.setModal(true);
+    dialog.exec();
 
-    //добавление события в таблицу и базу данных
-    delete editPLWindow;
+    if(dialog.result()==QDialog::Accepted){
+       this->close();
+    }
 }
 
 void MainWindow::on_actionExport_triggered()

@@ -1,5 +1,7 @@
 <RCC>
     <qresource prefix="/rc">
         <file alias="clockIcon">clockIcon.png</file>
+        <file alias="radioButtonUncheckedIcon">radioButtonUnchecked.png</file>
+        <file alias="radioButtonCheckedIcon">radioButtonChecked.png</file>
     </qresource>
 </RCC>

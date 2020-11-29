@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddEventDialog</class>
+ <widget class="QDialog" name="AddEventDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>303</width>
+    <height>453</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Dialog</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+background: #FFFFFF;
+}</string>
+  </property>
+  <widget class="QPushButton" name="btnOK">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>370</y>
+     <width>181</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+     color: #ffffff;
+     font-weight: bold;
+     border: 1px solid #8f8f91;
+     border-radius: 6px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #ffebb0, stop: 1  #ff911c);
+     min-width: 80px;
+ }
+
+ QPushButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0  #ff911c, stop: 1 #ffebb0);
+ }
+
+ QPushButton:flat {
+     border: none; /* для плоской кнопки границы нет */
+ }
+
+ QPushButton:default {
+     border-color: navy; /* делаем кнопку по умолчанию выпуклой */
+ }
+
+
+</string>
+   </property>
+   <property name="text">
+    <string>OK</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnCancel">
+   <property name="geometry">
+    <rect>
+     <x>60</x>
+     <y>400</y>
+     <width>181</width>
+     <height>23</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+     color: #ffffff;
+     font-weight: bold;
+     border: 1px solid #8f8f91;
+     border-radius: 6px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #ffebb0, stop: 1  #ff911c);
+     min-width: 80px;
+ }
+
+ QPushButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0  #ff911c, stop: 1 #ffebb0);
+ }
+
+ QPushButton:flat {
+     border: none; /* для плоской кнопки границы нет */
+ }
+
+ QPushButton:default {
+     border-color: navy; /* делаем кнопку по умолчанию выпуклой */
+ }
+
+
+</string>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>10</y>
+     <width>111</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Виберіть тип події:</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="teDescription">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>110</y>
+     <width>221</width>
+     <height>71</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QTextEdit:enabled{
+border: 1px solid #ff911c;
+ border-radius:10px;
+ background-color: palette(base);
+}
+QTextEdit:disabled{
+ border-radius:10px;
+border: 1px solid #CCCCCC; 
+background-color: palette(base);
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label_2">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>90</y>
+     <width>81</width>
+     <height>16</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Опис події: </string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>40</y>
+     <width>221</width>
+     <height>34</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QRadioButton" name="rbBusiness">
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QRadioButton::indicator {
+    width: 13px;
+    height: 13px; 
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/rc/radioButtonUncheckedIcon);
+}
+
+QRadioButton::indicator:unchecked:hover {
+     image: url(:/rc/radioButtonUncheckedIcon);
+}
+
+QRadioButton::indicator:unchecked:pressed {
+    image: url(:/rc/radioButtonCheckedIcon);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/rc/radioButtonCheckedIcon);
+}
+
+QRadioButton::indicator:checked:hover {
+    image: url(:/rc/radioButtonCheckedIcon);
+}
+
+QRadioButton::indicator:checked:pressed {
+   image: url(:/rc/radioButtonUncheckedIcon);
+}</string>
+      </property>
+      <property name="text">
+       <string>Заняття</string>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QRadioButton" name="rbTask">
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QRadioButton::indicator {
+    width: 13px;
+    height: 13px; 
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/rc/radioButtonUncheckedIcon);
+}
+
+QRadioButton::indicator:unchecked:hover {
+     image: url(:/rc/radioButtonUncheckedIcon);
+}
+
+QRadioButton::indicator:unchecked:pressed {
+    image: url(:/rc/radioButtonCheckedIcon);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/rc/radioButtonCheckedIcon);
+}
+
+QRadioButton::indicator:checked:hover {
+    image: url(:/rc/radioButtonCheckedIcon);
+}
+
+QRadioButton::indicator:checked:pressed {
+   image: url(:/rc/radioButtonUncheckedIcon);
+}</string>
+      </property>
+      <property name="text">
+       <string>Задача</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="0">
+     <widget class="QRadioButton" name="rbMeet">
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QRadioButton::indicator {
+    width: 13px;
+    height: 13px; 
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/rc/radioButtonUncheckedIcon);
+}
+
+QRadioButton::indicator:unchecked:hover {
+     image: url(:/rc/radioButtonUncheckedIcon);
+}
+
+QRadioButton::indicator:unchecked:pressed {
+    image: url(:/rc/radioButtonCheckedIcon);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/rc/radioButtonCheckedIcon);
+}
+
+QRadioButton::indicator:checked:hover {
+    image: url(:/rc/radioButtonCheckedIcon);
+}
+
+QRadioButton::indicator:checked:pressed {
+   image: url(:/rc/radioButtonUncheckedIcon);
+}</string>
+      </property>
+      <property name="text">
+       <string>Зустріч</string>
+      </property>
+     </widget>
+    </item>
+    <item row="1" column="1">
+     <widget class="QRadioButton" name="rbBirthday">
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QRadioButton::indicator {
+    width: 13px;
+    height: 13px; 
+}
+
+QRadioButton::indicator::unchecked {
+    image: url(:/rc/radioButtonUncheckedIcon);
+}
+
+QRadioButton::indicator:unchecked:hover {
+     image: url(:/rc/radioButtonUncheckedIcon);
+}
+
+QRadioButton::indicator:unchecked:pressed {
+    image: url(:/rc/radioButtonCheckedIcon);
+}
+
+QRadioButton::indicator::checked {
+    image: url(:/rc/radioButtonCheckedIcon);
+}
+
+QRadioButton::indicator:checked:hover {
+    image: url(:/rc/radioButtonCheckedIcon);
+}
+
+QRadioButton::indicator:checked:pressed {
+   image: url(:/rc/radioButtonUncheckedIcon);
+}</string>
+      </property>
+      <property name="text">
+       <string>День народження</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>40</x>
+     <y>192</y>
+     <width>221</width>
+     <height>152</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QLabel" name="label_3">
+        <property name="text">
+         <string>Дата:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QDateEdit" name="dateEdit">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_5">
+        <property name="text">
+         <string>Початок:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTimeEdit" name="teStart">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="locale">
+         <locale language="Ukrainian" country="Ukraine"/>
+        </property>
+        <property name="currentSection">
+         <enum>QDateTimeEdit::HourSection</enum>
+        </property>
+        <property name="displayFormat">
+         <string>h:mm AP</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <widget class="QLabel" name="label_6">
+        <property name="text">
+         <string>Кінець:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTimeEdit" name="teEnd">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="locale">
+         <locale language="Ukrainian" country="Ukraine"/>
+        </property>
+        <property name="currentSection">
+         <enum>QDateTimeEdit::HourSection</enum>
+        </property>
+        <property name="displayFormat">
+         <string>h:mm AP</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_4">
+      <item>
+       <widget class="QLabel" name="label_7">
+        <property name="text">
+         <string>Час дедлайну:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTimeEdit" name="teDeadline">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="locale">
+         <locale language="Ukrainian" country="Ukraine"/>
+        </property>
+        <property name="currentSection">
+         <enum>QDateTimeEdit::HourSection</enum>
+        </property>
+        <property name="displayFormat">
+         <string>h:mm AP</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_5">
+      <item>
+       <widget class="QLabel" name="label_8">
+        <property name="text">
+         <string>Час повідомлення:</string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTimeEdit" name="teNotification">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="locale">
+         <locale language="Ukrainian" country="Ukraine"/>
+        </property>
+        <property name="currentSection">
+         <enum>QDateTimeEdit::HourSection</enum>
+        </property>
+        <property name="displayFormat">
+         <string>h:mm AP</string>
+        </property>
+        <property name="calendarPopup">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_6">
+      <item>
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>Числовий пріорітет: </string>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="sbNumPriority">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

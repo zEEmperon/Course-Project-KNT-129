@@ -1,0 +1,6 @@
+#ifndef EVENTSENUM_H
+#define EVENTSENUM_H
+
+enum Events{BUSINESS=0,TASK,MEET,BIRTHDAY,NONE};
+
+#endif // EVENTENUM_H
