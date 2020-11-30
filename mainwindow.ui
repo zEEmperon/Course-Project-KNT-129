@@ -10,7 +10,7 @@
     <x>0</x>
     <y>0</y>
     <width>681</width>
-    <height>655</height>
+    <height>698</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -26,7 +26,7 @@
       <x>10</x>
       <y>10</y>
       <width>661</width>
-      <height>601</height>
+      <height>641</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -940,7 +940,7 @@ margin-left:18px;
        <string/>
       </property>
      </widget>
-     <widget class="QWidget" name="">
+     <widget class="QWidget" name="layoutWidget">
       <property name="geometry">
        <rect>
         <x>380</x>
