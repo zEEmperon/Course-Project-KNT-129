@@ -33,7 +33,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>3</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tabToday">
      <attribute name="title">
@@ -703,8 +703,7 @@ margin-left:18px;
        </rect>
       </property>
       <property name="styleSheet">
-       <string notr="true">
-</string>
+       <string notr="true"/>
       </property>
      </widget>
      <widget class="QLabel" name="label_3">

@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+     this->setFixedSize(this->size());
     this->setWindowIcon(QIcon(":/rc/clockIcon"));//application icon
 
     ui->labelTodayDate->setText("Сьогодні "+QDate::currentDate().toString("dd.MM.yyyy"));
@@ -234,11 +235,40 @@ void MainWindow::on_buttonRemovePersonalLife_clicked()
 void MainWindow::on_buttonAddPersonalLife_clicked()
 {
     AddEventDialog dialog;
-    //dialog.setModal(true);
     dialog.exec();
 
     if(dialog.result()==QDialog::Accepted){
-       this->close();
+
+       Events newEvent = dialog.get_selectedEvent();
+       QDate eventDate = dialog.get_eventDate();
+       QString eventDescription = dialog.get_eventDescription();
+
+       QTime eventStartTime;
+       QTime eventEndTime;
+       QTime eventNotificationTime;
+       QTime eventDeadlineTime;
+       int eventNumPriority;
+       //эти переменные для наглядности получения данных, можешь их убрать
+
+       switch (newEvent) {
+       case Events::BUSINESS:
+           eventStartTime = dialog.get_eventStartTime();
+           eventEndTime = dialog.get_eventEndTime();
+           break;
+       case Events::TASK:
+           eventNotificationTime = dialog.get_eventNotificationTime();
+           eventDeadlineTime = dialog.get_eventDeadlineTime();
+           eventNumPriority = dialog.get_eventNumPriority();
+           break;
+       case Events::MEET:
+           eventStartTime = dialog.get_eventStartTime();
+           eventEndTime = dialog.get_eventEndTime();
+           eventNotificationTime = dialog.get_eventNotificationTime();
+           break;
+       case Events::BIRTHDAY:
+           eventNotificationTime = dialog.get_eventNotificationTime();
+           break;
+       }//НАСТЯ тут получаем данные из формы в зависимости от выбранного события
     }
 }
 

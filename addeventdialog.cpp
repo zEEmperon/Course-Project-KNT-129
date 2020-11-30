@@ -7,7 +7,14 @@ AddEventDialog::AddEventDialog(QWidget *parent) :
 {
 
     ui->setupUi(this);
+    this->setFixedSize(this->size());
+    ui->dateEdit->setMinimumDate(QDate::currentDate());
     selectedEvent = Events::NONE;
+    eventDate = nullptr;
+    eventStart = nullptr;
+    eventEnd = nullptr;
+    eventNotificationTime = nullptr;
+    eventDeadlineTime = nullptr;
     this->setWindowIcon(QIcon(":/rc/clockIcon"));//application icon
     QObject::connect(ui->btnOK, SIGNAL(clicked()), this, SLOT(accept()));
     QObject::connect(ui->btnCancel, SIGNAL(clicked()), this, SLOT(reject()));
@@ -25,6 +32,11 @@ AddEventDialog::AddEventDialog(QWidget *parent) :
 
 AddEventDialog::~AddEventDialog()
 {
+    if(eventDate) delete eventDate;
+    if(eventStart) delete eventStart;
+    if(eventEnd) delete eventEnd;
+    if(eventNotificationTime) delete eventNotificationTime;
+    if(eventDeadlineTime) delete eventDeadlineTime;
     delete btnGroup;
     delete ui;
 
@@ -75,6 +87,51 @@ void AddEventDialog::disableAllTheWidgetsForInput(){
 void AddEventDialog::on_AddEventDialog_finished(int result)
 {
     if(result == QDialog::Accepted){
-        //запись в поля
+        eventDescription = ui->teDescription->toPlainText();
+        eventDate = new QDate(ui->dateEdit->date());
+        switch (selectedEvent) {
+        case Events::BUSINESS:
+            eventStart = new QTime(ui->teStart->time());
+            eventEnd = new QTime(ui->teEnd->time());
+            break;
+        case Events::TASK:
+            eventNotificationTime = new QTime(ui->teNotification->time());
+            eventDeadlineTime = new QTime(ui->teDeadline->time());
+            eventNumPriority = ui->sbNumPriority->value();
+            break;
+        case Events::MEET:
+            eventStart = new QTime(ui->teStart->time());
+            eventEnd = new QTime(ui->teEnd->time());
+            eventNotificationTime = new QTime(ui->teNotification->time());
+            break;
+        case Events::BIRTHDAY:
+            eventNotificationTime = new QTime(ui->teNotification->time());
+            break;
+        }
     }
+}
+
+int AddEventDialog::get_eventNumPriority(){
+    return eventNumPriority;
+}
+Events AddEventDialog::get_selectedEvent(){
+    return selectedEvent;
+}
+QString AddEventDialog::get_eventDescription(){
+    return eventDescription;
+}
+QDate AddEventDialog::get_eventDate(){
+    return *eventDate;
+}
+QTime AddEventDialog::get_eventStartTime(){
+    return *eventStart;
+}
+QTime AddEventDialog::get_eventEndTime(){
+    return *eventEnd;
+}
+QTime AddEventDialog::get_eventNotificationTime(){
+    return *eventNotificationTime;
+}
+QTime AddEventDialog::get_eventDeadlineTime(){
+    return *eventDeadlineTime;
 }
