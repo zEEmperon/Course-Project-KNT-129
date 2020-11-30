@@ -69,10 +69,11 @@ MainWindow::MainWindow(QWidget *parent)
     }//добавляем check box к каждой ячейке
 
 
-    ui->tableTodayPesonalLife->setColumnCount(2);
-    ui->tableTodayPesonalLife->setColumnWidth(0,125);
-    ui->tableTodayPesonalLife->setColumnWidth(1,125);
-    ui->tableTodayPesonalLife->setHorizontalHeaderLabels({"Час","Подія"});
+    ui->tableTodayPesonalLife->setColumnCount(3);
+    ui->tableTodayPesonalLife->setColumnWidth(0,100);
+    ui->tableTodayPesonalLife->setColumnWidth(1,100);
+    ui->tableTodayPesonalLife->setColumnWidth(2,100);
+    ui->tableTodayPesonalLife->setHorizontalHeaderLabels({"Час","Подія","Місце"});
     ui->tableTodayPesonalLife->horizontalHeader()->setVisible(true);
     ui->tableTodayPesonalLife->verticalHeader()->setVisible(false);
     //ui->tableTodayPesonalLife->setRowCount(int(today_meet.size())+int(today_bd.size())); //DB loading
@@ -88,19 +89,20 @@ MainWindow::MainWindow(QWidget *parent)
         ui->tableTodayPesonalLife->setItem(int(today_meet.size())+i, 1, new QTableWidgetItem(today_bd[i].getName()));
     }
 
-    ui->tableTodayUniversity->setColumnCount(2);
-    ui->tableTodayUniversity->setColumnWidth(0,125);
-    ui->tableTodayUniversity->setColumnWidth(1,125);
-    ui->tableTodayUniversity->setHorizontalHeaderLabels({"Час","Заняття"});
-    ui->tableTodayUniversity->horizontalHeader()->setVisible(true);
-    ui->tableTodayUniversity->verticalHeader()->setVisible(false);
+    ui->tableTodayBusiness->setColumnCount(3);
+    ui->tableTodayBusiness->setColumnWidth(0,100);
+    ui->tableTodayBusiness->setColumnWidth(1,100);
+    ui->tableTodayBusiness->setColumnWidth(2,100);
+    ui->tableTodayBusiness->setHorizontalHeaderLabels({"Час","Заняття", "Місце"});
+    ui->tableTodayBusiness->horizontalHeader()->setVisible(true);
+    ui->tableTodayBusiness->verticalHeader()->setVisible(false);
     //ui->tableTodayUniversity->setRowCount(int(today_study.size())); //DB loading
-    ui->tableTodayUniversity->setRowCount(8);
+    ui->tableTodayBusiness->setRowCount(8);
 
     for (int i=0; i<int(today_study.size()); i++)
     {
-        ui->tableTodayUniversity->setItem(i, 0, new QTableWidgetItem(today_study[i].getTimeBeg().toString("HH:mm")));
-        ui->tableTodayUniversity->setItem(i, 1, new QTableWidgetItem(today_study[i].getName()));
+        ui->tableTodayBusiness->setItem(i, 0, new QTableWidgetItem(today_study[i].getTimeBeg().toString("HH:mm")));
+        ui->tableTodayBusiness->setItem(i, 1, new QTableWidgetItem(today_study[i].getName()));
     }
 
     ui->tableTasks->setColumnCount(3);
@@ -124,10 +126,11 @@ MainWindow::MainWindow(QWidget *parent)
         ui->tableTasks->setItem(i, 2, new QTableWidgetItem(w_time));
     }
 
-    ui->tablePersonalLifeEvents->setColumnCount(2);
-    ui->tablePersonalLifeEvents->setColumnWidth(0,125);
-    ui->tablePersonalLifeEvents->setColumnWidth(1,125);
-    ui->tablePersonalLifeEvents->setHorizontalHeaderLabels({"Час","Подія"});
+    ui->tablePersonalLifeEvents->setColumnCount(3);
+    ui->tablePersonalLifeEvents->setColumnWidth(0,100);
+    ui->tablePersonalLifeEvents->setColumnWidth(1,100);
+    ui->tablePersonalLifeEvents->setColumnWidth(2,100);
+    ui->tablePersonalLifeEvents->setHorizontalHeaderLabels({"Час","Подія", "Місце"});
     ui->tablePersonalLifeEvents->horizontalHeader()->setVisible(true);
     ui->tablePersonalLifeEvents->verticalHeader()->setVisible(false);
     ui->textEdit->setText(QDate::currentDate().toString("dd.MM.yyyy"));
@@ -240,33 +243,37 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
     if(dialog.result()==QDialog::Accepted){
 
        Events newEvent = dialog.get_selectedEvent();
-       QDate eventDate = dialog.get_eventDate();
+       QDate eventDate;
        QString eventDescription = dialog.get_eventDescription();
 
+       QString eventLocation;
        QTime eventStartTime;
        QTime eventEndTime;
-       QTime eventNotificationTime;
+       QDateTime eventDateAndNotificationTime;
        QTime eventDeadlineTime;
        int eventNumPriority;
        //эти переменные для наглядности получения данных, можешь их убрать
 
        switch (newEvent) {
        case Events::BUSINESS:
+           eventDate = dialog.get_eventDate();
            eventStartTime = dialog.get_eventStartTime();
            eventEndTime = dialog.get_eventEndTime();
+           eventLocation = dialog.get_eventLocation();
            break;
        case Events::TASK:
-           eventNotificationTime = dialog.get_eventNotificationTime();
+           eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
            eventDeadlineTime = dialog.get_eventDeadlineTime();
            eventNumPriority = dialog.get_eventNumPriority();
            break;
        case Events::MEET:
            eventStartTime = dialog.get_eventStartTime();
            eventEndTime = dialog.get_eventEndTime();
-           eventNotificationTime = dialog.get_eventNotificationTime();
+           eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
+           eventLocation = dialog.get_eventLocation();
            break;
        case Events::BIRTHDAY:
-           eventNotificationTime = dialog.get_eventNotificationTime();
+           eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
            break;
        }//НАСТЯ тут получаем данные из формы в зависимости от выбранного события
     }

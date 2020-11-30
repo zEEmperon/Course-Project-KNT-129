@@ -13,7 +13,7 @@ AddEventDialog::AddEventDialog(QWidget *parent) :
     eventDate = nullptr;
     eventStart = nullptr;
     eventEnd = nullptr;
-    eventNotificationTime = nullptr;
+    eventDateAndNotificationTime = nullptr;
     eventDeadlineTime = nullptr;
     this->setWindowIcon(QIcon(":/rc/clockIcon"));//application icon
     QObject::connect(ui->btnOK, SIGNAL(clicked()), this, SLOT(accept()));
@@ -35,7 +35,7 @@ AddEventDialog::~AddEventDialog()
     if(eventDate) delete eventDate;
     if(eventStart) delete eventStart;
     if(eventEnd) delete eventEnd;
-    if(eventNotificationTime) delete eventNotificationTime;
+    if(eventDateAndNotificationTime) delete eventDateAndNotificationTime;
     if(eventDeadlineTime) delete eventDeadlineTime;
     delete btnGroup;
     delete ui;
@@ -53,6 +53,7 @@ void AddEventDialog::on_rb_clicked(){
         case Events::BUSINESS:
             ui->teStart->setEnabled(true);
             ui->teEnd->setEnabled(true);
+            ui->leLocation->setEnabled(true);
             break;
         case Events::TASK:
             ui->teNotification->setEnabled(true);
@@ -63,6 +64,7 @@ void AddEventDialog::on_rb_clicked(){
             ui->teStart->setEnabled(true);
             ui->teEnd->setEnabled(true);
             ui->teNotification->setEnabled(true);
+            ui->leLocation->setEnabled(true);
             break;
         case Events::BIRTHDAY:
             ui->teNotification->setEnabled(true);
@@ -79,6 +81,7 @@ void AddEventDialog::disableAllTheWidgetsForInput(){
     ui->teNotification->setEnabled(false);
     ui->teDeadline->setEnabled(false);
     ui->sbNumPriority->setEnabled(false);
+    ui->leLocation->setEnabled(false);
 
 }
 
@@ -88,24 +91,32 @@ void AddEventDialog::on_AddEventDialog_finished(int result)
 {
     if(result == QDialog::Accepted){
         eventDescription = ui->teDescription->toPlainText();
-        eventDate = new QDate(ui->dateEdit->date());
         switch (selectedEvent) {
         case Events::BUSINESS:
+            eventDate = new QDate(ui->dateEdit->date());
             eventStart = new QTime(ui->teStart->time());
             eventEnd = new QTime(ui->teEnd->time());
+            eventLocation = ui->leLocation->text();
             break;
         case Events::TASK:
-            eventNotificationTime = new QTime(ui->teNotification->time());
+            eventDateAndNotificationTime = new QDateTime();
+            eventDateAndNotificationTime->setDate(ui->dateEdit->date());
+            eventDateAndNotificationTime->setTime(ui->teNotification->time());
             eventDeadlineTime = new QTime(ui->teDeadline->time());
             eventNumPriority = ui->sbNumPriority->value();
             break;
         case Events::MEET:
             eventStart = new QTime(ui->teStart->time());
             eventEnd = new QTime(ui->teEnd->time());
-            eventNotificationTime = new QTime(ui->teNotification->time());
+            eventLocation = ui->leLocation->text();
+            eventDateAndNotificationTime = new QDateTime();
+            eventDateAndNotificationTime->setDate(ui->dateEdit->date());
+            eventDateAndNotificationTime->setTime(ui->teNotification->time());
             break;
-        case Events::BIRTHDAY:
-            eventNotificationTime = new QTime(ui->teNotification->time());
+        case Events::BIRTHDAY:       
+            eventDateAndNotificationTime = new QDateTime();
+            eventDateAndNotificationTime->setDate(ui->dateEdit->date());
+            eventDateAndNotificationTime->setTime(ui->teNotification->time());
             break;
         }
     }
@@ -120,6 +131,9 @@ Events AddEventDialog::get_selectedEvent(){
 QString AddEventDialog::get_eventDescription(){
     return eventDescription;
 }
+QString AddEventDialog::get_eventLocation(){
+    return eventLocation;
+}
 QDate AddEventDialog::get_eventDate(){
     return *eventDate;
 }
@@ -129,8 +143,8 @@ QTime AddEventDialog::get_eventStartTime(){
 QTime AddEventDialog::get_eventEndTime(){
     return *eventEnd;
 }
-QTime AddEventDialog::get_eventNotificationTime(){
-    return *eventNotificationTime;
+QDateTime AddEventDialog::get_eventDateAndNotificationTime(){
+    return *eventDateAndNotificationTime;
 }
 QTime AddEventDialog::get_eventDeadlineTime(){
     return *eventDeadlineTime;

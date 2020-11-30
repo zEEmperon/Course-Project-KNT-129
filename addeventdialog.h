@@ -21,10 +21,11 @@ public:
     int get_eventNumPriority();
     Events get_selectedEvent();
     QString get_eventDescription();
+    QString get_eventLocation();
     QDate get_eventDate();
     QTime get_eventStartTime();
     QTime get_eventEndTime();
-    QTime get_eventNotificationTime();
+    QDateTime get_eventDateAndNotificationTime();
     QTime get_eventDeadlineTime();
 
 private slots:
@@ -39,10 +40,11 @@ private:
     int eventNumPriority;
     Events selectedEvent;
     QString eventDescription;
+    QString eventLocation;
     QDate* eventDate;
     QTime* eventStart;
     QTime* eventEnd;
-    QTime* eventNotificationTime;
+    QDateTime* eventDateAndNotificationTime;
     QTime* eventDeadlineTime;
 
     void disableAllTheWidgetsForInput();
