@@ -33,7 +33,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tabToday">
      <attribute name="title">
@@ -165,7 +165,7 @@ QHeaderView::section:vertical
 }
 QTableWidget {
     gridline-color: #ffffff;
-color: #733f09;
+color: #000000;
 }
 QTableWidget QTableCornerButton::section {
     border: 1px solid #ffffff;
@@ -218,7 +218,7 @@ QHeaderView::section:vertical
 }
 QTableWidget {
     gridline-color: #ffffff;
-color: #733f09;
+color: #000000;
 }
 QTableWidget QTableCornerButton::section {
     border: 1px solid #ffffff;
@@ -480,7 +480,7 @@ QHeaderView::section:vertical
 }
 QTableWidget {
     gridline-color: #ffffff;
-color: #733f09;
+color: #000000;
 }
 QTableWidget QTableCornerButton::section {
     border: 1px solid #ffffff;
@@ -668,7 +668,7 @@ QHeaderView::section:vertical
 }
 QTableWidget {
     gridline-color: #ffffff;
-color: #733f09;
+color: #000000;
 }
 QTableWidget QTableCornerButton::section {
     border: 1px solid #ffffff;
@@ -693,38 +693,12 @@ margin-left:18px;
        <number>31</number>
       </attribute>
      </widget>
-     <widget class="QDateEdit" name="dateEdit">
-      <property name="geometry">
-       <rect>
-        <x>470</x>
-        <y>500</y>
-        <width>110</width>
-        <height>22</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true"/>
-      </property>
-     </widget>
-     <widget class="QLabel" name="label_3">
-      <property name="geometry">
-       <rect>
-        <x>360</x>
-        <y>500</y>
-        <width>91</width>
-        <height>16</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Виберіть день:</string>
-      </property>
-     </widget>
      <widget class="QPushButton" name="buttonChangeUniversity">
       <property name="geometry">
        <rect>
-        <x>360</x>
+        <x>380</x>
         <y>540</y>
-        <width>221</width>
+        <width>181</width>
         <height>23</height>
        </rect>
       </property>
@@ -966,6 +940,121 @@ margin-left:18px;
        <string/>
       </property>
      </widget>
+     <widget class="QWidget" name="">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>490</y>
+        <width>181</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Виберіть день:</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QDateEdit" name="dateEdit">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QDateEdit:enabled {
+ border: 1px solid #ff911c;
+ border-radius: 5px;
+ background-color: white;
+ }
+QDateEdit:disabled {
+ border: 1px solid #CCCCCC;
+ border-radius: 5px;
+ background-color: white;
+ }
+
+QDateEdit::up-arrow:enabled { 
+border-left: 3px solid none;
+border-right: 3px solid none;
+ border-bottom: 3px solid black; 
+width: 0px;
+ height: 0px; 
+}
+QDateEdit::up-arrow:disabled { 
+border-left: 3px solid none;
+border-right: 3px solid none;
+ border-bottom: 3px solid black; 
+width: 0px;
+ height: 0px; 
+}
+
+
+QDateEdit::up-button:enabled {
+ width: 14px; 
+height: 9px; 
+background-color: #FF911C;
+}
+QDateEdit::up-button:disabled {
+ width: 14px; 
+height: 9px; 
+background-color: #CCCCCC;
+}
+
+QDateEdit::up-button:hover {
+ background-color: #FFD65E
+}
+ 
+QDateEdit::down-arrow:enabled { 
+border-left: 3px solid none;
+border-right: 3px solid none; 
+border-top: 3px solid black; 
+width: 0px; 
+height: 0px; 
+}
+
+QDateEdit::down-arrow:disabled { 
+border-left: 3px solid none;
+border-right: 3px solid none; 
+border-top: 3px solid black; 
+width: 0px; 
+height: 0px; 
+}
+
+
+QDateEdit::down-button:enabled { 
+width: 14px; 
+height: 9px;
+ background-color: #FF911C;
+}
+QDateEdit::down-button:disabled { 
+width: 14px; 
+height: 9px;
+ background-color: #CCCCCC;
+}
+QDateEdit::down-button:hover {
+ background-color: #FFD65E
+}
+
+QDateEdit::up-arrow:hover { 
+border-left: 3px solid none;
+border-right: 3px solid none;
+ border-bottom: 3px solid black;
+ width: 0px; 
+height: 0px; 
+}
+QDateEdit::down-arrow:hover {
+ border-left: 3px solid none;
+border-right: 3px solid none;
+ border-top: 3px solid black;
+ width: 0px;
+ height: 0px; 
+}</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
     </widget>
     <widget class="QWidget" name="tabPersonalLife">
      <attribute name="title">
@@ -1163,7 +1252,7 @@ QHeaderView::section:vertical
 }
 QTableWidget {
     gridline-color: #ffffff;
-color: #733f09;
+color: #000000;
 }
 QTableWidget QTableCornerButton::section {
     border: 1px solid #ffffff;
@@ -1264,7 +1353,7 @@ QHeaderView::section:vertical
 }
 QTableWidget {
     gridline-color: #ffffff;
-color: #733f09;
+color: #000000;
 }
 QTableWidget QTableCornerButton::section {
     border: 1px solid #ffffff;
