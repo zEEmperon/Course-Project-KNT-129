@@ -242,7 +242,8 @@ void MainWindow::on_buttonRemovePersonalLife_clicked()
 
 void MainWindow::on_buttonAddPersonalLife_clicked()
 {
-    AddEventDialog dialog;
+    std::vector <PriorityData> priority_data = dbm->GetPriorityList();
+    AddEventDialog dialog( priority_data );
     dialog.exec();
 
     if(dialog.result()==QDialog::Accepted){
@@ -275,7 +276,12 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
            eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
            eventDeadlineTime = dialog.get_eventDeadlineTime();
            eventNumPriority = dialog.get_eventNumPriority();
-           //sch->AddTask(eventDate, eventDeadlineTime, eventNumPriority, eventDescription, eventDateAndNotificationTime, EVENT_TASK, )
+           QDateTime dt = QDateTime();
+           dt.setTime(eventDeadlineTime);
+           quint16 weight = dialog.get_eventWeightPriority();
+           Task t(eventDate, dt, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
+           dbm->AddTask(t);
+           sch->AddTask(eventDate, dt, eventNumPriority, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
            break;
        }
        case Events::MEET:

@@ -1,9 +1,9 @@
 #include "addeventdialog.h"
 #include "ui_addeventdialog.h"
 
-AddEventDialog::AddEventDialog(QWidget *parent) :
+AddEventDialog::AddEventDialog( const std::vector <PriorityData>& priority_data, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::AddEventDialog)
+    ui(new Ui::AddEventDialog), priorities(priority_data)
 {
 
     ui->setupUi(this);
@@ -28,6 +28,10 @@ AddEventDialog::AddEventDialog(QWidget *parent) :
     btnGroup->addButton(ui->rbMeet,2);
     btnGroup->addButton(ui->rbBirthday,3);
 
+    for( size_t i = 0; i < priorities.size(); i++ )
+    {
+        ui->weight_comboBox->addItem( priorities[i].name, priorities[i].id );
+    }
 }
 
 AddEventDialog::~AddEventDialog()
@@ -113,7 +117,7 @@ void AddEventDialog::on_AddEventDialog_finished(int result)
             eventDateAndNotificationTime->setDate(ui->dateEdit->date());
             eventDateAndNotificationTime->setTime(ui->teNotification->time());
             break;
-        case Events::BIRTHDAY:       
+        case Events::BIRTHDAY:
             eventDateAndNotificationTime = new QDateTime();
             eventDateAndNotificationTime->setDate(ui->dateEdit->date());
             eventDateAndNotificationTime->setTime(ui->teNotification->time());
@@ -122,9 +126,25 @@ void AddEventDialog::on_AddEventDialog_finished(int result)
     }
 }
 
-int AddEventDialog::get_eventNumPriority(){
+quint64 AddEventDialog::get_eventNumPriority(){
+    if( ui->weight_comboBox->currentIndex() != -1 )
+    {
+        eventNumPriority = ui->weight_comboBox->currentData().toULongLong();
+    }
+    else
+        eventNumPriority = ui->weight_comboBox->itemData(0).toULongLong();
+
     return eventNumPriority;
 }
+
+quint16 AddEventDialog::get_eventWeightPriority(){
+    quint64 id = ui->weight_comboBox->currentData().toULongLong();
+    int i = 0;
+    while( priorities[i].id != id)
+        i++;
+    return priorities[i].weight;
+}
+
 Events AddEventDialog::get_selectedEvent(){
     return selectedEvent;
 }

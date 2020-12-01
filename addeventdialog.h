@@ -1,9 +1,12 @@
 #ifndef ADDEVENTDIALOG_H
 #define ADDEVENTDIALOG_H
 
+#include <vector>
 #include <QDialog>
 #include <QButtonGroup>
 #include "eventsEnum.h"
+#include "db_data.h"
+
 
 namespace Ui {
 class AddEventDialog;
@@ -15,10 +18,11 @@ class AddEventDialog : public QDialog
 
 public:
 
-    explicit AddEventDialog(QWidget *parent = nullptr);
+    explicit AddEventDialog( const std::vector <PriorityData>& priority_data, QWidget *parent = nullptr);
     ~AddEventDialog();
 
-    int get_eventNumPriority();
+    quint64 get_eventNumPriority();
+    quint16 get_eventWeightPriority();
     Events get_selectedEvent();
     QString get_eventDescription();
     QString get_eventLocation();
@@ -37,7 +41,7 @@ private:
     QButtonGroup* btnGroup;
     Ui::AddEventDialog *ui;
 
-    int eventNumPriority;
+    quint64 eventNumPriority;
     Events selectedEvent;
     QString eventDescription;
     QString eventLocation;
@@ -46,6 +50,8 @@ private:
     QTime* eventEnd;
     QDateTime* eventDateAndNotificationTime;
     QTime* eventDeadlineTime;
+
+    std::vector <PriorityData> priorities;
 
     void disableAllTheWidgetsForInput();
 };
