@@ -22,7 +22,7 @@ public:
     Events get_selectedEvent();
     QString get_eventDescription();
     QString get_eventLocation();
-    QDate get_eventDate();
+    QDateTime get_eventDate();
     QTime get_eventStartTime();
     QTime get_eventEndTime();
     QDateTime get_eventDateAndNotificationTime();
@@ -41,7 +41,7 @@ private:
     Events selectedEvent;
     QString eventDescription;
     QString eventLocation;
-    QDate* eventDate;
+    QDateTime* eventDate;
     QTime* eventStart;
     QTime* eventEnd;
     QDateTime* eventDateAndNotificationTime;

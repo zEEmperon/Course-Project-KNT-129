@@ -83,6 +83,7 @@ MainWindow::MainWindow(QWidget *parent)
     {
         ui->tableTodayPesonalLife->setItem(i, 0, new QTableWidgetItem(today_meet[i].getTimeBeg().toString("HH:mm")));
         ui->tableTodayPesonalLife->setItem(i, 1, new QTableWidgetItem(today_meet[i].getName()));
+        ui->tableTodayPesonalLife->setItem(i, 2, new QTableWidgetItem(today_meet[i].getPlace()));
     }
     for (int i=0; i<int(today_bd.size()); i++)
     {
@@ -103,6 +104,7 @@ MainWindow::MainWindow(QWidget *parent)
     {
         ui->tableTodayBusiness->setItem(i, 0, new QTableWidgetItem(today_study[i].getTimeBeg().toString("HH:mm")));
         ui->tableTodayBusiness->setItem(i, 1, new QTableWidgetItem(today_study[i].getName()));
+        ui->tableTodayBusiness->setItem(i, 2, new QTableWidgetItem(today_study[i].getPlace()));
     }
 
     ui->tableTasks->setColumnCount(3);
@@ -158,6 +160,8 @@ void MainWindow::on_calendarPersonalLife_clicked(const QDate &date)
 {
     ui->textEdit->setText(date.toString("dd.MM.yyyy"));
 
+    ui->tablePersonalLifeEvents->clear();
+
     vector<Study> study;
     sch->GetStudy(study, date);
     vector<Meet> meet;
@@ -171,11 +175,13 @@ void MainWindow::on_calendarPersonalLife_clicked(const QDate &date)
     {
         ui->tablePersonalLifeEvents->setItem(i, 0, new QTableWidgetItem(study[i].getTimeBeg().toString("HH:mm")));
         ui->tablePersonalLifeEvents->setItem(i, 1, new QTableWidgetItem(study[i].getName()));
+        ui->tablePersonalLifeEvents->setItem(i, 2, new QTableWidgetItem(study[i].getPlace()));
     }
     for (int i=0; i<int(meet.size()); i++)
     {
         ui->tablePersonalLifeEvents->setItem(int(study.size())+i, 0, new QTableWidgetItem(meet[i].getTimeBeg().toString("HH:mm")));
         ui->tablePersonalLifeEvents->setItem(int(study.size())+i, 1, new QTableWidgetItem(meet[i].getName()));
+        ui->tablePersonalLifeEvents->setItem(int(study.size())+i, 2, new QTableWidgetItem(meet[i].getPlace()));
     }
     for (int i=0; i<int(bd.size()); i++)
     {
@@ -192,7 +198,14 @@ void MainWindow::on_buttonRemovePersonalLife_clicked()
 
    vector <quint64> to_delete;
 
-   int amount = int(selItemsList.size())/2;
+   if (int(selItemsList.size()) == 1)
+   {
+       QString name = selItemsList[0]->text();
+       int i = sch->FindBD(name);
+       to_delete.push_back(sch->DeleteBD(i));
+   }
+
+   int amount = int(selItemsList.size())/3;
    int current = 0;
 
    for (int l = 0; l<amount; l++)
@@ -200,29 +213,21 @@ void MainWindow::on_buttonRemovePersonalLife_clicked()
        QString str_time = selItemsList[current]->text();
        QString name = selItemsList[current+1]->text();
 
-       if (str_time == "")
-       {
-           int i = sch->FindBD(name);
-           to_delete.push_back(sch->DeleteBD(i));
-       }
+       int dot = str_time.indexOf(":", 0);
+       QString hour =  str_time.left(dot);
+       QString minut =  str_time.mid(dot+1, 2);
+       QTime time(hour.toInt(), minut.toInt());
+
+       int i = sch->FindStudy(name, time, date);
+       if (i!=-1)
+           to_delete.push_back(sch->DeleteStudy(i));
        else
        {
-           int dot = str_time.indexOf(":", 0);
-           QString hour =  str_time.left(dot);
-           QString minut =  str_time.mid(dot+1, 2);
-           QTime time(hour.toInt(), minut.toInt());
-
-           int i = sch->FindStudy(name, time, date);
+           i = sch->FindMeet(name, time, date);
            if (i!=-1)
-               to_delete.push_back(sch->DeleteStudy(i));
-           else
-           {
-               i = sch->FindMeet(name, time, date);
-               if (i!=-1)
-                   to_delete.push_back(sch->DeleteMeet(i));
-           }
+               to_delete.push_back(sch->DeleteMeet(i));
        }
-       current += 2;
+       current += 3;
     }
 
    dbm->DeleteData(to_delete);
@@ -243,7 +248,7 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
     if(dialog.result()==QDialog::Accepted){
 
        Events newEvent = dialog.get_selectedEvent();
-       QDate eventDate;
+       QDateTime eventDate = dialog.get_eventDate();
        QString eventDescription = dialog.get_eventDescription();
 
        QString eventLocation;
@@ -256,24 +261,43 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
 
        switch (newEvent) {
        case Events::BUSINESS:
-           eventDate = dialog.get_eventDate();
+       {
            eventStartTime = dialog.get_eventStartTime();
            eventEndTime = dialog.get_eventEndTime();
            eventLocation = dialog.get_eventLocation();
+           Study s(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, EVENT_STUDY);
+           dbm->AddStudy(s);
+           sch->AddStudy(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, EVENT_STUDY);
            break;
+       }
        case Events::TASK:
+       {
            eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
            eventDeadlineTime = dialog.get_eventDeadlineTime();
            eventNumPriority = dialog.get_eventNumPriority();
+           //sch->AddTask(eventDate, eventDeadlineTime, eventNumPriority, eventDescription, eventDateAndNotificationTime, EVENT_TASK, )
            break;
+       }
        case Events::MEET:
+       {
            eventStartTime = dialog.get_eventStartTime();
            eventEndTime = dialog.get_eventEndTime();
            eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
            eventLocation = dialog.get_eventLocation();
+           Meet m(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, eventDateAndNotificationTime, EVENT_MEET);
+           dbm->AddMeet(m);
+           sch->AddMeet(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, eventDateAndNotificationTime, EVENT_MEET);
            break;
+       }
        case Events::BIRTHDAY:
+       {
            eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
+           Birthday bd(eventDate, eventDescription, eventDateAndNotificationTime, EVENT_BIRTHDAY);
+           dbm->AddBirthday(bd);
+           sch->AddBD(eventDate, eventDescription, eventDateAndNotificationTime, EVENT_BIRTHDAY);
+           break;
+       }
+       case Events::NONE:
            break;
        }//НАСТЯ тут получаем данные из формы в зависимости от выбранного события
     }
@@ -303,6 +327,10 @@ void MainWindow::slotUpdateDateTime(){
         ui->lcdMinutesLIT->display(QTime::currentTime().minute()%10);
         ui->lcdSecondsBIG->display((int)QTime::currentTime().second()/10);
         ui->lcdSecondsLIT->display(QTime::currentTime().second()%10);
+
+        sch->MeetNotific(QDateTime::currentDateTime());
+        sch->BDNotific(QDateTime::currentDateTime());
+        sch->TaskNotific(QDateTime::currentDateTime());
     }
 }
 

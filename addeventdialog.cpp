@@ -91,9 +91,9 @@ void AddEventDialog::on_AddEventDialog_finished(int result)
 {
     if(result == QDialog::Accepted){
         eventDescription = ui->teDescription->toPlainText();
+        eventDate = new QDateTime(ui->dateEdit->dateTime());
         switch (selectedEvent) {
         case Events::BUSINESS:
-            eventDate = new QDate(ui->dateEdit->date());
             eventStart = new QTime(ui->teStart->time());
             eventEnd = new QTime(ui->teEnd->time());
             eventLocation = ui->leLocation->text();
@@ -134,7 +134,7 @@ QString AddEventDialog::get_eventDescription(){
 QString AddEventDialog::get_eventLocation(){
     return eventLocation;
 }
-QDate AddEventDialog::get_eventDate(){
+QDateTime AddEventDialog::get_eventDate(){
     return *eventDate;
 }
 QTime AddEventDialog::get_eventStartTime(){

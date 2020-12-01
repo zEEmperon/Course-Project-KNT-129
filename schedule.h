@@ -39,12 +39,6 @@ public:
     void TaskNotific(QDateTime curr_time);
     void BDNotific(QDateTime curr_time);
 
-    //методи редагування подій
-    void ChangeStudy(int i, QDateTime d, QTime b, QTime e, QString n, QString p);
-    void ChangeMeet(int i, QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific);
-    void ChangeTask(int i, QDateTime tdl, quint16 p, QString n, QDateTime notific);
-    void ChangeBD(int i, QDateTime d, QString n, QDateTime notific);
-
     //методи отримання подій на сьогоднішній день
     void GetStudy(vector<Study>& stud, QDate needed_date);
     void GetMeet(vector<Meet>& meet, QDate needed_date);

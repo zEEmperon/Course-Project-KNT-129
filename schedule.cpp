@@ -190,38 +190,6 @@ void Schedule::BDNotific(QDateTime curr_time)
             cout << "Notification";
 }
 
-void Schedule::ChangeStudy(int i, QDateTime d, QTime b, QTime e, QString n, QString p)
-{
-    study_arr[i].date = d;
-    study_arr[i].timeBeg = b;
-    study_arr[i].timeEnd = e;
-    study_arr[i].name = n;
-    study_arr[i].place = p;
-}
-void Schedule::ChangeMeet(int i, QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific)
-{
-    meet_arr[i].date = d;
-    meet_arr[i].timeBeg = b;
-    meet_arr[i].timeEnd = e;
-    meet_arr[i].name = n;
-    meet_arr[i].place = p;
-    meet_arr[i].timeNotification = notific;
-}
-void Schedule::ChangeTask(int i, QDateTime tdl, quint16 p, QString n, QDateTime notific)
-{
-    task_arr[i].timeDeadline = tdl;
-    task_arr[i].priority = p;
-    task_arr[i].name = n;
-    task_arr[i].timeNotification = notific;
-}
-void Schedule::ChangeBD(int i, QDateTime d, QString n, QDateTime notific)
-{
-    bd_arr[i].date = d;
-    bd_arr[i].name = n;
-    bd_arr[i].timeNotification = notific;
-}
-
-
 void Schedule::GetStudy(vector<Study>& stud, QDate needed_date)
 {
     stud.resize(0);
@@ -272,59 +240,64 @@ void Schedule::GetBD(vector<Birthday>& bd, QDate needed_date)
 
 int Schedule::FindStudy(QString n, QTime time, QDate date)
 {
-    int i = -1;
+    int i = 0;
     bool found = false;
     while (!found && i<int(study_arr.size()))
     {
-        i++;
         if (study_arr[i].name == n && (study_arr[i].timeBeg.hour() == time.hour() && study_arr[i].timeBeg.minute() == time.minute()) && study_arr[i].date.date() == date)
             found = true;
+        i++;
     }
+    i--;
     return i;
 }
 
 int Schedule::FindMeet(QString n, QTime time, QDate date)
 {
-    int i = -1;
+    int i = 0;
     bool found = false;
     while (!found && i<int(meet_arr.size()))
     {
-        i++;
         if (meet_arr[i].name == n && (meet_arr[i].timeBeg.hour() == time.hour() && meet_arr[i].timeBeg.minute() == time.minute()) && meet_arr[i].date.date() == date)
             found = true;
+        i++;
     }
+    i--;
     return i;
 }
 
 int Schedule::FindTask(QString n, QDate tdl)
 {
-    int i = -1;
+    int i = 0;
     bool found = false;
     while (!found && i<int(task_arr.size()))
     {
-        i++;
         if (task_arr[i].name == n && task_arr[i].timeDeadline.date() == tdl)
             found = true;
+        i++;
     }
+    i--;
     return i;
 }
 
 int Schedule::FindBD(QString n)
 {
-    int i = -1;
+    int i = 0;
     bool found = false;
     while (!found && i<int(bd_arr.size()))
     {
-        i++;
         if (bd_arr[i].name == n)
             found = true;
+        i++;
     }
+    i--;
     return i;
 }
 
 quint64 Schedule::DeleteStudy(int i)
 {
     quint64 id = study_arr[i].GetID();
+    if (i == int(study_arr.size())-1) study_arr.pop_back();
     for (int j=i; j<int(study_arr.size())-1; j++)
         study_arr[j] = study_arr[j+1];
     study_arr.pop_back();
@@ -332,7 +305,8 @@ quint64 Schedule::DeleteStudy(int i)
 }
 quint64 Schedule::DeleteMeet(int i)
 {
-    quint64 id = study_arr[i].GetID();
+    quint64 id = meet_arr[i].GetID();
+    if (i == int(meet_arr.size())-1) meet_arr.pop_back();
     for (int j=i; j<int(meet_arr.size())-1; j++)
         meet_arr[j] = meet_arr[j+1];
     meet_arr.pop_back();
@@ -340,7 +314,8 @@ quint64 Schedule::DeleteMeet(int i)
 }
 quint64 Schedule::DeleteTask(int i)
 {
-    quint64 id = study_arr[i].GetID();
+    quint64 id = task_arr[i].GetID();
+    if (i == int(task_arr.size())-1) task_arr.pop_back();
     for (int j=i; j<int(task_arr.size())-1; j++)
         task_arr[j] = task_arr[j+1];
     task_arr.pop_back();
@@ -348,7 +323,8 @@ quint64 Schedule::DeleteTask(int i)
 }
 quint64 Schedule::DeleteBD(int i)
 {
-    quint64 id = study_arr[i].GetID();
+    quint64 id = bd_arr[i].GetID();
+    if (i == int(bd_arr.size())-1) bd_arr.pop_back();
     for (int j=i; j<int(bd_arr.size())-1; j++)
         bd_arr[j] = bd_arr[j+1];
     bd_arr.pop_back();
