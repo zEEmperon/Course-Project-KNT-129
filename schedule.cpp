@@ -26,22 +26,26 @@ void Schedule::AddStudy(QDateTime d, QTime b, QTime e, QString n, QString p, qui
     Study s(d, b, e, n, p, t_event_id);
     if (!isBusy(d.date(), b, e))   //сюда и в meet можно исключение
         study_arr.push_back(s);
+    //SortStudy(0, int(study_arr.size())-1);
 }
 void Schedule::AddMeet(QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific, quint64 t_event_id)
 {
     Meet m(d, b, e, n, p, notific, t_event_id);
     if (!isBusy(d.date(), b, e))
         meet_arr.push_back(m);
+    //SortMeet(0, int(meet_arr.size())-1);
 }
 void Schedule::AddTask(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, quint64 t_event_id, quint64 p_id)
 {
     Task t(d, tdl, p, n, notific, t_event_id, p_id);
     task_arr.push_back(t);
+    //SortTask(0, int(task_arr.size())-1);
 }
 void Schedule::AddBD(QDateTime d, QString n, QDateTime notific, quint64 t_event_id)
 {
     Birthday b(d, n, notific, t_event_id);
     bd_arr.push_back(b);
+    //SortBD(0, int(bd_arr.size())-1);
 }
 
 bool Schedule::isBusy(QDate d, QTime b, QTime e)
@@ -71,9 +75,9 @@ bool Schedule::isBusy(QDate d, QTime b, QTime e)
 }
 
 // сортування вектору занять
-void Schedule::SortStudy(int b, int e)
+void Schedule::SortStudy(int left, int right)
 {
-    int l=b, r=e;
+    /*int l=b, r=e;
     Study st = study_arr[(l+r)/2];
     while (l<=r)
     {
@@ -91,7 +95,7 @@ void Schedule::SortStudy(int b, int e)
             SortStudy(b, r);
         if (e>l)
             SortStudy(l, e);
-    }
+    }*/
 }
 void Schedule::SortMeet(int b, int e)
 {

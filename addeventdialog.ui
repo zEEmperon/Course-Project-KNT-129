@@ -710,13 +710,7 @@ border-right: 3px solid none;
        </widget>
       </item>
       <item>
-       <widget class="QTimeEdit" name="teDeadline">
-        <property name="enabled">
-         <bool>false</bool>
-        </property>
-        <property name="cursor">
-         <cursorShape>PointingHandCursor</cursorShape>
-        </property>
+       <widget class="QDateTimeEdit" name="deadlineDateTime">
         <property name="styleSheet">
          <string notr="true">QTimeEdit:enabled {
  border: 1px solid #ff911c;
@@ -808,15 +802,6 @@ border-right: 3px solid none;
         </property>
         <property name="locale">
          <locale language="Ukrainian" country="Ukraine"/>
-        </property>
-        <property name="currentSection">
-         <enum>QDateTimeEdit::HourSection</enum>
-        </property>
-        <property name="displayFormat">
-         <string>h:mm AP</string>
-        </property>
-        <property name="calendarPopup">
-         <bool>false</bool>
         </property>
        </widget>
       </item>
@@ -1095,7 +1080,7 @@ background-color: palette(base);
     <string>Місце проведення: </string>
    </property>
   </widget>
-  <widget class="QWidget" name="">
+  <widget class="QWidget" name="layoutWidget">
    <property name="geometry">
     <rect>
      <x>40</x>
@@ -1116,6 +1101,123 @@ background-color: palette(base);
      <widget class="QComboBox" name="weight_comboBox"/>
     </item>
    </layout>
+  </widget>
+  <widget class="QTimeEdit" name="teDeadline">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>550</y>
+     <width>105</width>
+     <height>18</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QTimeEdit:enabled {
+ border: 1px solid #ff911c;
+ border-radius: 5px;
+ background-color: white;
+ }
+QTimeEdit:disabled {
+ border: 1px solid #CCCCCC;
+ border-radius: 5px;
+ background-color: white;
+ }
+
+QTimeEdit::up-arrow:enabled { 
+border-left: 3px solid none;
+border-right: 3px solid none;
+ border-bottom: 3px solid black; 
+width: 0px;
+ height: 0px; 
+}
+QTimeEdit::up-arrow:disabled { 
+border-left: 3px solid none;
+border-right: 3px solid none;
+ border-bottom: 3px solid black; 
+width: 0px;
+ height: 0px; 
+}
+
+
+QTimeEdit::up-button:enabled {
+ width: 14px; 
+height: 9px; 
+background-color: #FF911C;
+}
+QTimeEdit::up-button:disabled {
+ width: 14px; 
+height: 9px; 
+background-color: #CCCCCC;
+}
+
+QTimeEdit::up-button:hover {
+ background-color: #FFD65E
+}
+ 
+QTimeEdit::down-arrow:enabled { 
+border-left: 3px solid none;
+border-right: 3px solid none; 
+border-top: 3px solid black; 
+width: 0px; 
+height: 0px; 
+}
+
+QTimeEdit::down-arrow:disabled { 
+border-left: 3px solid none;
+border-right: 3px solid none; 
+border-top: 3px solid black; 
+width: 0px; 
+height: 0px; 
+}
+
+
+QTimeEdit::down-button:enabled { 
+width: 14px; 
+height: 9px;
+ background-color: #FF911C;
+}
+QTimeEdit::down-button:disabled { 
+width: 14px; 
+height: 9px;
+ background-color: #CCCCCC;
+}
+QTimeEdit::down-button:hover {
+ background-color: #FFD65E
+}
+
+QTimeEdit::up-arrow:hover { 
+border-left: 3px solid none;
+border-right: 3px solid none;
+ border-bottom: 3px solid black;
+ width: 0px; 
+height: 0px; 
+}
+QTimeEdit::down-arrow:hover {
+ border-left: 3px solid none;
+border-right: 3px solid none;
+ border-top: 3px solid black;
+ width: 0px;
+ height: 0px; 
+}</string>
+   </property>
+   <property name="locale">
+    <locale language="Ukrainian" country="Ukraine"/>
+   </property>
+   <property name="currentSection">
+    <enum>QDateTimeEdit::HourSection</enum>
+   </property>
+   <property name="displayFormat">
+    <string>h:mm AP</string>
+   </property>
+   <property name="calendarPopup">
+    <bool>false</bool>
+   </property>
   </widget>
  </widget>
  <resources/>

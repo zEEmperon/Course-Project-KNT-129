@@ -256,7 +256,7 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
        QTime eventStartTime;
        QTime eventEndTime;
        QDateTime eventDateAndNotificationTime;
-       QTime eventDeadlineTime;
+       QDateTime eventDeadlineTime;
        int eventNumPriority;
        //эти переменные для наглядности получения данных, можешь их убрать
 
@@ -276,12 +276,24 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
            eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
            eventDeadlineTime = dialog.get_eventDeadlineTime();
            eventNumPriority = dialog.get_eventNumPriority();
-           QDateTime dt = QDateTime();
-           dt.setTime(eventDeadlineTime);
            quint16 weight = dialog.get_eventWeightPriority();
-           Task t(eventDate, dt, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
+           Task t(eventDate, eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
            dbm->AddTask(t);
-           sch->AddTask(eventDate, dt, eventNumPriority, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
+           sch->AddTask(eventDate, eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
+
+           vector<Task> task; sch->GetTask(task);
+           ui->tableTasks->clear();
+           for (int i=0; i<int(task.size()); i++)
+           {
+               ui->tableTasks->setItem(i, 0, new QTableWidgetItem(task[i].getName()));
+               ui->tableTasks->setItem(i, 1, new QTableWidgetItem(task[i].getTimeDeadline().toString("dd.MM.yyyy")));
+               int w, h, m;
+               w = task[i].getWorkTime();
+               h = w/60;
+               m = w - 60*h;
+               QString w_time = QString::number(h) + QString(":") + QString::number(m);
+               ui->tableTasks->setItem(i, 2, new QTableWidgetItem(w_time));
+           }
            break;
        }
        case Events::MEET:
