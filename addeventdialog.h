@@ -30,7 +30,7 @@ public:
     QTime get_eventStartTime();
     QTime get_eventEndTime();
     QDateTime get_eventDateAndNotificationTime();
-    QTime get_eventDeadlineTime();
+    QDateTime get_eventDeadlineTime();
 
 private slots:
     void on_rb_clicked();
@@ -49,7 +49,7 @@ private:
     QTime* eventStart;
     QTime* eventEnd;
     QDateTime* eventDateAndNotificationTime;
-    QTime* eventDeadlineTime;
+    QDateTime* eventDeadlineTime;
 
     std::vector <PriorityData> priorities;
 
