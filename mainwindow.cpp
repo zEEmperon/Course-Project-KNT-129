@@ -401,3 +401,4 @@ void MainWindow::on_buttonEndDo_clicked()
         current+=3;
     }
 }
+

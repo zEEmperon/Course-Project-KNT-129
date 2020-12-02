@@ -6,6 +6,7 @@
 #include "dbmanager.h"
 #include "addeventdialog.h"
 #include <QTimer>
+#include<notificationdialog.h>
 
 #include <QTableWidget>
 
@@ -29,15 +30,10 @@ public:
 
 private slots:
     void on_calendarPersonalLife_clicked(const QDate &date);
-
     void on_buttonRemovePersonalLife_clicked();
-
     void on_buttonAddPersonalLife_clicked();
-
     void on_actionExport_triggered();
-
     void slotUpdateDateTime();
-
     void on_buttonBeginDo_clicked();
     void on_buttonEndDo_clicked();
 };

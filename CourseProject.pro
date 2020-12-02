@@ -14,6 +14,7 @@ SOURCES += \
     event.cpp \
     main.cpp \
     mainwindow.cpp \
+    notificationdialog.cpp \
     schedule.cpp
 
 HEADERS += \
@@ -23,11 +24,13 @@ HEADERS += \
     event.h \
     eventsEnum.h \
     mainwindow.h \
+    notificationdialog.h \
     schedule.h
 
 FORMS += \
     addeventdialog.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    notificationdialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
