@@ -315,13 +315,11 @@ void MainWindow::on_actionExport_triggered()
             tr("Save DataBase"), "dataBase",
             tr("CSV file (*.csv);;JSON file (*.json)"));
     if(fileName.contains(".csv")){
-        //сохранение csv
+        dbm->ExportData_CSV( fileName, ',' );
     }
     else if(fileName.contains(".json")){
-        //сохранение json
+        dbm->ExportData_JSON( fileName);
     }
-//ВЕРОНИКА
-//Получаем полный путь для сохранения файла + имя файла с расширением. Теперь нужно окрыть файловый поток и сохранить базу данных
 }
 void MainWindow::slotUpdateDateTime(){
 
