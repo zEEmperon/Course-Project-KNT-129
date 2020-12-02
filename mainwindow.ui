@@ -33,7 +33,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tabToday">
      <attribute name="title">
@@ -1002,7 +1002,8 @@ background-color: #CCCCCC;
 }
 
 QDateEdit::up-button:hover {
- background-color: #FFD65E
+ background-color: #FFD65E;
+ border-top-right-radius: 5px; /* same radius as the QComboBox */
 }
  
 QDateEdit::down-arrow:enabled { 
@@ -1033,7 +1034,8 @@ height: 9px;
  background-color: #CCCCCC;
 }
 QDateEdit::down-button:hover {
- background-color: #FFD65E
+ background-color: #FFD65E;
+ border-bottom-right-radius: 3px;
 }
 
 QDateEdit::up-arrow:hover { 
@@ -1467,7 +1469,7 @@ QTableWidget::item:selected{
      <x>0</x>
      <y>0</y>
      <width>681</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

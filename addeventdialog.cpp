@@ -61,9 +61,8 @@ void AddEventDialog::on_rb_clicked(){
             break;
         case Events::TASK:
             ui->teNotification->setEnabled(true);
-            ui->teDeadline->setEnabled(true);
             ui->deadlineDateTime->setEnabled(true);
-            ui->sbNumPriority->setEnabled(true);
+            ui->weight_comboBox->setEnabled(true);
             break;
         case Events::MEET:
             ui->teStart->setEnabled(true);
@@ -84,9 +83,8 @@ void AddEventDialog::disableAllTheWidgetsForInput(){
     ui->teStart->setEnabled(false);
     ui->teEnd->setEnabled(false);
     ui->teNotification->setEnabled(false);
-    ui->teDeadline->setEnabled(false);
     ui->deadlineDateTime->setEnabled(false);
-    ui->sbNumPriority->setEnabled(false);
+    ui->weight_comboBox->setEnabled(false);
     ui->leLocation->setEnabled(false);
 
 }
@@ -108,9 +106,7 @@ void AddEventDialog::on_AddEventDialog_finished(int result)
             eventDateAndNotificationTime = new QDateTime();
             eventDateAndNotificationTime->setDate(ui->dateEdit->date());
             eventDateAndNotificationTime->setTime(ui->teNotification->time());
-            //eventDeadlineTime = new QDateTime(ui->teDeadline->dateTime());
             eventDeadlineTime = new QDateTime(ui->deadlineDateTime->dateTime());
-            eventNumPriority = ui->sbNumPriority->value();
             break;
         case Events::MEET:
             eventStart = new QTime(ui->teStart->time());
