@@ -33,19 +33,19 @@ void Schedule::AddMeet(QDateTime d, QTime b, QTime e, QString n, QString p, QDat
     Meet m(d, b, e, n, p, notific, t_event_id);
     if (!isBusy(d.date(), b, e))
         meet_arr.push_back(m);
-    //SortMeet(0, int(meet_arr.size())-1);
+    SortMeet(0, int(meet_arr.size())-1);
 }
 void Schedule::AddTask(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, quint64 t_event_id, quint64 p_id)
 {
     Task t(d, tdl, p, n, notific, t_event_id, p_id);
     task_arr.push_back(t);
-    //SortTask(0, int(task_arr.size())-1);
+    SortTask(0, int(task_arr.size())-1);
 }
 void Schedule::AddBD(QDateTime d, QString n, QDateTime notific, quint64 t_event_id)
 {
     Birthday b(d, n, notific, t_event_id);
     bd_arr.push_back(b);
-    //SortBD(0, int(bd_arr.size())-1);
+    SortBD(0, int(bd_arr.size())-1);
 }
 
 bool Schedule::isBusy(QDate d, QTime b, QTime e)
@@ -74,41 +74,13 @@ bool Schedule::isBusy(QDate d, QTime b, QTime e)
     return found_busy;
 }
 
-int meet_arr[2]={2,1};
-int partition(int p, int r)
-{
-  int x=meet_arr[r];
-  int i=p-1;
-  for (int j=p; j<=r-1; j++)
-    if (meet_arr[j]<=x) {
-      i++;
-      int tmp=meet_arr[j];
-      meet_arr[j]=meet_arr[i];
-      meet_arr[i]=tmp;
-    }
-    int tmp=meet_arr[r];
-    meet_arr[r]=meet_arr[i+1];
-    meet_arr[i+1]=tmp;
-    return i+1;
-}
-
-void quicksort(int p, int r)
-{
-  if (p<r) {
-    cout << ".";
-    int q = partition(p,r);
-    quicksort(p,q-1);
-    quicksort(q+1,r);
-  }
-}
-
 // сортування
 int Schedule::PartitionStudy(int p, int r)
 {
     Study x = study_arr[r];
     int i=p-1;
     for (int j=p; j<=r-1; j++)
-        if (study_arr[j].date <= x.date || (study_arr[j].date == x.date && study_arr[j].timeBeg <= x.timeBeg))
+        if ((study_arr[j].date.date() < x.date.date()) || (study_arr[j].date.date() == x.date.date() && study_arr[j].timeBeg <= x.timeBeg))
         {
             i++;
             Study tmp = study_arr[j];
@@ -136,7 +108,7 @@ int Schedule::PartitionMeet(int p, int r)
     Meet x = meet_arr[r];
     int i=p-1;
     for (int j=p; j<=r-1; j++)
-        if (meet_arr[j].date <= x.date || (meet_arr[j].date == x.date && meet_arr[j].timeBeg <= x.timeBeg))
+        if (meet_arr[j].date.date() < x.date.date() || (meet_arr[j].date.date() == x.date.date() && meet_arr[j].timeBeg <= x.timeBeg))
         {
             i++;
             Meet tmp = meet_arr[j];
@@ -157,81 +129,69 @@ void Schedule::SortMeet(int p, int r)
         SortMeet(p, q-1);
         SortMeet(q+1, r);
     }
+}
 
-    /*int l=b, r=e;
-    Meet m = meet_arr[(l+r)/2];
-    while (l<=r)
-    {
-        while ((meet_arr[l].date < m.date)||(meet_arr[l].date == m.date && meet_arr[l].timeBeg < m.timeBeg))
-            l++;
-        while ((meet_arr[l].date > m.date)||(meet_arr[l].date == m.date && meet_arr[l].timeBeg > m.timeBeg))
-            r--;
-        if (l<=r)
-        {
-            Meet temp = meet_arr[l+1];
-            meet_arr[l+1] = meet_arr[r-1];
-            meet_arr[r-1] = temp;
-        }
-        if (b<r)
-            SortMeet(b, r);
-        if (e>l)
-            SortMeet(l, e);
-    }*/
-}
-void Schedule::SortTask(int b, int e)
+int Schedule::PartitionTask(int p, int r)
 {
-    int l=b, r=e;
-    Task task = task_arr[(l+r)/2];
-    while (l<=r)
-    {
-        while ((task_arr[l].date < task.date)||
-               (task_arr[l].date == task.date && task_arr[l].timeDeadline < task.timeDeadline)||
-               (task_arr[l].date == task.date && task_arr[l].timeDeadline == task.timeDeadline && task_arr[l].priority > task_arr[r].priority))
-            l++;
-        while ((task_arr[l].date > task.date)||
-               (task_arr[l].date == task.date && task_arr[l].timeDeadline > task.timeDeadline)||
-               (task_arr[l].date == task.date && task_arr[l].timeDeadline == task.timeDeadline && task_arr[l].priority < task_arr[r].priority))
-            r--;
-        if (l<=r)
+    Task x = task_arr[r];
+    int i=p-1;
+    for (int j=p; j<=r-1; j++)
+        if ((task_arr[j].date < x.date)||(task_arr[j].date == x.date && task_arr[j].timeDeadline < x.timeDeadline)||
+            (task_arr[j].date == x.date && task_arr[j].timeDeadline == x.timeDeadline && task_arr[j].priority > x.priority))
         {
-            Task temp = task_arr[l+1];
-            task_arr[l+1] = task_arr[r-1];
-            task_arr[r-1] = temp;
+            i++;
+            Task tmp = task_arr[j];
+            task_arr[j] = task_arr[i];
+            task_arr[i] = tmp;
         }
-        if (b<r)
-            SortTask(b, r);
-        if (e>l)
-            SortTask(l, e);
-    }
+    Task tmp = task_arr[r];
+    task_arr[r] = task_arr[i+1];
+    task_arr[i+1] = tmp;
+    return i+1;
 }
-void Schedule::SortBD(int b, int e)
+
+void Schedule::SortTask(int p, int r)
 {
-    int l=b, r=e;
-    Birthday m = bd_arr[(l+r)/2];
-    while (l<=r)
+    if (p<r)
     {
-        while (bd_arr[l].date.date() < m.date.date())
-            l++;
-        while (bd_arr[r].date.date() > m.date.date())
-            r--;
-        if (l<=r)
-        {
-            Birthday temp = bd_arr[l+1];
-            bd_arr[l+1] = bd_arr[r-1];
-            bd_arr[r-1] = temp;
-        }
-        if (b<r)
-            SortBD(b, r);
-        if (e>l)
-            SortBD(l, e);
+        int q = PartitionTask(p, r);
+        SortTask(p, q-1);
+        SortTask(q+1, r);
     }
 }
 
+int Schedule::PartitionBD(int p, int r)
+{
+    Birthday x = bd_arr[r];
+    int i=p-1;
+    for (int j=p; j<=r-1; j++)
+        if (bd_arr[j].date.date() < x.date.date())
+        {
+            i++;
+            Birthday tmp = bd_arr[j];
+            bd_arr[j] = bd_arr[i];
+            bd_arr[i] = tmp;
+        }
+    Birthday tmp = bd_arr[r];
+    bd_arr[r] = bd_arr[i+1];
+    bd_arr[i+1] = tmp;
+    return i+1;
+}
+
+void Schedule::SortBD(int p, int r)
+{
+    if (p<r)
+    {
+        int q = PartitionBD(p, r);
+        SortBD(p, q-1);
+        SortBD(q+1, r);
+    }
+}
 
 void Schedule::MeetNotific(QDateTime curr_time)
 {
     int n = int(meet_arr.size());
-    QDate curr_date = QDate::currentDate();//QDateTime::currentDateTime();//
+    QDate curr_date = QDate::currentDate();
     for (int i=0; i<n; i++)
         if ((meet_arr[i].date.date() == curr_date || (meet_arr[i].date.date()).addDays(-3) == curr_date) && meet_arr[i].timeNotification == curr_time)
             cout << "Notification";
@@ -272,7 +232,6 @@ void Schedule::GetMeet(vector<Meet>& meet, QDate needed_date)
     QDateTime end_interval(needed_date, QTime(23, 59, 59));
 
     for (int i=0; i<int(meet_arr.size()); i++)
-        //if ((meet_arr[i]->date).date() == needed_date)
         if ((meet_arr[i].getDate() >= start_interval) && (meet_arr[i].getDate() <= end_interval))
             meet.push_back(meet_arr[i]);
 }
@@ -280,12 +239,7 @@ void Schedule::GetTask(vector<Task>& task)
 {
     task.resize(0);
 
-    //QDateTime start_interval(needed_date, QTime(0, 0, 0));
-    //QDateTime end_interval(needed_date, QTime(23, 59, 59));
-
     for (int i=0; i<int(task_arr.size()); i++)
-        //if ((task_arr[i]->date).date() == needed_date)
-        //if ((task_arr[i].getDate() >= start_interval) && (task_arr[i].getDate() <= end_interval))
             task.push_back(task_arr[i]);
 }
 void Schedule::GetBD(vector<Birthday>& bd, QDate needed_date)
@@ -296,7 +250,6 @@ void Schedule::GetBD(vector<Birthday>& bd, QDate needed_date)
     QDateTime end_interval(needed_date, QTime(23, 59, 59));
 
     for (int i=0; i<int(bd_arr.size()); i++)
-        //if ((bd_arr[i]->date).date() == needed_date)
         if ((bd_arr[i].getDate() >= start_interval) && (bd_arr[i].getDate() <= end_interval))
             bd.push_back(bd_arr[i]);
 }

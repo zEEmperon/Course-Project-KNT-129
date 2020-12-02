@@ -319,7 +319,7 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
        }
        case Events::NONE:
            break;
-       }//НАСТЯ тут получаем данные из формы в зависимости от выбранного события
+       }
     }
 }
 
