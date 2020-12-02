@@ -26,7 +26,7 @@ void Schedule::AddStudy(QDateTime d, QTime b, QTime e, QString n, QString p, qui
     Study s(d, b, e, n, p, t_event_id);
     if (!isBusy(d.date(), b, e))   //сюда и в meet можно исключение
         study_arr.push_back(s);
-    //SortStudy(0, int(study_arr.size())-1);
+    SortStudy(0, int(study_arr.size())-1);
 }
 void Schedule::AddMeet(QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific, quint64 t_event_id)
 {
@@ -74,32 +74,91 @@ bool Schedule::isBusy(QDate d, QTime b, QTime e)
     return found_busy;
 }
 
-// сортування вектору занять
-void Schedule::SortStudy(int left, int right)
+int meet_arr[2]={2,1};
+int partition(int p, int r)
 {
-    /*int l=b, r=e;
-    Study st = study_arr[(l+r)/2];
-    while (l<=r)
-    {
-        while ((study_arr[l].date < st.date)||(study_arr[l].date == st.date && study_arr[l].timeBeg < st.timeBeg))
-            l++;
-        while ((study_arr[l].date > st.date)||(study_arr[l].date == st.date && study_arr[l].timeBeg > st.timeBeg))
-            r--;
-        if (l<=r)
-        {
-            Study temp = study_arr[l+1];
-            study_arr[l+1] = study_arr[r-1];
-            study_arr[r-1] = temp;
-        }
-        if (b<r)
-            SortStudy(b, r);
-        if (e>l)
-            SortStudy(l, e);
-    }*/
+  int x=meet_arr[r];
+  int i=p-1;
+  for (int j=p; j<=r-1; j++)
+    if (meet_arr[j]<=x) {
+      i++;
+      int tmp=meet_arr[j];
+      meet_arr[j]=meet_arr[i];
+      meet_arr[i]=tmp;
+    }
+    int tmp=meet_arr[r];
+    meet_arr[r]=meet_arr[i+1];
+    meet_arr[i+1]=tmp;
+    return i+1;
 }
-void Schedule::SortMeet(int b, int e)
+
+void quicksort(int p, int r)
 {
-    int l=b, r=e;
+  if (p<r) {
+    cout << ".";
+    int q = partition(p,r);
+    quicksort(p,q-1);
+    quicksort(q+1,r);
+  }
+}
+
+// сортування
+int Schedule::PartitionStudy(int p, int r)
+{
+    Study x = study_arr[r];
+    int i=p-1;
+    for (int j=p; j<=r-1; j++)
+        if (study_arr[j].date <= x.date || (study_arr[j].date == x.date && study_arr[j].timeBeg <= x.timeBeg))
+        {
+            i++;
+            Study tmp = study_arr[j];
+            study_arr[j] = study_arr[i];
+            study_arr[i] = tmp;
+        }
+    Study tmp = study_arr[r];
+    study_arr[r] = study_arr[i+1];
+    study_arr[i+1] = tmp;
+    return i+1;
+}
+
+void Schedule::SortStudy(int p, int r)
+{
+    if (p<r)
+    {
+        int q = PartitionStudy(p, r);
+        SortStudy(p, q-1);
+        SortStudy(q+1, r);
+    }
+}
+
+int Schedule::PartitionMeet(int p, int r)
+{
+    Meet x = meet_arr[r];
+    int i=p-1;
+    for (int j=p; j<=r-1; j++)
+        if (meet_arr[j].date <= x.date || (meet_arr[j].date == x.date && meet_arr[j].timeBeg <= x.timeBeg))
+        {
+            i++;
+            Meet tmp = meet_arr[j];
+            meet_arr[j] = meet_arr[i];
+            meet_arr[i] = tmp;
+        }
+    Meet tmp = meet_arr[r];
+    meet_arr[r] = meet_arr[i+1];
+    meet_arr[i+1] = tmp;
+    return i+1;
+}
+
+void Schedule::SortMeet(int p, int r)
+{
+    if (p<r)
+    {
+        int q = PartitionMeet(p, r);
+        SortMeet(p, q-1);
+        SortMeet(q+1, r);
+    }
+
+    /*int l=b, r=e;
     Meet m = meet_arr[(l+r)/2];
     while (l<=r)
     {
@@ -117,7 +176,7 @@ void Schedule::SortMeet(int b, int e)
             SortMeet(b, r);
         if (e>l)
             SortMeet(l, e);
-    }
+    }*/
 }
 void Schedule::SortTask(int b, int e)
 {
