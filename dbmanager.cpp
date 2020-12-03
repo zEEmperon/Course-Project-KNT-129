@@ -138,9 +138,11 @@ vector <Task> DBManager::GetTask( QDateTime date_start, QDateTime date_end)
 
     vector <Task> result;
     QString str = QString("select Task_list.ID, Task_list.Type_task, Type_task.Name as type_name,"
-                          "Task_list.Date_start, Task_list.Date_end, Task_list.Name, Task_list.Priority,"
-                          "Task_list.Time_Notification, Task_list.Work_time,"
-                          "Priority.Name as priority_name, Priority.Weight"
+                          " Task_list.Date_start,"
+                          " Task_list.Date_end, Task_list.Name, Task_list.Priority,"
+                          " Task_list.Time_Notification, Task_list.Work_time,"
+                          " Priority.Name as priority_name, Priority.Weight,"
+                          " case when Task_list.Date_start is null then 0 else 1 end as valid_st_dt"
                           " from Task_list, Priority, Type_task"
                           " where Task_list.Priority = Priority.ID"
                           "   and Task_list.Type_task = Type_task.ID"
@@ -156,18 +158,26 @@ vector <Task> DBManager::GetTask( QDateTime date_start, QDateTime date_end)
     {
         while( query.next() )
         {
-            Task item( QDateTime::fromTime_t( query.value(3).toULongLong() ),
+            Task item( (query.value(11).toUInt() ? QDateTime::fromTime_t( query.value(3).toULongLong() ) : QDateTime()),
                        QDateTime::fromTime_t( query.value(4).toULongLong() ),
-                       query.value(6).toULongLong(),
+                       query.value(10).toULongLong(),
                        QString::fromUtf8( query.value(5).toByteArray().data() ),
                        QDateTime::fromTime_t( query.value(7).toULongLong() ),
                        query.value(1).toULongLong(), query.value(6).toULongLong() );
             item.SetID( query.value(0).toULongLong() );
             item.SetWorkTime( query.value(8).toULongLong() );
+
+            /*qDebug() << query.value(11).toUInt();
+
+            qDebug() << item.GetID();
+            qDebug() << item.getDate();
+            qDebug() << item.getWorkTime();*/
+
             if( item.getDate().isValid() )
                 item.SetIsActive( true );
             else
                 item.SetIsActive( false );
+
             result.push_back( item );
         }
     }
@@ -282,7 +292,8 @@ void DBManager::AddTask( Task& item )
     QString str = QString( "insert into Task_list"
                            " (Type_task, Date_start, Date_end, Name, Priority, Time_notification, Work_time)"
                            " values (%1, %2, %3, \"%4\", %5, %6, %7)" ).arg( EVENT_TASK ).
-                           arg( item.getDate().toTime_t() ).arg( item.getTimeDeadline().toTime_t() ).
+                           arg( item.getDate().isValid() ? QString::number( item.getDate().toTime_t() ) : "NULL" ).
+                           arg( item.getTimeDeadline().toTime_t() ).
                            arg( item.getName() ).arg( item.GetPriorityID() ).
                            arg( item.getTimeNotific().toTime_t() ).arg( item.getWorkTime() );
 
@@ -291,7 +302,11 @@ void DBManager::AddTask( Task& item )
         throw std::runtime_error( QString("AddTask error!").toStdString() );
     }
 
-    item.SetID( query.lastInsertId().toULongLong() );
+    /*item.SetID( query.lastInsertId().toULongLong() );
+
+    qDebug() << item.GetID();
+    qDebug() << item.getDate();
+    qDebug() << item.getWorkTime();*/
 
     qDebug() << __func__ << " -";
 }
@@ -499,6 +514,10 @@ void DBManager::ActivateTask( Task &item )
         throw std::runtime_error( QString("ActivateTask error!").toStdString() );
     }
 
+    /*qDebug() << item.GetID();
+    qDebug() << item.getDate();
+    qDebug() << item.getWorkTime();*/
+
     qDebug() << __func__ << " -";
 }
 
@@ -518,6 +537,10 @@ void DBManager::DeactivateTask( Task &item )
     {
         throw std::runtime_error( QString("DeactivateTask error!").toStdString() );
     }
+
+    /*qDebug() << item.GetID();
+    qDebug() << item.getDate();
+    qDebug() << item.getWorkTime();*/
 
     qDebug() << __func__ << " -";
 }

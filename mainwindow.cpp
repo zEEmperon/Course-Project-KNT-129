@@ -278,10 +278,10 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
            eventDeadlineTime = dialog.get_eventDeadlineTime();
            eventNumPriority = dialog.get_eventNumPriority();
            quint16 weight = dialog.get_eventWeightPriority();
-           Task t(eventDate, eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
+           Task t(QDateTime(), eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
 
            dbm->AddTask(t);
-           sch->AddTask(eventDate, eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
+           sch->AddTask(QDateTime(), eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
 
            vector<Task> task; sch->GetTask(task);
            ui->tableTasks->clear();
