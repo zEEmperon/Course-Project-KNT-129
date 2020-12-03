@@ -6,7 +6,7 @@
 #include "dbmanager.h"
 #include "addeventdialog.h"
 #include <QTimer>
-#include<notificationdialog.h>
+#include "notificationdialog.h"
 
 #include <QTableWidget>
 
@@ -36,5 +36,6 @@ private slots:
     void slotUpdateDateTime();
     void on_buttonBeginDo_clicked();
     void on_buttonEndDo_clicked();
+    void on_buttonRemove_clicked();
 };
 #endif // MAINWINDOW_H

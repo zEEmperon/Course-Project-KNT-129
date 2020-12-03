@@ -258,7 +258,6 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
        QDateTime eventDateAndNotificationTime;
        QDateTime eventDeadlineTime;
        int eventNumPriority;
-       //эти переменные для наглядности получения данных, можешь их убрать
 
        switch (newEvent) {
        case Events::BUSINESS:
@@ -280,6 +279,7 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
            eventNumPriority = dialog.get_eventNumPriority();
            quint16 weight = dialog.get_eventWeightPriority();
            Task t(eventDate, eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
+
            dbm->AddTask(t);
            sch->AddTask(eventDate, eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
 
@@ -346,9 +346,9 @@ void MainWindow::slotUpdateDateTime(){
         ui->lcdSecondsBIG->display((int)QTime::currentTime().second()/10);
         ui->lcdSecondsLIT->display(QTime::currentTime().second()%10);
 
-        sch->MeetNotific(QDateTime::currentDateTime());
-        sch->BDNotific(QDateTime::currentDateTime());
-        sch->TaskNotific(QDateTime::currentDateTime());
+        sch->MeetNotific(QTime::currentTime());
+        sch->BDNotific(QTime::currentTime());
+        sch->TaskNotific(QTime::currentTime());
     }
 }
 
@@ -365,11 +365,10 @@ void MainWindow::on_buttonBeginDo_clicked()
         QString task_name = selItemsList[current]->text();
 
         QString str_time_deadline = selItemsList[current+1]->text();
-        int dot = str_time_deadline.indexOf(".", 0);
-        QString date =  str_time_deadline.left(dot);
-        QString month =  str_time_deadline.mid(dot+1, 2);
+        QString day =  str_time_deadline.left(2);
+        QString month =  str_time_deadline.mid(3, 2);
         QString year =  str_time_deadline.right(4);
-        QDate tdl(year.toInt(), month.toInt(), date.toInt());
+        QDate tdl(year.toInt(), month.toInt(), day.toInt());
 
         int task_num = sch->FindTask(task_name, tdl);
         dbm->ActivateTask(sch->ActivateTask(task_num));
@@ -390,15 +389,63 @@ void MainWindow::on_buttonEndDo_clicked()
         QString task_name = selItemsList[current]->text();
 
         QString str_time_deadline = selItemsList[current+1]->text();
-        int dot = str_time_deadline.indexOf(".", 0);
-        QString date =  str_time_deadline.left(dot);
-        QString month =  str_time_deadline.mid(dot+1, 2);
+        QString day =  str_time_deadline.left(2);
+        QString month =  str_time_deadline.mid(3, 2);
         QString year =  str_time_deadline.right(4);
-        QDate tdl(year.toInt(), month.toInt(), date.toInt());
+        QDate tdl(year.toInt(), month.toInt(), day.toInt());
 
         int task_num = sch->FindTask(task_name, tdl);
         dbm->DeactivateTask(sch->DeactivateTask(task_num));
         current+=3;
     }
+
+    vector<Task> task; sch->GetTask(task);
+    ui->tableTasks->clear();
+    for (int i=0; i<int(task.size()); i++)
+    {
+        ui->tableTasks->setItem(i, 0, new QTableWidgetItem(task[i].getName()));
+        ui->tableTasks->setItem(i, 1, new QTableWidgetItem(task[i].getTimeDeadline().toString("dd.MM.yyyy")));
+        int w, h, m;
+        w = task[i].getWorkTime();
+        h = w/60;
+        m = w - 60*h;
+        QString w_time = QString::number(h) + QString(":") + QString::number(m);
+        ui->tableTasks->setItem(i, 2, new QTableWidgetItem(w_time));
+    }
 }
 
+
+void MainWindow::on_buttonRemove_clicked()
+{
+    QList<QTableWidgetItem*>selItemsList = ui->tableTasks->selectedItems();
+
+    vector <quint64> to_delete;
+
+    int amount = int(selItemsList.size())/3;
+    int current = 0;
+
+   for (int l = 0; l<amount; l++)
+    {
+        QString name = selItemsList[current]->text();
+        QString str_tdl = selItemsList[current+1]->text();
+
+        QString day =  str_tdl.left(2);
+        QString month =  str_tdl.mid(3, 2);
+        QString year =  str_tdl.right(4);
+        QDate tdl(year.toInt(), month.toInt(), day.toInt());
+
+        int i = sch->FindTask(name, tdl);
+        if (i!=-1)
+            to_delete.push_back(sch->DeleteTask(i));
+        current += 3;
+     }
+
+    dbm->DeleteData(to_delete);
+
+    QModelIndexList selectedRows = ui->tableTasks->selectionModel()->selectedRows();
+    while (!selectedRows.empty())
+    {
+         ui->tableTasks->removeRow(selectedRows[0].row());
+         selectedRows = ui->tableTasks->selectionModel()->selectedRows();
+    }
+}

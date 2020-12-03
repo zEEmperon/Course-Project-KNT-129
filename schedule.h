@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "event.h"
+#include "notificationdialog.h"
 
 class Schedule
 {
@@ -35,9 +36,9 @@ public:
     void SortBD(int b, int e); int PartitionBD(int p, int r);
 
     //сповіщення про події
-    void MeetNotific(QDateTime curr_time);
-    void TaskNotific(QDateTime curr_time);
-    void BDNotific(QDateTime curr_time);
+    void MeetNotific(QTime curr_time);
+    void TaskNotific(QTime curr_time);
+    void BDNotific(QTime curr_time);
 
     //методи отримання подій на сьогоднішній день
     void GetStudy(vector<Study>& stud, QDate needed_date);

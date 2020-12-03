@@ -188,29 +188,48 @@ void Schedule::SortBD(int p, int r)
     }
 }
 
-void Schedule::MeetNotific(QDateTime curr_time)
+// сповіщення
+void Schedule::MeetNotific(QTime curr_time)
 {
     int n = int(meet_arr.size());
     QDate curr_date = QDate::currentDate();
     for (int i=0; i<n; i++)
-        if ((meet_arr[i].date.date() == curr_date || (meet_arr[i].date.date()).addDays(-3) == curr_date) && meet_arr[i].timeNotification == curr_time)
-            cout << "Notification";
+        if ((meet_arr[i].date.date() == curr_date || (meet_arr[i].date.date()).addDays(-3) == curr_date) &&
+             meet_arr[i].timeNotification.time().hour() == curr_time.hour() &&
+             meet_arr[i].timeNotification.time().minute() == curr_time.minute() &&
+             curr_time.second() == 0)
+        {
+            NotificationDialog nDialog("Зустріч: " + meet_arr[i].name);
+            nDialog.exec();
+        }
 }
-void Schedule::TaskNotific(QDateTime curr_time)
+void Schedule::TaskNotific(QTime curr_time)
 {
     int n = int(task_arr.size());
     QDate curr_date = QDate::currentDate();
     for (int i=0; i<n; i++)
-        if ((task_arr[i].date.date() == curr_date || (task_arr[i].date.date()).addDays(-3) == curr_date) && task_arr[i].timeNotification == curr_time)
-            cout << "Notification";
+        if ((task_arr[i].timeDeadline.date() == curr_date || (task_arr[i].timeDeadline.date()).addDays(-3) == curr_date) &&
+             task_arr[i].timeNotification.time().hour() == curr_time.hour() &&
+             task_arr[i].timeNotification.time().minute() == curr_time.minute() &&
+             curr_time.second() == 0)
+        {
+            NotificationDialog nDialog("Дедлайн: " + task_arr[i].name);
+            nDialog.exec();
+        }
 }
-void Schedule::BDNotific(QDateTime curr_time)
+void Schedule::BDNotific(QTime curr_time)
 {
     int n = int(bd_arr.size());
     QDate curr_date = QDate::currentDate();
     for (int i=0; i<n; i++)
-        if ((bd_arr[i].date.date() == curr_date || (bd_arr[i].date.date()).addDays(-3) == curr_date) && bd_arr[i].timeNotification == curr_time)
-            cout << "Notification";
+        if ((bd_arr[i].date.date() == curr_date || (bd_arr[i].date.date()).addDays(-3) == curr_date) &&
+             bd_arr[i].timeNotification.time().hour() == curr_time.hour() &&
+             bd_arr[i].timeNotification.time().minute() == curr_time.minute() &&
+             curr_time.second() == 0)
+        {
+            NotificationDialog nDialog("День народження: " + bd_arr[i].name);
+            nDialog.exec();
+        }
 }
 
 void Schedule::GetStudy(vector<Study>& stud, QDate needed_date)
