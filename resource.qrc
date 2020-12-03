@@ -3,5 +3,6 @@
         <file alias="clockIcon">clockIcon.png</file>
         <file alias="radioButtonUncheckedIcon">radioButtonUnchecked.png</file>
         <file alias="radioButtonCheckedIcon">radioButtonChecked.png</file>
+        <file alias="downArrowIcon">downArrow.png</file>
     </qresource>
 </RCC>

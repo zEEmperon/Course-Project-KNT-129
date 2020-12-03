@@ -33,7 +33,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tabToday">
      <attribute name="title">
@@ -1002,7 +1002,8 @@ background-color: #CCCCCC;
 }
 
 QDateEdit::up-button:hover {
- background-color: #FFD65E
+ background-color: #FFD65E;
+ border-top-right-radius: 5px; /* same radius as the QComboBox */
 }
  
 QDateEdit::down-arrow:enabled { 
@@ -1033,7 +1034,8 @@ height: 9px;
  background-color: #CCCCCC;
 }
 QDateEdit::down-button:hover {
- background-color: #FFD65E
+ background-color: #FFD65E;
+ border-bottom-right-radius: 3px;
 }
 
 QDateEdit::up-arrow:hover { 
@@ -1166,13 +1168,13 @@ QCalendarWidget QWidget { alternate-background-color: #ffd3a3; }
      border: 1px solid #8f8f91;
      border-radius: 6px;
      background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 #ffebb0, stop: 1  #ff911c);
+                                       stop: 0 #ffebb0, stop: 1  #58b500);
      min-width: 80px;
  }
 
  QPushButton:pressed {
      background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0  #ff911c, stop: 1 #ffebb0);
+                                       stop: 0  #58b500, stop: 1 #ffebb0);
  }
 
  QPushButton:flat {
@@ -1293,13 +1295,13 @@ QTableWidget::item:selected{
      border: 1px solid #8f8f91;
      border-radius: 6px;
      background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 #ffebb0, stop: 1  #ff911c);
+                                       stop: 0 #ffebb0, stop: 1  #fc5a03);
      min-width: 80px;
  }
 
  QPushButton:pressed {
      background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0  #ff911c, stop: 1 #ffebb0);
+                                       stop: 0  #fc5a03, stop: 1 #ffebb0);
  }
 
  QPushButton:flat {
@@ -1375,8 +1377,8 @@ QTableWidget::item:selected{
      <widget class="QPushButton" name="buttonBeginDo">
       <property name="geometry">
        <rect>
-        <x>100</x>
-        <y>530</y>
+        <x>20</x>
+        <y>520</y>
         <width>171</width>
         <height>31</height>
        </rect>
@@ -1391,13 +1393,13 @@ QTableWidget::item:selected{
      border: 1px solid #8f8f91;
      border-radius: 6px;
      background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0 #ffebb0, stop: 1  #ff911c);
+                                       stop: 0 #ffebb0, stop: 1  #58b500);
      min-width: 80px;
  }
 
  QPushButton:pressed {
      background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                       stop: 0  #ff911c, stop: 1 #ffebb0);
+                                       stop: 0  #58b500, stop: 1 #ffebb0);
  }
 
  QPushButton:flat {
@@ -1418,8 +1420,8 @@ QTableWidget::item:selected{
      <widget class="QPushButton" name="buttonEndDo">
       <property name="geometry">
        <rect>
-        <x>380</x>
-        <y>530</y>
+        <x>240</x>
+        <y>520</y>
         <width>171</width>
         <height>31</height>
        </rect>
@@ -1458,6 +1460,49 @@ QTableWidget::item:selected{
        <string>Закінчити роботу</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="buttonRemove">
+      <property name="geometry">
+       <rect>
+        <x>460</x>
+        <y>520</y>
+        <width>171</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+     color: #ffffff;
+     font-weight: bold;
+     border: 1px solid #8f8f91;
+     border-radius: 6px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #ffebb0, stop: 1  #fc5a03);
+     min-width: 80px;
+ }
+
+ QPushButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0  #fc5a03, stop: 1 #ffebb0);
+ }
+
+ QPushButton:flat {
+     border: none; /* для плоской кнопки границы нет */
+ }
+
+ QPushButton:default {
+     border-color: navy; /* делаем кнопку по умолчанию выпуклой */
+ }
+
+
+</string>
+      </property>
+      <property name="text">
+       <string>Видалити задачу</string>
+      </property>
+     </widget>
     </widget>
    </widget>
   </widget>
@@ -1467,7 +1512,7 @@ QTableWidget::item:selected{
      <x>0</x>
      <y>0</y>
      <width>681</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -1484,18 +1529,12 @@ QTableWidget::item:selected{
     <property name="title">
      <string>База даних</string>
     </property>
-    <addaction name="actionExport"/>
    </widget>
    <addaction name="menu_2"/>
    <addaction name="menu"/>
    <addaction name="menu_3"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionExport">
-   <property name="text">
-    <string>Експорт...</string>
-   </property>
-  </action>
  </widget>
  <resources/>
  <connections/>

@@ -17,11 +17,9 @@ public:
     Event();
     Event(QDateTime d, QString n, quint64 t_event_id);
     virtual ~Event(){};
-    virtual void Add()=0;
-    virtual void Del()=0;
 
     QDateTime getDate(){return date;};
-    QString getType(){return type;};
+    virtual QString getType() = 0;
     QString getName(){return name;};
 
     void SetID( quint64 new_id );
@@ -43,15 +41,11 @@ public:
     Study();
     Study(QDateTime d, QTime b, QTime e, QString n, QString p, quint64 t_event_id);
     ~Study(){};
-    void Add(){};
-    void Del(){};
-    bool IsFree(){return false;};
 
+    QString getType(){return "study";};
     QTime getTimeBeg(){return timeBeg;};
     QTime getTimeEnd(){return timeEnd;};
     QString getPlace(){return place;};
-
-    void Show();
 
     Study& operator=(const Study &to_copy);
 
@@ -71,17 +65,12 @@ public:
     Meet();
     Meet(QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific, quint64 t_event_id);
     ~Meet(){};
-    void Add(){};
-    void Del(){};
-    bool IsFree(){return false;};
-    void Notification(){};
 
+    QString getType(){return "meet";};
     QTime getTimeBeg(){return timeBeg;};
     QTime getTimeEnd(){return timeEnd;};
     QString getPlace(){return place;};
     QDateTime getTimeNotific(){return timeNotification;};
-
-    void Show();
 
     Meet& operator=(const Meet &to_copy);
 
@@ -105,9 +94,6 @@ public:
     Task();
     Task(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, quint64 t_event_id, quint64 p_id);
     ~Task(){};
-    void Add(){};
-    void Del(){};
-    void Notification(){};
     void Activate();
     void Deactivate();
 
@@ -116,11 +102,10 @@ public:
     QDateTime getTimeNotific(){return timeNotification;};
     int getWorkTime(){return time_minut;};
 
-    void Show();
-
     void SetIsActive( bool is_active );
     void SetWorkTime( quint64 new_work_time );
 
+    QString getType(){return "task";};
     quint64 GetPriorityID(){return priority_id;};
 
     Task& operator=(const Task &to_copy);
@@ -137,13 +122,9 @@ public:
     Birthday();
     Birthday(QDateTime d, QString n, QDateTime notific, quint64 t_event_id);
     ~Birthday(){};
-    void Add(){};
-    void Del(){};
-    void Notification(){};
 
+    QString getType(){return "birthday";};
     QDateTime getTimeNotific(){return timeNotification;};
-
-    void Show();
 
     Birthday& operator=(const Birthday &to_copy);
 

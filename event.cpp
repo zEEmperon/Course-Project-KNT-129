@@ -25,14 +25,6 @@ Study::Study(QDateTime d, QTime b, QTime e, QString n, QString p, quint64 t_even
     place = p;
 }
 
-void Study::Show()
-{
-    QTextStream out(stdout);
-    QString dt(date.toString("yyyy.MM.dd"));
-    cout << name.toStdString() << " in " << place.toStdString() << endl;
-    out << dt << " " << timeBeg.toString() << " " << timeEnd.toString() << endl;
-}
-
 Study& Study::operator=(const Study &to_copy)
 {
     if (this == &to_copy)
@@ -59,13 +51,6 @@ Meet::Meet(QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notifi
     timeNotification = notific;
     type = "meet";
     place = p;
-}
-
-void Meet::Show()
-{
-    QTextStream out(stdout);
-    cout << name.toStdString() << " in " << place.toStdString() << endl;
-    out << date.toString("yyyy.MM.dd") << " " << timeBeg.toString() << " " << timeEnd.toString() << " " << timeNotification.toString() << endl;
 }
 
 Meet& Meet::operator=(const Meet &to_copy)
@@ -95,14 +80,7 @@ Task::Task(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, 
     priority_id = p_id;
     timeNotification = notific;
     type = "task";
-}
-
-
-void Task::Show()
-{
-    QTextStream out(stdout);
-    cout << "The " << name.toStdString() << " with " << priority << " priority" << endl;
-    out << date.toString("yyyy.MM.dd") << " " << timeDeadline.toString() << " " << timeNotification.toString() << endl;
+    isActive = false;
 }
 
 Task& Task::operator=(const Task &to_copy)
@@ -155,14 +133,6 @@ Birthday::Birthday(QDateTime d, QString n, QDateTime notific, quint64 t_event_id
 {
     timeNotification = notific;
     type = "birthday";
-}
-
-
-void Birthday::Show()
-{
-    QTextStream out(stdout);
-    cout << "The " << name.toStdString() << "'s birthday!" << endl;
-    out << date.toString("yyyy.MM.dd") << " " << " " << timeNotification.toString() << endl;
 }
 
 Birthday& Birthday::operator=(const Birthday &to_copy)
