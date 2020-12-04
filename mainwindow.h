@@ -37,5 +37,6 @@ private slots:
     void on_buttonBeginDo_clicked();
     void on_buttonEndDo_clicked();
     void on_buttonRemove_clicked();
+    void on_buttonShowHomework_clicked();
 };
 #endif // MAINWINDOW_H

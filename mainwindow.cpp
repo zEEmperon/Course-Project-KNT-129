@@ -449,3 +449,8 @@ void MainWindow::on_buttonRemove_clicked()
          selectedRows = ui->tableTasks->selectionModel()->selectedRows();
     }
 }
+
+void MainWindow::on_buttonShowHomework_clicked()
+{
+
+}

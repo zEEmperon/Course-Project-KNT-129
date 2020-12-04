@@ -693,7 +693,7 @@ margin-left:18px;
        <number>31</number>
       </attribute>
      </widget>
-     <widget class="QPushButton" name="buttonChangeUniversity">
+     <widget class="QPushButton" name="buttonShowHomework">
       <property name="geometry">
        <rect>
         <x>380</x>
@@ -733,7 +733,7 @@ margin-left:18px;
 </string>
       </property>
       <property name="text">
-       <string>Змінити</string>
+       <string>Показати</string>
       </property>
      </widget>
      <widget class="QLabel" name="label_10">
