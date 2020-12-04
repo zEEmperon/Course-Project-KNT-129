@@ -452,5 +452,5 @@ void MainWindow::on_buttonRemove_clicked()
 
 void MainWindow::on_buttonShowHomework_clicked()
 {
-
+    vector <Hometask> current_hometask = dbm->GetHometask(ui->dateEdit->date());
 }
