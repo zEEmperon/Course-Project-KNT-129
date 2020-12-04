@@ -38,5 +38,6 @@ private slots:
     void on_buttonEndDo_clicked();
     void on_buttonRemove_clicked();
     void on_buttonShowHomework_clicked();
+    void on_tableHomeWork_cellChanged(int row, int column);
 };
 #endif // MAINWINDOW_H

@@ -61,12 +61,13 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableHomeWork->setHorizontalHeaderLabels({"Завдання","Стан"});
     ui->tableHomeWork->horizontalHeader()->setVisible(true);
     ui->tableHomeWork->verticalHeader()->setVisible(false);
-    int rowCount = 4;//DB loading ДОБАВИТЬ КОЛ-ВО ДЗ ИЗ БД
-    ui->tableHomeWork->setRowCount(rowCount);
 
-    for(int i = 0; i < rowCount; i++){
-        ui->tableHomeWork->setCellWidget(i, 1, new QCheckBox);
-    }//добавляем check box к каждой ячейке
+//    int rowCount = 4;//DB loading ДОБАВИТЬ КОЛ-ВО ДЗ ИЗ БД
+//    ui->tableHomeWork->setRowCount(rowCount);
+
+//    for(int i = 0; i < rowCount; i++){
+//        ui->tableHomeWork->setCellWidget(i, 1, new QCheckBox);
+//    }//добавляем check box к каждой ячейке
 
 
     ui->tableTodayPesonalLife->setColumnCount(3);
@@ -456,4 +457,23 @@ void MainWindow::on_buttonRemove_clicked()
 void MainWindow::on_buttonShowHomework_clicked()
 {
     vector <Hometask> current_hometask = dbm->GetHometask(ui->dateEdit->date());
+
+    ui->tableHomeWork->clearContents();
+    ui->tableHomeWork->model()->removeRows(0, ui->tableHomeWork->rowCount());
+
+    //ui->tableHomeWork->setRowCount(current_hometask.size());
+
+   for(int i = 0; i < (int)current_hometask.size();i++){
+       ui->tableHomeWork->insertRow ( ui->tableHomeWork->rowCount() );
+       ui->tableHomeWork->setItem   ( ui->tableHomeWork->rowCount()-1, 0, new QTableWidgetItem(current_hometask[i].name));
+       ui->tableHomeWork->setCellWidget(i, 1, new QCheckBox);
+       QTableWidgetItem* pItem(ui->tableHomeWork->item(ui->tableHomeWork->rowCount()-1,0));
+       pItem->setCheckState(Qt::CheckState(current_hometask[i].completed));
+   }
+}
+void MainWindow::on_tableHomeWork_cellChanged(int row, int column)
+{
+    if(column == 1){
+        //Qt::CheckState cur = ui->tableHomeWork->item(row,column)->checkState();
+    }
 }
