@@ -249,7 +249,7 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
     if(dialog.result()==QDialog::Accepted){
 
        Events newEvent = dialog.get_selectedEvent();
-       QDateTime eventDate = dialog.get_eventDate();
+       QDateTime eventDate;
        QString eventDescription = dialog.get_eventDescription();
 
        QString eventLocation;
@@ -262,6 +262,7 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
        switch (newEvent) {
        case Events::BUSINESS:
        {
+           eventDate = dialog.get_eventDate();
            eventStartTime = dialog.get_eventStartTime();
            eventEndTime = dialog.get_eventEndTime();
            eventLocation = dialog.get_eventLocation();
@@ -300,6 +301,7 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
        }
        case Events::MEET:
        {
+           eventDate = dialog.get_eventDate();
            eventStartTime = dialog.get_eventStartTime();
            eventEndTime = dialog.get_eventEndTime();
            eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
@@ -311,6 +313,7 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
        }
        case Events::BIRTHDAY:
        {
+           eventDate = dialog.get_eventDate();
            eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
            Birthday bd(eventDate, eventDescription, eventDateAndNotificationTime, EVENT_BIRTHDAY);
            dbm->AddBirthday(bd);
