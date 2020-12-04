@@ -9,6 +9,8 @@ AddEventDialog::AddEventDialog( const std::vector <PriorityData>& priority_data,
     ui->setupUi(this);
     this->setFixedSize(this->size());
     ui->dateEdit->setMinimumDate(QDate::currentDate());
+    ui->deadlineDateTime->setMinimumDate(QDate::currentDate());
+    ui->deadlineDateTime->setMinimumTime(QTime::currentTime());
     selectedEvent = Events::NONE;
     eventDate = nullptr;
     eventStart = nullptr;
@@ -52,9 +54,10 @@ void AddEventDialog::on_rb_clicked(){
     if(selectedRB != Events::NONE){
         selectedEvent = (Events)selectedRB;
         ui->teDescription->setEnabled(true);
-        ui->dateEdit->setEnabled(true);
+
         switch (selectedEvent) {
         case Events::BUSINESS:
+            ui->dateEdit->setEnabled(true);
             ui->teStart->setEnabled(true);
             ui->teEnd->setEnabled(true);
             ui->leLocation->setEnabled(true);
@@ -65,12 +68,14 @@ void AddEventDialog::on_rb_clicked(){
             ui->weight_comboBox->setEnabled(true);
             break;
         case Events::MEET:
+            ui->dateEdit->setEnabled(true);
             ui->teStart->setEnabled(true);
             ui->teEnd->setEnabled(true);
             ui->teNotification->setEnabled(true);
             ui->leLocation->setEnabled(true);
             break;
         case Events::BIRTHDAY:
+            ui->dateEdit->setEnabled(true);
             ui->teNotification->setEnabled(true);
             break;
         }
@@ -95,9 +100,9 @@ void AddEventDialog::on_AddEventDialog_finished(int result)
 {
     if(result == QDialog::Accepted){
         eventDescription = ui->teDescription->toPlainText();
-        eventDate = new QDateTime(ui->dateEdit->dateTime());
         switch (selectedEvent) {
         case Events::BUSINESS:
+            eventDate = new QDateTime(ui->dateEdit->dateTime());
             eventStart = new QTime(ui->teStart->time());
             eventEnd = new QTime(ui->teEnd->time());
             eventLocation = ui->leLocation->text();
@@ -109,6 +114,7 @@ void AddEventDialog::on_AddEventDialog_finished(int result)
             eventDeadlineTime = new QDateTime(ui->deadlineDateTime->dateTime());
             break;
         case Events::MEET:
+            eventDate = new QDateTime(ui->dateEdit->dateTime());
             eventStart = new QTime(ui->teStart->time());
             eventEnd = new QTime(ui->teEnd->time());
             eventLocation = ui->leLocation->text();
@@ -117,6 +123,7 @@ void AddEventDialog::on_AddEventDialog_finished(int result)
             eventDateAndNotificationTime->setTime(ui->teNotification->time());
             break;
         case Events::BIRTHDAY:
+            eventDate = new QDateTime(ui->dateEdit->dateTime());
             eventDateAndNotificationTime = new QDateTime();
             eventDateAndNotificationTime->setDate(ui->dateEdit->date());
             eventDateAndNotificationTime->setTime(ui->teNotification->time());
