@@ -62,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableHomeWork->horizontalHeader()->setVisible(true);
     ui->tableHomeWork->verticalHeader()->setVisible(false);
 
+    //vector <Hometask> current_hometask = dbm->GetHometask(ui->dateEdit->date());
 //    int rowCount = 4;//DB loading ДОБАВИТЬ КОЛ-ВО ДЗ ИЗ БД
 //    ui->tableHomeWork->setRowCount(rowCount);
 
@@ -77,6 +78,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTodayPesonalLife->setHorizontalHeaderLabels({"Час","Подія","Місце"});
     ui->tableTodayPesonalLife->horizontalHeader()->setVisible(true);
     ui->tableTodayPesonalLife->verticalHeader()->setVisible(false);
+    //vector <Meet> today_meet dbm->GetMeet( QDateTime(QDateTime::currentDateTime().date()), QDateTime(QDateTime::currentDateTime().date()).addDays(1).addMSecs(-1) );
+    //vector <Birthday> today_bd dbm->GetBirthday( QDateTime(QDateTime::currentDateTime().date()), QDateTime(QDateTime::currentDateTime().date()).addDays(1).addMSecs(-1) );
     //ui->tableTodayPesonalLife->setRowCount(int(today_meet.size())+int(today_bd.size())); //DB loading
     ui->tableTodayPesonalLife->setRowCount(8);
 
@@ -98,7 +101,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTodayBusiness->setHorizontalHeaderLabels({"Час","Заняття", "Місце"});
     ui->tableTodayBusiness->horizontalHeader()->setVisible(true);
     ui->tableTodayBusiness->verticalHeader()->setVisible(false);
+    //vector <Study> today_study dbm->GetStudy( QDateTime(QDateTime::currentDateTime().date()), QDateTime(QDateTime::currentDateTime().date()).addDays(1).addMSecs(-1) );
     //ui->tableTodayUniversity->setRowCount(int(today_study.size())); //DB loading
+
     ui->tableTodayBusiness->setRowCount(8);
 
     for (int i=0; i<int(today_study.size()); i++)
@@ -108,6 +113,8 @@ MainWindow::MainWindow(QWidget *parent)
         ui->tableTodayBusiness->setItem(i, 2, new QTableWidgetItem(today_study[i].getPlace()));
     }
 
+
+    //vector <Task> today_task dbm->GetTask( start, end ); //я не знаю, какие у тебя ограничения
     ui->tableTasks->setColumnCount(3);
     ui->tableTasks->setColumnWidth(0,210);
     ui->tableTasks->setColumnWidth(1,200);
@@ -475,5 +482,6 @@ void MainWindow::on_tableHomeWork_cellChanged(int row, int column)
 {
     if(column == 1){
         //Qt::CheckState cur = ui->tableHomeWork->item(row,column)->checkState();
+        //dbm->ModifyHometask( current ); сначала нужно изменить объект, потом передать его в бд
     }
 }

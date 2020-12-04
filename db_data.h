@@ -12,29 +12,33 @@ enum TypeEvents
     EVENT_STUDY
 };
 
-struct PriorityData
+class PriorityData
 {
+public:
     quint64 id;
     quint16 weight;
     QString name;
 };
 
-struct TypeData
+class TypeData
 {
+public:
     quint64 id;
     QString name;
 };
 
-struct Lessons
+class Lessons
 {
+public:
     quint64 id;
     QString name;
     quint16 week_day;
     quint16 lesson_number;
 };
 
-struct Hometask
+class Hometask
 {
+public:
     quint64 id;
     QString name;
     QDate delivery_day;
