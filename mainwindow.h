@@ -40,6 +40,10 @@ private slots:
     void on_buttonRemove_clicked();
     void on_buttonShowHomework_clicked();
     void on_tableHomeWork_cellChanged(int row, int column);
+    void on_tableScheduleUniversity_cellChanged(int row, int column);
+
+    void on_tabWidget_tabBarClicked(int index);
+
 private:
     void displayTime();
 };

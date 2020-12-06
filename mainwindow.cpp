@@ -135,8 +135,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tablePersonalLifeEvents->horizontalHeader()->setVisible(true);
     ui->tablePersonalLifeEvents->verticalHeader()->setVisible(false);
     ui->textEdit->setText(QDate::currentDate().toString("dd.MM.yyyy"));
-    ui->dateEdit->setMinimumDate(QDate::currentDate());
-
+    //ui->dateEdit->setMinimumDate(QDate::currentDate());
+     ui->dateEdit->setMinimumDate(QDate(2020,12,3));
     ui->tablePersonalLifeEvents->setRowCount(5);
 
 }
@@ -159,7 +159,7 @@ void MainWindow::on_calendarPersonalLife_clicked(const QDate &date)
 {
     ui->textEdit->setText(date.toString("dd.MM.yyyy"));
 
-    ui->tablePersonalLifeEvents->clear();
+    ui->tablePersonalLifeEvents->clearContents();//тут стирает
 
     vector<Study> study;
     sch->GetStudy(study, date);
@@ -483,8 +483,17 @@ void MainWindow::on_buttonShowHomework_clicked()
 void MainWindow::on_tableHomeWork_cellChanged(int row, int column)
 {
     if(column == 1){
-        //Qt::CheckState cur = ui->tableHomeWork->item(row,column)->checkState();
-        //dbm->ModifyHometask( current ); сначала нужно изменить объект, потом передать его в бд
+        Qt::CheckState cur = ui->tableHomeWork->item(row,column)->checkState();
+        vector<Hometask> hometasks = dbm->GetHometask(ui->dateEdit->date());
+        for(int i = 0; i<hometasks.size();i++){
+            if(hometasks[i].name == ui->tableHomeWork->item(row,0)->text()){
+                if(cur != hometasks[i].completed){
+                    hometasks[i].completed = cur;
+                    dbm->ModifyHometask(hometasks[i]);
+                    break;
+                }
+            }
+        }
     }
 }
 void MainWindow::displayTime(){
@@ -497,3 +506,16 @@ void MainWindow::displayTime(){
     ui->lcdSecondsLIT->display(QTime::currentTime().second()%10);
 }
 
+
+void MainWindow::on_tableScheduleUniversity_cellChanged(int row, int column)
+{
+//Вероника, сюда добавь
+
+}
+
+void MainWindow::on_tabWidget_tabBarClicked(int index)
+{
+    if(index == 0){
+        //Настя, добавь сюда
+    }
+}

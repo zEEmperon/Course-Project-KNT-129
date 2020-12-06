@@ -33,7 +33,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>3</number>
     </property>
     <widget class="QWidget" name="tabToday">
      <attribute name="title">
@@ -800,7 +800,7 @@ margin-left:18px;
         <x>90</x>
         <y>300</y>
         <width>181</width>
-        <height>41</height>
+        <height>46</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -838,7 +838,7 @@ margin-left:18px;
         <x>90</x>
         <y>390</y>
         <width>181</width>
-        <height>61</height>
+        <height>71</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -889,7 +889,7 @@ margin-left:18px;
         <x>90</x>
         <y>500</y>
         <width>181</width>
-        <height>41</height>
+        <height>46</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -1204,6 +1204,9 @@ QCalendarWidget QWidget { alternate-background-color: #ffd3a3; }
       </property>
       <property name="locale">
        <locale language="Ukrainian" country="Ukraine"/>
+      </property>
+      <property name="firstDayOfWeek">
+       <enum>Qt::Monday</enum>
       </property>
       <property name="gridVisible">
        <bool>true</bool>
