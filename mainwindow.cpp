@@ -45,6 +45,7 @@ MainWindow::MainWindow(QWidget *parent)
     sch->GetBD(today_bd, d);
     vector<Task> task;
     sch->GetTask(task);
+    university_schedule = dbm->GetLessons();
 
     ui->tableHomeWork->setColumnCount(2);
     ui->tableHomeWork->setColumnWidth(0,125);
@@ -69,8 +70,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTodayPesonalLife->setHorizontalHeaderLabels({"Час","Подія","Місце"});
     ui->tableTodayPesonalLife->horizontalHeader()->setVisible(true);
     ui->tableTodayPesonalLife->verticalHeader()->setVisible(false);
-    //vector <Meet> today_meet dbm->GetMeet( QDateTime(QDateTime::currentDateTime().date()), QDateTime(QDateTime::currentDateTime().date()).addDays(1).addMSecs(-1) );
-    //vector <Birthday> today_bd dbm->GetBirthday( QDateTime(QDateTime::currentDateTime().date()), QDateTime(QDateTime::currentDateTime().date()).addDays(1).addMSecs(-1) );
     //ui->tableTodayPesonalLife->setRowCount(int(today_meet.size())+int(today_bd.size())); //DB loading
     ui->tableTodayPesonalLife->setRowCount(8);
 
@@ -92,7 +91,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTodayBusiness->setHorizontalHeaderLabels({"Час","Заняття", "Місце"});
     ui->tableTodayBusiness->horizontalHeader()->setVisible(true);
     ui->tableTodayBusiness->verticalHeader()->setVisible(false);
-    //vector <Study> today_study dbm->GetStudy( QDateTime(QDateTime::currentDateTime().date()), QDateTime(QDateTime::currentDateTime().date()).addDays(1).addMSecs(-1) );
     //ui->tableTodayUniversity->setRowCount(int(today_study.size())); //DB loading
 
     ui->tableTodayBusiness->setRowCount(8);
@@ -104,8 +102,6 @@ MainWindow::MainWindow(QWidget *parent)
         ui->tableTodayBusiness->setItem(i, 2, new QTableWidgetItem(today_study[i].getPlace()));
     }
 
-
-    //vector <Task> today_task dbm->GetTask( start, end ); //я не знаю, какие у тебя ограничения
     ui->tableTasks->setColumnCount(3);
     ui->tableTasks->setColumnWidth(0,210);
     ui->tableTasks->setColumnWidth(1,200);
@@ -509,8 +505,33 @@ void MainWindow::displayTime(){
 
 void MainWindow::on_tableScheduleUniversity_cellChanged(int row, int column)
 {
-//Вероника, сюда добавь
+    for( unsigned int i = 0; i < university_schedule.size(); i++ )
+    {
+        if( ( university_schedule[i].week_day == ( row + 1 ) ) &&
+            ( university_schedule[i].lesson_number == ( column + 1) ) )
+        {
+            if( ui->tableScheduleUniversity->item( row, column )->text() == "" )
+            {
+                dbm->DeleteLesson( university_schedule[i] );
+                university_schedule.erase( university_schedule.begin() + i );
+                return;
+            }
+            else
+            {
+                university_schedule[i].name = ui->tableScheduleUniversity->item( row, column )->text();
+                dbm->ModifyLesson( university_schedule[i] );
+                university_schedule[i].name = ui->tableScheduleUniversity->item( row, column )->text();
+                return;
+            }
+        }
+    }
 
+    Lessons new_lesson;
+    new_lesson.name = ui->tableScheduleUniversity->item( row, column )->text();
+    new_lesson.week_day = row + 1;
+    new_lesson.lesson_number = column + 1;
+    dbm->AddLesson( new_lesson );
+    university_schedule.push_back( new_lesson );
 }
 
 void MainWindow::on_tabWidget_tabBarClicked(int index)

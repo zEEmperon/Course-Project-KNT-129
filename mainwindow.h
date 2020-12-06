@@ -24,6 +24,7 @@ private:
     Schedule* sch;
     DBManager* dbm;
     QTimer*timer;
+    vector <Lessons> university_schedule;
 
 public:
     MainWindow(QWidget *parent = nullptr);
