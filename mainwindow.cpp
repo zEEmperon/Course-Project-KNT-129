@@ -17,10 +17,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
-ErrorDialog e("Ошибка");
-e.exec();
-
     this->setFixedSize(this->size());//фіксований розмір вікна
     this->setWindowIcon(QIcon(":/rc/clockIcon"));//application icon
 

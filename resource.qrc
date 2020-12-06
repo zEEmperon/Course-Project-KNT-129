@@ -4,5 +4,6 @@
         <file alias="radioButtonUncheckedIcon">radioButtonUnchecked.png</file>
         <file alias="radioButtonCheckedIcon">radioButtonChecked.png</file>
         <file alias="downArrowIcon">downArrow.png</file>
+        <file alias="coffeeIcon">coffee.png</file>
     </qresource>
 </RCC>

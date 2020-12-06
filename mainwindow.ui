@@ -33,7 +33,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="tabToday">
      <attribute name="title">
@@ -759,17 +759,17 @@ margin-left:18px;
      <widget class="QLabel" name="label_19">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>460</y>
-        <width>41</width>
-        <height>41</height>
+        <x>150</x>
+        <y>450</y>
+        <width>51</width>
+        <height>51</height>
        </rect>
       </property>
       <property name="text">
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../../Users/User/Desktop/coffee.png</pixmap>
+       <pixmap resource="resource.qrc">:/rc/coffeeIcon</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -778,17 +778,17 @@ margin-left:18px;
      <widget class="QLabel" name="label_20">
       <property name="geometry">
        <rect>
-        <x>160</x>
-        <y>350</y>
-        <width>41</width>
-        <height>41</height>
+        <x>150</x>
+        <y>340</y>
+        <width>51</width>
+        <height>51</height>
        </rect>
       </property>
       <property name="text">
        <string/>
       </property>
       <property name="pixmap">
-       <pixmap>../../Users/User/Desktop/coffee.png</pixmap>
+       <pixmap resource="resource.qrc">:/rc/coffeeIcon</pixmap>
       </property>
       <property name="scaledContents">
        <bool>true</bool>
@@ -799,8 +799,8 @@ margin-left:18px;
        <rect>
         <x>90</x>
         <y>300</y>
-        <width>201</width>
-        <height>54</height>
+        <width>181</width>
+        <height>41</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -837,8 +837,8 @@ margin-left:18px;
        <rect>
         <x>90</x>
         <y>390</y>
-        <width>201</width>
-        <height>83</height>
+        <width>181</width>
+        <height>61</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -888,8 +888,8 @@ margin-left:18px;
        <rect>
         <x>90</x>
         <y>500</y>
-        <width>201</width>
-        <height>54</height>
+        <width>181</width>
+        <height>41</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout_5">
@@ -944,7 +944,7 @@ margin-left:18px;
       <property name="geometry">
        <rect>
         <x>380</x>
-        <y>490</y>
+        <y>510</y>
         <width>182</width>
         <height>22</height>
        </rect>
@@ -1056,6 +1056,92 @@ border-right: 3px solid none;
         </widget>
        </item>
       </layout>
+     </widget>
+     <widget class="QPushButton" name="buttonAddHomeWork">
+      <property name="geometry">
+       <rect>
+        <x>380</x>
+        <y>480</y>
+        <width>91</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+     color: #ffffff;
+     font-weight: bold;
+     border: 1px solid #8f8f91;
+     border-radius: 6px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #ffebb0, stop: 1  #58b500);
+     min-width: 80px;
+ }
+
+ QPushButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0  #58b500, stop: 1 #ffebb0);
+ }
+
+ QPushButton:flat {
+     border: none; /* для плоской кнопки границы нет */
+ }
+
+ QPushButton:default {
+     border-color: navy; /* делаем кнопку по умолчанию выпуклой */
+ }
+
+
+</string>
+      </property>
+      <property name="text">
+       <string>Додати</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="buttonRemoveHomeWork">
+      <property name="geometry">
+       <rect>
+        <x>479</x>
+        <y>480</y>
+        <width>82</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QPushButton {
+     color: #ffffff;
+     font-weight: bold;
+     border: 1px solid #8f8f91;
+     border-radius: 6px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #ffebb0, stop: 1  #fc5a03);
+     min-width: 80px;
+ }
+
+ QPushButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0  #fc5a03, stop: 1 #ffebb0);
+ }
+
+ QPushButton:flat {
+     border: none; /* для плоской кнопки границы нет */
+ }
+
+ QPushButton:default {
+     border-color: navy; /* делаем кнопку по умолчанию выпуклой */
+ }
+
+
+</string>
+      </property>
+      <property name="text">
+       <string>Видалити</string>
+      </property>
      </widget>
     </widget>
     <widget class="QWidget" name="tabPersonalLife">
@@ -1542,6 +1628,8 @@ QTableWidget::item:selected{
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="resource.qrc"/>
+ </resources>
  <connections/>
 </ui>
