@@ -534,9 +534,39 @@ void MainWindow::on_tableScheduleUniversity_cellChanged(int row, int column)
     university_schedule.push_back( new_lesson );
 }
 
+// Оновлення таблиць на першій вкладці
 void MainWindow::on_tabWidget_tabBarClicked(int index)
 {
     if(index == 0){
-        //Настя, добавь сюда
+
+        QDate d = QDate::currentDate();
+        vector<Study> today_study;
+        sch->GetStudy(today_study, d);
+        vector<Meet> today_meet;
+        sch->GetMeet(today_meet, d);
+        vector<Birthday> today_bd;
+        sch->GetBD(today_bd, d);
+        vector<Task> task;
+        sch->GetTask(task);
+
+        ui->tableTodayPesonalLife->clearContents();
+        ui->tableTodayBusiness->clearContents();
+
+        for (int i=0; i<int(today_meet.size()); i++)
+        {
+            ui->tableTodayPesonalLife->setItem(i, 0, new QTableWidgetItem(today_meet[i].getTimeBeg().toString("HH:mm")));
+            ui->tableTodayPesonalLife->setItem(i, 1, new QTableWidgetItem(today_meet[i].getName()));
+            ui->tableTodayPesonalLife->setItem(i, 2, new QTableWidgetItem(today_meet[i].getPlace()));
+        }
+        for (int i=0; i<int(today_bd.size()); i++)
+        {
+            ui->tableTodayPesonalLife->setItem(int(today_meet.size())+i, 1, new QTableWidgetItem(today_bd[i].getName()));
+        }
+        for (int i=0; i<int(today_study.size()); i++)
+        {
+            ui->tableTodayBusiness->setItem(i, 0, new QTableWidgetItem(today_study[i].getTimeBeg().toString("HH:mm")));
+            ui->tableTodayBusiness->setItem(i, 1, new QTableWidgetItem(today_study[i].getName()));
+            ui->tableTodayBusiness->setItem(i, 2, new QTableWidgetItem(today_study[i].getPlace()));
+        }
     }
 }
