@@ -17,20 +17,17 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-     this->setFixedSize(this->size());
+
+ErrorDialog e("Ошибка");
+e.exec();
+
+    this->setFixedSize(this->size());//фіксований розмір вікна
     this->setWindowIcon(QIcon(":/rc/clockIcon"));//application icon
 
     ui->labelTodayDate->setText("Сьогодні "+QDate::currentDate().toString("dd.MM.yyyy"));
+    displayTime();
 
-
-    ui->lcdHoursBIG->display((int)QTime::currentTime().hour()/10);
-    ui->lcdHoursLIT->display(QTime::currentTime().hour()%10);
-    ui->lcdMinutesBIG->display((int)QTime::currentTime().minute()/10);
-    ui->lcdMinutesLIT->display(QTime::currentTime().minute()%10);
-    ui->lcdSecondsBIG->display((int)QTime::currentTime().second()/10);
-    ui->lcdSecondsLIT->display(QTime::currentTime().second()%10);
-
-//timer
+    //timer
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), SLOT(slotUpdateDateTime()));
     timer->start(1000);
@@ -39,8 +36,6 @@ MainWindow::MainWindow(QWidget *parent)
     dbm = new DBManager();
 
     QDate d = QDate::currentDate();
-    //QDate d(2020, 11, 15);
-
     QDateTime start = QDateTime::currentDateTime().addDays(-30);
     QDateTime end = QDateTime::currentDateTime().addDays(30);
 
@@ -366,14 +361,7 @@ void MainWindow::on_actionExport_triggered()
 void MainWindow::slotUpdateDateTime(){
 
     if(timer->isActive()){
-
-        ui->lcdHoursBIG->display((int)QTime::currentTime().hour()/10);
-        ui->lcdHoursLIT->display(QTime::currentTime().hour()%10);
-        ui->lcdMinutesBIG->display((int)QTime::currentTime().minute()/10);
-        ui->lcdMinutesLIT->display(QTime::currentTime().minute()%10);
-        ui->lcdSecondsBIG->display((int)QTime::currentTime().second()/10);
-        ui->lcdSecondsLIT->display(QTime::currentTime().second()%10);
-
+        displayTime();
         sch->MeetNotific(QTime::currentTime());
         sch->BDNotific(QTime::currentTime());
         sch->TaskNotific(QTime::currentTime());
@@ -503,3 +491,13 @@ void MainWindow::on_tableHomeWork_cellChanged(int row, int column)
         //dbm->ModifyHometask( current ); сначала нужно изменить объект, потом передать его в бд
     }
 }
+void MainWindow::displayTime(){
+
+    ui->lcdHoursBIG->display((int)QTime::currentTime().hour()/10);
+    ui->lcdHoursLIT->display(QTime::currentTime().hour()%10);
+    ui->lcdMinutesBIG->display((int)QTime::currentTime().minute()/10);
+    ui->lcdMinutesLIT->display(QTime::currentTime().minute()%10);
+    ui->lcdSecondsBIG->display((int)QTime::currentTime().second()/10);
+    ui->lcdSecondsLIT->display(QTime::currentTime().second()%10);
+}
+

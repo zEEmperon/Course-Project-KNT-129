@@ -7,6 +7,7 @@
 #include "addeventdialog.h"
 #include <QTimer>
 #include "notificationdialog.h"
+#include "errordialog.h"
 
 #include <QTableWidget>
 
@@ -39,5 +40,7 @@ private slots:
     void on_buttonRemove_clicked();
     void on_buttonShowHomework_clicked();
     void on_tableHomeWork_cellChanged(int row, int column);
+private:
+    void displayTime();
 };
 #endif // MAINWINDOW_H
