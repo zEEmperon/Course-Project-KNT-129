@@ -24,13 +24,19 @@ Schedule::~Schedule(){}
 void Schedule::AddStudy(QDateTime d, QTime b, QTime e, QString n, QString p, quint64 t_event_id)
 {
     Study s(d, b, e, n, p, t_event_id);
-    if (!isBusy(d.date(), b, e))   //сюда и в meet можно исключение
+
+    // ------------ сюда исключение, если время занято ------------
+
+    if (!isBusy(d.date(), b, e))
         study_arr.push_back(s);
     SortStudy(0, int(study_arr.size())-1);
 }
 void Schedule::AddMeet(QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific, quint64 t_event_id)
 {
     Meet m(d, b, e, n, p, notific, t_event_id);
+
+    // ------------ сюда исключение, если время занято ------------
+
     if (!isBusy(d.date(), b, e))
         meet_arr.push_back(m);
     SortMeet(0, int(meet_arr.size())-1);
@@ -284,6 +290,10 @@ int Schedule::FindStudy(QString n, QTime time, QDate date)
         i++;
     }
     i--;
+
+    // ------------ сюда исключение, если found == false (Не найдено событие) ------------
+    if (!found)
+        return -1;
     return i;
 }
 
@@ -298,6 +308,10 @@ int Schedule::FindMeet(QString n, QTime time, QDate date)
         i++;
     }
     i--;
+
+    // ------------ сюда исключение, если found == false (Не найдено событие) ------------
+    if (!found)
+        return -1;
     return i;
 }
 
@@ -312,6 +326,10 @@ int Schedule::FindTask(QString n, QDate tdl)
         i++;
     }
     i--;
+
+    // ------------ сюда исключение, если found == false (Не найдено событие) ------------
+    if (!found)
+        return -1;
     return i;
 }
 
@@ -326,11 +344,17 @@ int Schedule::FindBD(QString n)
         i++;
     }
     i--;
+
+    // ------------ сюда исключение, если found == false (Не найдено событие) ------------
+    if (!found)
+        return -1;
     return i;
 }
 
 quint64 Schedule::DeleteStudy(int i)
 {
+    // ------------ сюда исключение, если i выходит за пределы размера вектора study_arr (i >= int(study_arr.size()) || i<0) ------------
+
     quint64 id = study_arr[i].GetID();
     if (i == int(study_arr.size())-1) study_arr.pop_back();
     for (int j=i; j<int(study_arr.size())-1; j++)
@@ -340,6 +364,8 @@ quint64 Schedule::DeleteStudy(int i)
 }
 quint64 Schedule::DeleteMeet(int i)
 {
+    // ------------ сюда исключение, если i выходит за пределы размера вектора meet_arr (i >= int(meet_arr.size()) || i<0) ------------
+
     quint64 id = meet_arr[i].GetID();
     if (i == int(meet_arr.size())-1) meet_arr.pop_back();
     for (int j=i; j<int(meet_arr.size())-1; j++)
@@ -349,6 +375,8 @@ quint64 Schedule::DeleteMeet(int i)
 }
 quint64 Schedule::DeleteTask(int i)
 {
+    // ------------ сюда исключение, если i выходит за пределы размера вектора task_arr (i >= int(task_arr.size()) || i<0) ------------
+
     quint64 id = task_arr[i].GetID();
     if (i == int(task_arr.size())-1) task_arr.pop_back();
     for (int j=i; j<int(task_arr.size())-1; j++)
@@ -358,6 +386,8 @@ quint64 Schedule::DeleteTask(int i)
 }
 quint64 Schedule::DeleteBD(int i)
 {
+    // ------------ сюда исключение, если i выходит за пределы размера вектора bd_arr (i >= int(bd_arr.size()) || i<0) ------------
+
     quint64 id = bd_arr[i].GetID();
     if (i == int(bd_arr.size())-1) bd_arr.pop_back();
     for (int j=i; j<int(bd_arr.size())-1; j++)

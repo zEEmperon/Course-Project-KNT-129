@@ -25,6 +25,7 @@ Study::Study(QDateTime d, QTime b, QTime e, QString n, QString p, quint64 t_even
     place = p;
 }
 
+// перевантажений оператор присвоєння
 Study& Study::operator=(const Study &to_copy)
 {
     if (this == &to_copy)
@@ -53,6 +54,7 @@ Meet::Meet(QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notifi
     place = p;
 }
 
+// перевантажений оператор присвоєння
 Meet& Meet::operator=(const Meet &to_copy)
 {
     if (this == &to_copy)
@@ -83,6 +85,7 @@ Task::Task(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, 
     isActive = false;
 }
 
+// перевантажений оператор присвоєння
 Task& Task::operator=(const Task &to_copy)
 {
     if (this == &to_copy)
@@ -108,7 +111,9 @@ Task& Task::operator=(const Task &to_copy)
 //методи обліку часу роботи над завданнями
 void Task::Activate()
 {
-    if(!isActive){ //сюда можно исключение, если задача не активирована
+    // ------------ сюда исключение, если isActive == true ------------
+
+    if(!isActive){
         isActive = true;
         startAct = QDateTime::currentDateTime();
         date = QDateTime::currentDateTime();
@@ -117,7 +122,9 @@ void Task::Activate()
 
 void Task::Deactivate()
 {
-    if(isActive){ //сюда можно исключение, если задача не активирована
+    // ------------ сюда исключение, если isActive == false ------------
+
+    if(isActive){
         isActive = false;
         startAct = date;
         endAct = QDateTime::currentDateTime();
@@ -135,6 +142,7 @@ Birthday::Birthday(QDateTime d, QString n, QDateTime notific, quint64 t_event_id
     type = "birthday";
 }
 
+// перевантажений оператор присвоєння
 Birthday& Birthday::operator=(const Birthday &to_copy)
 {
     if (this == &to_copy)

@@ -163,7 +163,7 @@ MainWindow::~MainWindow()
     delete timer;
 }
 
-
+// Обробник натискання дати у календарі
 void MainWindow::on_calendarPersonalLife_clicked(const QDate &date)
 {
     ui->textEdit->setText(date.toString("dd.MM.yyyy"));
@@ -197,9 +197,10 @@ void MainWindow::on_calendarPersonalLife_clicked(const QDate &date)
     }
 }
 
+
+// Обробник видалення подій из таблиці та з бази даних
 void MainWindow::on_buttonRemovePersonalLife_clicked()
 {
-   //удаление события из таблицы и базы данных
    QDate date = ui->calendarPersonalLife->selectedDate();
 
    QList<QTableWidgetItem*>selItemsList = ui->tablePersonalLifeEvents->selectedItems();
@@ -248,6 +249,7 @@ void MainWindow::on_buttonRemovePersonalLife_clicked()
    }
 }
 
+// Обробник додавання події
 void MainWindow::on_buttonAddPersonalLife_clicked()
 {
     std::vector <PriorityData> priority_data = dbm->GetPriorityList();
@@ -274,11 +276,13 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
            eventStartTime = dialog.get_eventStartTime();
            eventEndTime = dialog.get_eventEndTime();
            eventLocation = dialog.get_eventLocation();
+
+           // ------------ сюда исключение, если (eventLocation == "" || eventDescription == "") - не все поля заполнены ------------
+           // ------------ сюда исключение, если eventStartTime > eventEndTime - время начала позже время окончания ------------
+
            Study s(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, EVENT_STUDY);
            dbm->AddStudy(s);
            sch->AddStudy(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, EVENT_STUDY);
-
-
            break;
        }
        case Events::TASK:
@@ -287,6 +291,11 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
            eventDeadlineTime = dialog.get_eventDeadlineTime();
            eventNumPriority = dialog.get_eventNumPriority();
            quint16 weight = dialog.get_eventWeightPriority();
+
+           // ------------ сюда исключение, если (eventDescription == "") - не все поля заполнены ------------
+           // ------------ сюда исключение, если eventStartTime > eventEndTime - время начала позже время окончания ------------
+           // ------------ сюда исключение, если eventDeadlineTime < QDateTime::currentDateTime() - время дедлайна раньше сегодняшней даты ------------
+
            Task t(QDateTime(), eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
 
            dbm->AddTask(t);
@@ -314,6 +323,10 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
            eventEndTime = dialog.get_eventEndTime();
            eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
            eventLocation = dialog.get_eventLocation();
+
+           // ------------ сюда исключение, если (eventLocation == "" || eventDescription == "") - не все поля заполнены ------------
+           // ------------ сюда исключение, если eventStartTime > eventEndTime - время начала позже время окончания ------------
+
            Meet m(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, eventDateAndNotificationTime, EVENT_MEET);
            dbm->AddMeet(m);
            sch->AddMeet(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, eventDateAndNotificationTime, EVENT_MEET);
@@ -323,6 +336,9 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
        {
            eventDate = dialog.get_eventDate();
            eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
+
+           // ------------ сюда исключение, если (eventDescription == "") - не все поля заполнены ------------
+
            Birthday bd(eventDate, eventDescription, eventDateAndNotificationTime, EVENT_BIRTHDAY);
            dbm->AddBirthday(bd);
            sch->AddBD(eventDate, eventDescription, eventDateAndNotificationTime, EVENT_BIRTHDAY);
@@ -333,6 +349,7 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
        }
     }
 }
+
 
 void MainWindow::on_actionExport_triggered()
 {
@@ -363,7 +380,7 @@ void MainWindow::slotUpdateDateTime(){
     }
 }
 
-
+// Обробник початку роботи над задачею
 void MainWindow::on_buttonBeginDo_clicked()
 {
     QList<QTableWidgetItem*>selItemsList = ui->tableTasks->selectedItems();
@@ -388,6 +405,7 @@ void MainWindow::on_buttonBeginDo_clicked()
     }
 }
 
+// Обробник закінчення роботи над задачею
 void MainWindow::on_buttonEndDo_clicked()
 {
     QList<QTableWidgetItem*>selItemsList = ui->tableTasks->selectedItems();
@@ -425,7 +443,7 @@ void MainWindow::on_buttonEndDo_clicked()
     }
 }
 
-
+// Обробник видалення задачі
 void MainWindow::on_buttonRemove_clicked()
 {
     QList<QTableWidgetItem*>selItemsList = ui->tableTasks->selectedItems();
