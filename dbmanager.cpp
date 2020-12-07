@@ -546,7 +546,8 @@ void DBManager::DeactivateTask( Task &item )
 }
 
 //----------------------------------------------------------------------------
-vector <Lessons> DBManager::GetLessons( void )
+//vector <Lessons> DBManager::GetLessons( void )
+vector <Lessons> DBManager::GetLessons( vector <Lessons>& lessons )
 {
     qDebug() << __func__ << " +";
 
@@ -571,6 +572,15 @@ vector <Lessons> DBManager::GetLessons( void )
         throw std::runtime_error( QString("Select from lessons error!").toStdString() );
 
     qDebug() << __func__ << " -";
+
+    lessons.resize(result.size());
+    for (int i=0; i<int(result.size()); i++)
+    {
+        lessons[i].id = result[i].id;
+        lessons[i].name = result[i].name;
+        lessons[i].week_day = result[i].week_day;
+        lessons[i].lesson_number = result[i].lesson_number;
+    }
 
     return result;
 }

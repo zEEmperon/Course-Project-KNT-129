@@ -39,7 +39,8 @@ public:
     void ActivateTask( Task& item );
     void DeactivateTask( Task&item );
 
-    vector <Lessons> GetLessons( void );
+    //vector <Lessons> GetLessons( void );
+    vector <Lessons> GetLessons(vector <Lessons>&);
     vector <Hometask> GetHometask( QDate day );
 
     void AddLesson( Lessons& item );

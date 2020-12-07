@@ -45,7 +45,28 @@ MainWindow::MainWindow(QWidget *parent)
     sch->GetBD(today_bd, d);
     vector<Task> task;
     sch->GetTask(task);
-    university_schedule = dbm->GetLessons();
+    //university_schedule = dbm->GetLessons();
+    dbm->GetLessons(university_schedule);
+
+    ui->tableScheduleUniversity->clearContents();
+    for (int i=0; i<int(university_schedule.size()); i++)
+    {
+        ui->tableScheduleUniversity->setItem(university_schedule[i].week_day-1, university_schedule[i].lesson_number-1, new QTableWidgetItem(university_schedule[i].name));
+    }
+
+    vector <Hometask> current_hometask = dbm->GetHometask(ui->dateEdit->date());
+
+    ui->tableHomeWork->clearContents();
+    ui->tableHomeWork->model()->removeRows(0, ui->tableHomeWork->rowCount());
+
+    for(int i = 0; i < (int)current_hometask.size();i++){
+       ui->tableHomeWork->insertRow ( ui->tableHomeWork->rowCount() );
+       ui->tableHomeWork->setItem   ( ui->tableHomeWork->rowCount()-1, 0, new QTableWidgetItem(current_hometask[i].name));
+       ui->tableHomeWork->setCellWidget(i, 1, new QCheckBox);
+       QTableWidgetItem* pItem(ui->tableHomeWork->item(ui->tableHomeWork->rowCount()-1,0));
+       pItem->setCheckState(Qt::CheckState(current_hometask[i].completed));
+   }
+
 
     ui->tableHomeWork->setColumnCount(2);
     ui->tableHomeWork->setColumnWidth(0,125);
@@ -134,7 +155,6 @@ MainWindow::MainWindow(QWidget *parent)
     //ui->dateEdit->setMinimumDate(QDate::currentDate());
      ui->dateEdit->setMinimumDate(QDate(2020,12,3));
     ui->tablePersonalLifeEvents->setRowCount(5);
-
 }
 
 MainWindow::~MainWindow()
