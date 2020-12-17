@@ -259,101 +259,116 @@ void MainWindow::on_buttonRemovePersonalLife_clicked()
 // Обробник додавання події
 void MainWindow::on_buttonAddPersonalLife_clicked()
 {
-    std::vector <PriorityData> priority_data = dbm->GetPriorityList();
-    AddEventDialog dialog( priority_data );
-    dialog.exec();
+    try {
+        std::vector <PriorityData> priority_data = dbm->GetPriorityList();
+        AddEventDialog dialog( priority_data );
+        dialog.exec();
 
-    if(dialog.result()==QDialog::Accepted){
+        if(dialog.result()==QDialog::Accepted){
 
-       Events newEvent = dialog.get_selectedEvent();
-       QDateTime eventDate;
-       QString eventDescription = dialog.get_eventDescription();
+           Events newEvent = dialog.get_selectedEvent();
+           QDateTime eventDate;
+           QString eventDescription = dialog.get_eventDescription();
 
-       QString eventLocation;
-       QTime eventStartTime;
-       QTime eventEndTime;
-       QDateTime eventDateAndNotificationTime;
-       QDateTime eventDeadlineTime;
-       int eventNumPriority;
+           QString eventLocation;
+           QTime eventStartTime;
+           QTime eventEndTime;
+           QDateTime eventDateAndNotificationTime;
+           QDateTime eventDeadlineTime;
+           int eventNumPriority;
 
-       switch (newEvent) {
-       case Events::BUSINESS:
-       {
-           eventDate = dialog.get_eventDate();
-           eventStartTime = dialog.get_eventStartTime();
-           eventEndTime = dialog.get_eventEndTime();
-           eventLocation = dialog.get_eventLocation();
-
-           // ------------ сюда исключение, если (eventLocation == "" || eventDescription == "") - не все поля заполнены ------------
-           // ------------ сюда исключение, если eventStartTime > eventEndTime - время начала позже время окончания ------------
-
-           Study s(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, EVENT_STUDY);
-           dbm->AddStudy(s);
-           sch->AddStudy(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, EVENT_STUDY);
-           break;
-       }
-       case Events::TASK:
-       {
-           eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
-           eventDeadlineTime = dialog.get_eventDeadlineTime();
-           eventNumPriority = dialog.get_eventNumPriority();
-           quint16 weight = dialog.get_eventWeightPriority();
-
-           // ------------ сюда исключение, если (eventDescription == "") - не все поля заполнены ------------
-           // ------------ сюда исключение, если eventStartTime > eventEndTime - время начала позже время окончания ------------
-           // ------------ сюда исключение, если eventDeadlineTime < QDateTime::currentDateTime() - время дедлайна раньше сегодняшней даты ------------
-
-           Task t(QDateTime(), eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
-
-           dbm->AddTask(t);
-           sch->AddTask(QDateTime(), eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
-
-           vector<Task> task; sch->GetTask(task);
-           ui->tableTasks->clear();
-           for (int i=0; i<int(task.size()); i++)
+           switch (newEvent) {
+           case Events::BUSINESS:
            {
-               ui->tableTasks->setItem(i, 0, new QTableWidgetItem(task[i].getName()));
-               ui->tableTasks->setItem(i, 1, new QTableWidgetItem(task[i].getTimeDeadline().toString("dd.MM.yyyy")));
-               int w, h, m;
-               w = task[i].getWorkTime();
-               h = w/60;
-               m = w - 60*h;
-               QString w_time = QString::number(h) + QString(":") + QString::number(m);
-               ui->tableTasks->setItem(i, 2, new QTableWidgetItem(w_time));
+               eventDate = dialog.get_eventDate();
+               eventStartTime = dialog.get_eventStartTime();
+               eventEndTime = dialog.get_eventEndTime();
+               eventLocation = dialog.get_eventLocation();
+
+               if (eventLocation == "" || eventDescription == "") throw Exception(4);
+               if (eventStartTime > eventEndTime) throw Exception(5);
+
+               Study s(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, EVENT_STUDY);
+               bool isB = sch->isBusy(eventDate.date(), eventStartTime, eventEndTime);
+               if (isB) throw Exception(1);
+               dbm->AddStudy(s);
+               sch->AddStudy(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, EVENT_STUDY);
+               break;
            }
-           break;
-       }
-       case Events::MEET:
-       {
-           eventDate = dialog.get_eventDate();
-           eventStartTime = dialog.get_eventStartTime();
-           eventEndTime = dialog.get_eventEndTime();
-           eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
-           eventLocation = dialog.get_eventLocation();
+           case Events::TASK:
+           {
+               eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
+               eventDeadlineTime = dialog.get_eventDeadlineTime();
+               eventNumPriority = dialog.get_eventNumPriority();
+               quint16 weight = dialog.get_eventWeightPriority();
 
-           // ------------ сюда исключение, если (eventLocation == "" || eventDescription == "") - не все поля заполнены ------------
-           // ------------ сюда исключение, если eventStartTime > eventEndTime - время начала позже время окончания ------------
+               if (eventDescription == "") throw Exception(4);
+               if (eventStartTime > eventEndTime) throw Exception(5);
+               if (eventDeadlineTime < QDateTime::currentDateTime()) throw Exception(6);
 
-           Meet m(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, eventDateAndNotificationTime, EVENT_MEET);
-           dbm->AddMeet(m);
-           sch->AddMeet(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, eventDateAndNotificationTime, EVENT_MEET);
-           break;
-       }
-       case Events::BIRTHDAY:
-       {
-           eventDate = dialog.get_eventDate();
-           eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
+               Task t(QDateTime(), eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
 
-           // ------------ сюда исключение, если (eventDescription == "") - не все поля заполнены ------------
+               dbm->AddTask(t);
+               sch->AddTask(QDateTime(), eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
 
-           Birthday bd(eventDate, eventDescription, eventDateAndNotificationTime, EVENT_BIRTHDAY);
-           dbm->AddBirthday(bd);
-           sch->AddBD(eventDate, eventDescription, eventDateAndNotificationTime, EVENT_BIRTHDAY);
-           break;
-       }
-       case Events::NONE:
-           break;
-       }
+               vector<Task> task; sch->GetTask(task);
+               ui->tableTasks->clear();
+               for (int i=0; i<int(task.size()); i++)
+               {
+                   ui->tableTasks->setItem(i, 0, new QTableWidgetItem(task[i].getName()));
+                   ui->tableTasks->setItem(i, 1, new QTableWidgetItem(task[i].getTimeDeadline().toString("dd.MM.yyyy")));
+                   int w, h, m;
+                   w = task[i].getWorkTime();
+                   h = w/60;
+                   m = w - 60*h;
+                   QString w_time = QString::number(h) + QString(":") + QString::number(m);
+                   ui->tableTasks->setItem(i, 2, new QTableWidgetItem(w_time));
+               }
+               break;
+           }
+           case Events::MEET:
+           {
+               eventDate = dialog.get_eventDate();
+               eventStartTime = dialog.get_eventStartTime();
+               eventEndTime = dialog.get_eventEndTime();
+               eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
+               eventLocation = dialog.get_eventLocation();
+
+               if (eventLocation == "" || eventDescription == "") throw Exception(4);
+               if (eventStartTime > eventEndTime) throw Exception(5);
+
+               Meet m(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, eventDateAndNotificationTime, EVENT_MEET);
+               bool isB = sch->isBusy(eventDate.date(), eventStartTime, eventEndTime);
+               if (isB) throw Exception(1);
+               dbm->AddMeet(m);
+               sch->AddMeet(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, eventDateAndNotificationTime, EVENT_MEET);
+               break;
+           }
+           case Events::BIRTHDAY:
+           {
+               eventDate = dialog.get_eventDate();
+               eventDateAndNotificationTime = dialog.get_eventDateAndNotificationTime();
+
+               if (eventDescription == "") throw Exception(4);
+
+               Birthday bd(eventDate, eventDescription, eventDateAndNotificationTime, EVENT_BIRTHDAY);
+               dbm->AddBirthday(bd);
+               sch->AddBD(eventDate, eventDescription, eventDateAndNotificationTime, EVENT_BIRTHDAY);
+               break;
+           }
+           case Events::NONE:
+               break;
+           }
+        }
+    }
+    catch (bad_alloc)
+    {
+        ErrorDialog errDialog("Allocation failure!");
+        errDialog.exec();
+    }
+    catch (Exception &e)
+    {
+        e.show();
     }
 }
 

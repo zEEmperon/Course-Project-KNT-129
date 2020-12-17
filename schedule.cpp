@@ -23,23 +23,41 @@ Schedule::~Schedule(){}
 // додавання події
 void Schedule::AddStudy(QDateTime d, QTime b, QTime e, QString n, QString p, quint64 t_event_id)
 {
-    Study s(d, b, e, n, p, t_event_id);
-
-    // ------------ сюда исключение, если время занято ------------
-
-    if (!isBusy(d.date(), b, e))
+    try {
+        Study s(d, b, e, n, p, t_event_id);
+        bool isB = isBusy(d.date(), b, e);
+        if (isB) throw Exception(1);
         study_arr.push_back(s);
-    SortStudy(0, int(study_arr.size())-1);
+        SortStudy(0, int(study_arr.size())-1);
+    }
+    catch (bad_alloc)
+    {
+        ErrorDialog errDialog("Allocation failure!");
+        errDialog.exec();
+    }
+    catch (Exception &e)
+    {
+        e.show();
+    }
 }
 void Schedule::AddMeet(QDateTime d, QTime b, QTime e, QString n, QString p, QDateTime notific, quint64 t_event_id)
 {
-    Meet m(d, b, e, n, p, notific, t_event_id);
-
-    // ------------ сюда исключение, если время занято ------------
-
-    if (!isBusy(d.date(), b, e))
+    try {
+        Meet m(d, b, e, n, p, notific, t_event_id);
+        bool isB = isBusy(d.date(), b, e);
+        if (isB) throw Exception(1);
         meet_arr.push_back(m);
-    SortMeet(0, int(meet_arr.size())-1);
+        SortMeet(0, int(meet_arr.size())-1);
+    }
+    catch (bad_alloc)
+    {
+        ErrorDialog errDialog("Allocation failure!");
+        errDialog.exec();
+    }
+    catch (Exception &e)
+    {
+        e.show();
+    }
 }
 void Schedule::AddTask(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, quint64 t_event_id, quint64 p_id)
 {
@@ -281,119 +299,219 @@ void Schedule::GetBD(vector<Birthday>& bd, QDate needed_date)
 
 int Schedule::FindStudy(QString n, QTime time, QDate date)
 {
-    int i = 0;
-    bool found = false;
-    while (!found && i<int(study_arr.size()))
-    {
-        if (study_arr[i].name == n && (study_arr[i].timeBeg.hour() == time.hour() && study_arr[i].timeBeg.minute() == time.minute()) && study_arr[i].date.date() == date)
-            found = true;
-        i++;
+    try {
+        int i = 0;
+        bool found = false;
+        while (!found && i<int(study_arr.size()))
+        {
+            if (study_arr[i].name == n && (study_arr[i].timeBeg.hour() == time.hour() && study_arr[i].timeBeg.minute() == time.minute()) && study_arr[i].date.date() == date)
+                found = true;
+            i++;
+        }
+        i--;
+        if (!found)
+        {
+            throw Exception(2);
+        }
+        return i;
     }
-    i--;
-
-    // ------------ сюда исключение, если found == false (Не найдено событие) ------------
-    if (!found)
+    catch (bad_alloc)
+    {
+        ErrorDialog errDialog("Allocation failure!");
+        errDialog.exec();
         return -1;
-    return i;
+    }
+    catch (Exception &e)
+    {
+        e.show();
+        return -1;
+    }
 }
 
 int Schedule::FindMeet(QString n, QTime time, QDate date)
 {
-    int i = 0;
-    bool found = false;
-    while (!found && i<int(meet_arr.size()))
-    {
-        if (meet_arr[i].name == n && (meet_arr[i].timeBeg.hour() == time.hour() && meet_arr[i].timeBeg.minute() == time.minute()) && meet_arr[i].date.date() == date)
-            found = true;
-        i++;
+    try {
+        int i = 0;
+        bool found = false;
+        while (!found && i<int(meet_arr.size()))
+        {
+            if (meet_arr[i].name == n && (meet_arr[i].timeBeg.hour() == time.hour() && meet_arr[i].timeBeg.minute() == time.minute()) && meet_arr[i].date.date() == date)
+                found = true;
+            i++;
+        }
+        i--;
+        if (!found)
+        {
+            throw Exception(2);
+        }
+        return i;
     }
-    i--;
-
-    // ------------ сюда исключение, если found == false (Не найдено событие) ------------
-    if (!found)
+    catch (bad_alloc)
+    {
+        ErrorDialog errDialog("Allocation failure!");
+        errDialog.exec();
         return -1;
-    return i;
+    }
+    catch (Exception &e)
+    {
+        e.show();
+        return -1;
+    }
 }
 
 int Schedule::FindTask(QString n, QDate tdl)
 {
-    int i = 0;
-    bool found = false;
-    while (!found && i<int(task_arr.size()))
-    {
-        if (task_arr[i].name == n && task_arr[i].timeDeadline.date() == tdl)
-            found = true;
-        i++;
+    try {
+        int i = 0;
+        bool found = false;
+        while (!found && i<int(task_arr.size()))
+        {
+            if (task_arr[i].name == n && task_arr[i].timeDeadline.date() == tdl)
+                found = true;
+            i++;
+        }
+        i--;
+        if (!found)
+        {
+            throw Exception(2);
+        }
+        return i;
     }
-    i--;
-
-    // ------------ сюда исключение, если found == false (Не найдено событие) ------------
-    if (!found)
+    catch (bad_alloc)
+    {
+        ErrorDialog errDialog("Allocation failure!");
+        errDialog.exec();
         return -1;
-    return i;
+    }
+    catch (Exception &e)
+    {
+        e.show();
+        return -1;
+    }
 }
 
 int Schedule::FindBD(QString n)
 {
-    int i = 0;
-    bool found = false;
-    while (!found && i<int(bd_arr.size()))
-    {
-        if (bd_arr[i].name == n)
-            found = true;
-        i++;
+    try {
+        int i = 0;
+        bool found = false;
+        while (!found && i<int(bd_arr.size()))
+        {
+            if (bd_arr[i].name == n)
+                found = true;
+            i++;
+        }
+        i--;
+        if (!found)
+        {
+            throw Exception(2);
+        }
+        return i;
     }
-    i--;
-
-    // ------------ сюда исключение, если found == false (Не найдено событие) ------------
-    if (!found)
+    catch (bad_alloc)
+    {
+        ErrorDialog errDialog("Allocation failure!");
+        errDialog.exec();
         return -1;
-    return i;
+    }
+    catch (Exception &e)
+    {
+        e.show();
+        return -1;
+    }
 }
 
 quint64 Schedule::DeleteStudy(int i)
 {
-    // ------------ сюда исключение, если i выходит за пределы размера вектора study_arr (i >= int(study_arr.size()) || i<0) ------------
-
-    quint64 id = study_arr[i].GetID();
-    if (i == int(study_arr.size())-1) study_arr.pop_back();
-    for (int j=i; j<int(study_arr.size())-1; j++)
-        study_arr[j] = study_arr[j+1];
-    study_arr.pop_back();
-    return id;
+    try {
+        if (i>int(study_arr.size())) throw Exception(3);
+        quint64 id = study_arr[i].GetID();
+        if (i == int(study_arr.size())-1) study_arr.pop_back();
+        for (int j=i; j<int(study_arr.size())-1; j++)
+            study_arr[j] = study_arr[j+1];
+        study_arr.pop_back();
+        return id;
+    }
+    catch (bad_alloc)
+    {
+        ErrorDialog errDialog("Allocation failure!");
+        errDialog.exec();
+        return -1;
+    }
+    catch (Exception &e)
+    {
+        e.show();
+        return -1;
+    }
 }
 quint64 Schedule::DeleteMeet(int i)
 {
-    // ------------ сюда исключение, если i выходит за пределы размера вектора meet_arr (i >= int(meet_arr.size()) || i<0) ------------
-
-    quint64 id = meet_arr[i].GetID();
-    if (i == int(meet_arr.size())-1) meet_arr.pop_back();
-    for (int j=i; j<int(meet_arr.size())-1; j++)
-        meet_arr[j] = meet_arr[j+1];
-    meet_arr.pop_back();
-    return id;
+    try {
+        if (i>int(meet_arr.size())) throw Exception(3);
+        quint64 id = meet_arr[i].GetID();
+        if (i == int(meet_arr.size())-1) meet_arr.pop_back();
+        for (int j=i; j<int(meet_arr.size())-1; j++)
+            meet_arr[j] = meet_arr[j+1];
+        meet_arr.pop_back();
+        return id;
+    }
+    catch (bad_alloc)
+    {
+        ErrorDialog errDialog("Allocation failure!");
+        errDialog.exec();
+        return -1;
+    }
+    catch (Exception &e)
+    {
+        e.show();
+        return -1;
+    }
 }
 quint64 Schedule::DeleteTask(int i)
 {
-    // ------------ сюда исключение, если i выходит за пределы размера вектора task_arr (i >= int(task_arr.size()) || i<0) ------------
-
-    quint64 id = task_arr[i].GetID();
-    if (i == int(task_arr.size())-1) task_arr.pop_back();
-    for (int j=i; j<int(task_arr.size())-1; j++)
-        task_arr[j] = task_arr[j+1];
-    task_arr.pop_back();
-    return id;
+    try {
+        if (i>int(task_arr.size())) throw Exception(3);
+        quint64 id = task_arr[i].GetID();
+        if (i == int(task_arr.size())-1) task_arr.pop_back();
+        for (int j=i; j<int(task_arr.size())-1; j++)
+            task_arr[j] = task_arr[j+1];
+        task_arr.pop_back();
+        return id;
+    }
+    catch (bad_alloc)
+    {
+        ErrorDialog errDialog("Allocation failure!");
+        errDialog.exec();
+        return -1;
+    }
+    catch (Exception &e)
+    {
+        e.show();
+        return -1;
+    }
 }
 quint64 Schedule::DeleteBD(int i)
 {
-    // ------------ сюда исключение, если i выходит за пределы размера вектора bd_arr (i >= int(bd_arr.size()) || i<0) ------------
-
-    quint64 id = bd_arr[i].GetID();
-    if (i == int(bd_arr.size())-1) bd_arr.pop_back();
-    for (int j=i; j<int(bd_arr.size())-1; j++)
-        bd_arr[j] = bd_arr[j+1];
-    bd_arr.pop_back();
-    return id;
+    try {
+        if (i>int(bd_arr.size())) throw Exception(3);
+        quint64 id = bd_arr[i].GetID();
+        if (i == int(bd_arr.size())-1) bd_arr.pop_back();
+        for (int j=i; j<int(bd_arr.size())-1; j++)
+            bd_arr[j] = bd_arr[j+1];
+        bd_arr.pop_back();
+        return id;
+    }
+    catch (bad_alloc)
+    {
+        ErrorDialog errDialog("Allocation failure!");
+        errDialog.exec();
+        return -1;
+    }
+    catch (Exception &e)
+    {
+        e.show();
+        return -1;
+    }
 }
 
 Task& Schedule::ActivateTask(int i)

@@ -4,6 +4,8 @@
 #include <vector>
 #include "event.h"
 #include "notificationdialog.h"
+#include "errordialog.h"
+#include "exception.h"
 
 class Schedule
 {

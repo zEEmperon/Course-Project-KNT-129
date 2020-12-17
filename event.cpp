@@ -111,26 +111,32 @@ Task& Task::operator=(const Task &to_copy)
 //методи обліку часу роботи над завданнями
 void Task::Activate()
 {
-    // ------------ сюда исключение, если isActive == true ------------
-
-    if(!isActive){
+    try {
+        if (isActive) throw Exception(7);
         isActive = true;
         startAct = QDateTime::currentDateTime();
         date = QDateTime::currentDateTime();
+    }
+    catch (Exception &e)
+    {
+        e.show();
     }
 }
 
 void Task::Deactivate()
 {
-    // ------------ сюда исключение, если isActive == false ------------
-
-    if(isActive){
+    try {
+        if(!isActive) throw Exception(8);
         isActive = false;
         startAct = date;
         endAct = QDateTime::currentDateTime();
         quint64 work_time = startAct.daysTo(endAct)*1000*60*60*24 + startAct.time().msecsTo(endAct.time());
         time_minut += work_time/60000;
         date = QDateTime();
+    }
+    catch (Exception &e)
+    {
+        e.show();
     }
 }
 

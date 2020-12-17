@@ -3,6 +3,8 @@
 
 #include <QDateTime>
 #include <string>
+#include "errordialog.h"
+#include "exception.h"
 using namespace std;
 
 class Event
