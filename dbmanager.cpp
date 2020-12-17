@@ -124,7 +124,7 @@ vector <Study> DBManager::GetStudy( QDateTime date_start, QDateTime date_end)
     QSqlQuery query( m_db );
 
     //тут if - try, если нет - catch
-        //відкриття бази даних: витягання подій "Навчання"
+        //відкриття бази даних: витягання подій "Заняття"
 
     if( query.exec( str ) )
     {
@@ -290,7 +290,7 @@ void DBManager::AddStudy( Study& item )
                            arg( item.getName() ).arg( item.getPlace() );
 
     //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: додавання події "Навчання"
+        //відкриття бази даних: додавання події "Заняття"
 
     if( !query.exec( str ) )
     {
@@ -447,7 +447,7 @@ void DBManager::ModifyStudy( Study& item )
                            arg( item.getName() ).arg( item.getPlace() ).arg( item.GetID() );
 
     //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: змінення події "Навчання"
+        //відкриття бази даних: змінення події "Заняття"
 
     if( !query.exec( str ) )
     {
@@ -594,7 +594,7 @@ vector <Lessons> DBManager::GetLessons( vector <Lessons>& lessons )
     QSqlQuery query( m_db );
 
     //тут if - try, если нет - catch
-        //відкриття бази даних: витягання "Розклад занять"
+        //відкриття бази даних: витягання "Розклад"
 
     if( query.exec( str ) )
     {
@@ -674,7 +674,7 @@ void DBManager::AddLesson( Lessons &item )
                            arg( item.lesson_number );
 
     //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: додавання заняття до розкладу
+        //відкриття бази даних: додавання предмету до розкладу
 
     if( !query.exec( str ) )
     {
@@ -726,7 +726,7 @@ void DBManager::ModifyLesson( Lessons &item )
                            arg( item.lesson_number ).arg( item.id );
 
     //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: змінення заняття у розкладі
+        //відкриття бази даних: змінення предемету у розкладі
 
     if( !query.exec( str ) )
     {
@@ -771,7 +771,7 @@ void DBManager::DeleteLesson( Lessons &item )
                            " where ID = %1" ).arg( item.id );
 
     //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: видалення заняття з розкладу
+        //відкриття бази даних: видалення предемету з розкладу
 
     if( !query.exec( str ) )
     {
