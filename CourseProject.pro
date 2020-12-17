@@ -13,6 +13,7 @@ SOURCES += \
     dbmanager.cpp \
     errordialog.cpp \
     event.cpp \
+    exception.cpp \
     main.cpp \
     mainwindow.cpp \
     notificationdialog.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
     errordialog.h \
     event.h \
     eventsEnum.h \
+    exception.h \
     mainwindow.h \
     notificationdialog.h \
     schedule.h
