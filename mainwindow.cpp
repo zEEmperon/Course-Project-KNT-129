@@ -513,10 +513,10 @@ void MainWindow::on_buttonShowHomework_clicked()
 }
 void MainWindow::on_tableHomeWork_cellChanged(int row, int column)
 {
-    if(column == 1){
+    //if(column == 1){
         Qt::CheckState cur = ui->tableHomeWork->item(row,column)->checkState();
         vector<Hometask> hometasks = dbm->GetHometask(ui->dateEdit->date());
-        for(int i = 0; i<hometasks.size();i++){
+        for(int i = 0; i<int(hometasks.size());i++){
             if(hometasks[i].name == ui->tableHomeWork->item(row,0)->text()){
                 if(cur != hometasks[i].completed){
                     hometasks[i].completed = cur;
@@ -524,9 +524,35 @@ void MainWindow::on_tableHomeWork_cellChanged(int row, int column)
                     break;
                 }
             }
-        }
+        //}
     }
 }
+
+void MainWindow::on_buttonRemoveHomeWork_clicked()
+{
+    QList<QTableWidgetItem*>selItemsList = ui->tableHomeWork->selectedItems();
+
+    QString name = selItemsList[0]->text();
+    vector<Hometask> hometasks = dbm->GetHometask(ui->dateEdit->date());
+    for(int i = 0; i<int(hometasks.size());i++)
+        if(hometasks[i].name == name)
+            dbm->DeleteHometask(hometasks[i]);
+
+    ui->tableHomeWork->clearContents();
+    ui->tableHomeWork->model()->removeRows(0, ui->tableHomeWork->rowCount());
+
+    //ui->tableHomeWork->setRowCount(current_hometask.size());
+
+    vector <Hometask> current_hometask = dbm->GetHometask(ui->dateEdit->date());
+    for(int i = 0; i < (int)current_hometask.size();i++){
+        ui->tableHomeWork->insertRow ( ui->tableHomeWork->rowCount() );
+        ui->tableHomeWork->setItem   ( ui->tableHomeWork->rowCount()-1, 0, new QTableWidgetItem(current_hometask[i].name));
+        ui->tableHomeWork->setCellWidget(i, 1, new QCheckBox);
+        QTableWidgetItem* pItem(ui->tableHomeWork->item(ui->tableHomeWork->rowCount()-1,0));
+        pItem->setCheckState(Qt::CheckState(current_hometask[i].completed));
+   }
+}
+
 void MainWindow::displayTime(){
 
     ui->lcdHoursBIG->display((int)QTime::currentTime().hour()/10);
