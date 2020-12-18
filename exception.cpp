@@ -33,6 +33,39 @@ void Exception::show()
         case 8:
             msg = "Задача ще не активована";
             break;
+        case 9:
+            msg = "Відкриття бази даних";
+            break;
+        case 10:
+            msg = "Витягання пріоритетів з БД";
+            break;
+        case 11:
+            msg = "Витягання типів подій з БД";
+            break;
+        case 12:
+            msg = "Витягання подій з БД";
+            break;
+        case 13:
+            msg = "Додавання події до БД";
+            break;
+        case 14:
+            msg = "Видалення події з БД";
+            break;
+        case 15:
+            msg = "Змінення події у БД";
+            break;
+        case 16:
+            msg = "Активація задачі у БД";
+            break;
+        case 17:
+            msg = "Деактивація задачі у БД";
+            break;
+        case 18:
+            msg = "Експорт у файл";
+            break;
+        case 19:
+            msg = "Помилка відкриття файлу";
+            break;
     }
     ErrorDialog errDialog(msg);
     errDialog.exec();

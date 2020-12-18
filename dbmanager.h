@@ -5,6 +5,7 @@
 #include <QtSql/QSqlDatabase>
 #include "event.h"
 #include "db_data.h"
+#include "exception.h"
 
 class DBManager
 {
