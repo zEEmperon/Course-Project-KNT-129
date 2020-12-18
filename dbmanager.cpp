@@ -16,18 +16,18 @@ DBManager::DBManager()
     m_db = QSqlDatabase::addDatabase( "QSQLITE", "tasklist" );
     m_db.setDatabaseName( fname );
 
-    //можешь, пожалуйста, все мои throw std::runtime_error(...) тоже в catch отправлять?
-
-    //тут try {m_db.open();}, if - catch
-        //відкриття бази даних
-    try {
-        m_db.open();
+    try
+    {
+        if( !m_db.open() ) throw Exception(9);
     }
-    //if( !m_db.open() )
+    catch (Exception &e)
+    {
+        e.show();
+    }
     catch (runtime_error)
     {
-            //throw std::runtime_error( QString("DB \"%1\" openning error!").arg( fname ).toStdString() );
-        ErrorDialog errDialog("Відкриття бази даних");
+        //throw std::runtime_error( QString("DB \"%1\" openning error!").arg( fname ).toStdString() );
+        ErrorDialog errDialog("Помилка виконання");
         errDialog.exec();
     }
 
@@ -56,10 +56,6 @@ vector <PriorityData> DBManager::GetPriorityList( void )
 
     QSqlQuery query( m_db );
 
-    //тут if - try, где else - catch
-        //відкриття бази даних: витягання пріоритетів задач
-
-    //if( query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(10);
@@ -74,17 +70,14 @@ vector <PriorityData> DBManager::GetPriorityList( void )
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("Select from priority error!").toStdString() );
         e.show();
     }
-
     catch (runtime_error)
     {
         ErrorDialog errDialog("Помилка виконання");
         errDialog.exec();
     }
-
-    //else
-        //throw std::runtime_error( QString("Select from priority error!").toStdString() );
 
     qDebug() << __func__ << " -";
 
@@ -102,10 +95,6 @@ vector <TypeData> DBManager::GetTypeTask( void )
 
     QSqlQuery query( m_db );
 
-    //тут if - try, где else - catch
-        //відкриття бази даних: витягання типів подій
-
-    //if( query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(11);
@@ -119,16 +108,14 @@ vector <TypeData> DBManager::GetTypeTask( void )
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("Select from type task error!").toStdString() );
         e.show();
     }
-
     catch (runtime_error)
     {
         ErrorDialog errDialog("Помилка виконання");
         errDialog.exec();
     }
-    //else
-        //throw std::runtime_error( QString("Select from type task error!").toStdString() );
 
     qDebug() << __func__ << " -";
 
@@ -153,10 +140,6 @@ vector <Study> DBManager::GetStudy( QDateTime date_start, QDateTime date_end)
 
     QSqlQuery query( m_db );
 
-    //тут if - try, если нет - catch
-        //відкриття бази даних: витягання подій "Заняття"
-
-    //if( query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(12);
@@ -209,10 +192,6 @@ vector <Task> DBManager::GetTask( QDateTime date_start, QDateTime date_end)
 
     QSqlQuery query( m_db );
 
-    //тут if - try, если нет - catch
-        //відкриття бази даних: витягання подій "Задачі"
-
-    //if( query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(12);
@@ -268,10 +247,6 @@ vector <Meet> DBManager::GetMeet( QDateTime date_start, QDateTime date_end)
 
     QSqlQuery query( m_db );
 
-    //тут if - try, если нет - catch
-        //відкриття бази даних: витягання подій "Зустрічі"
-
-    //if( query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(12);
@@ -319,10 +294,6 @@ vector <Birthday> DBManager::GetBirthday( QDateTime date_start, QDateTime date_e
 
     QSqlQuery query( m_db );
 
-    //тут if - try, если нет - catch
-        //відкриття бази даних: витягання подій "Дні народження"
-
-    //if( query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(12);
@@ -363,17 +334,13 @@ void DBManager::AddStudy( Study& item )
                            arg( QDateTime( item.getDate().date(), item.getTimeEnd() ).toTime_t() ).
                            arg( item.getName() ).arg( item.getPlace() );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: додавання події "Заняття"
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(13);
-        //throw std::runtime_error( QString("AddStudy error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("AddStudy error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -402,17 +369,13 @@ void DBManager::AddTask( Task& item )
                            arg( item.getName() ).arg( item.GetPriorityID() ).
                            arg( item.getTimeNotific().toTime_t() ).arg( item.getWorkTime() );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: додавання події "Задачі"
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(13);
-        //throw std::runtime_error( QString("AddTask error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("AddTask error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -439,17 +402,13 @@ void DBManager::AddMeet( Meet& item )
                            arg( QDateTime( item.getDate().date(), item.getTimeEnd() ).toTime_t() ).
                            arg( item.getName() ).arg( item.getPlace() ).arg( item.getTimeNotific().toTime_t() );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: додавання події "Зустрічі"
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(13);
-        //throw std::runtime_error( QString("AddMeet error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("AddMeet error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -475,17 +434,13 @@ void DBManager::AddBirthday( Birthday& item )
                            arg( item.getDate().toTime_t() ).arg( item.getName() ).
                            arg( item.getTimeNotific().toTime_t() );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: додавання події "Дні народження"
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(13);
-        //throw std::runtime_error( QString("AddBirthday error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("AddBirthday error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -514,17 +469,13 @@ void DBManager::DeleteData( vector <quint64> list_id )
                            "   set Deleted = 1"
                            " where Task_list.ID in (%1)" ).arg( list_id_str );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: видалення події
-
-    //if( !query.exec( str ) )
     try
     {
-        if (!query.exec( str )) throw Exception(13);
-        //throw std::runtime_error( QString("Delete error!").toStdString() );
+        if (!query.exec( str )) throw Exception(14);
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("Delete error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -575,17 +526,13 @@ void DBManager::ModifyStudy( Study& item )
                            arg( QDateTime( item.getDate().date(), item.getTimeEnd() ).toTime_t() ).
                            arg( item.getName() ).arg( item.getPlace() ).arg( item.GetID() );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: змінення події "Заняття"
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(15);
-        //throw std::runtime_error( QString("ModifyStudy error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("ModifyStudy error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -613,17 +560,13 @@ void DBManager::ModifyTask( Task& item )
                            arg( item.getName() ).arg( item.GetPriorityID() ).
                            arg( item.getTimeNotific().toTime_t() ).arg( item.GetID() );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: змінення події "Задачі"
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(15);
-        //throw std::runtime_error( QString("ModifyTask error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("ModifyTask error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -653,17 +596,13 @@ void DBManager::ModifyMeet( Meet& item )
                            arg( item.getName() ).arg( item.getPlace() ).
                            arg( item.getTimeNotific().toTime_t() ).arg( item.GetID());
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: змінення події "Зустрічі"
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(15);
-        //throw std::runtime_error( QString("ModifyMeet error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("ModifyMeet error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -689,17 +628,13 @@ void DBManager::ModifyBirthday( Birthday& item )
                            arg( item.getDate().toTime_t() ).arg( item.getName() ).
                            arg( item.getTimeNotific().toTime_t() ).arg( item.GetID());
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: змінення події "Дні народження"
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(15);
-        //throw std::runtime_error( QString("ModifyBirthday error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("ModifyBirthday error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -722,17 +657,13 @@ void DBManager::ActivateTask( Task &item )
                            " where Task_list.ID in (%2)" ).
                            arg( item.getDate().toTime_t() ).arg( item.GetID());
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: активація задачі
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(16);
-        //throw std::runtime_error( QString("ActivateTask error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("ActivateTask error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -756,17 +687,13 @@ void DBManager::DeactivateTask( Task &item )
                            " where Task_list.ID in (%2)" ).
                            arg( item.getWorkTime() ).arg( item.GetID());
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: дезактивація задачі
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(17);
-        //throw std::runtime_error( QString("DeactivateTask error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("DeactivateTask error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -788,10 +715,6 @@ vector <Lessons> DBManager::GetLessons( vector <Lessons>& lessons )
     vector <Lessons> result;
     QSqlQuery query( m_db );
 
-    //тут if - try, если нет - catch
-        //відкриття бази даних: витягання "Розклад"
-
-    //if( query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(12);
@@ -807,6 +730,7 @@ vector <Lessons> DBManager::GetLessons( vector <Lessons>& lessons )
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("Select from lessons error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -814,8 +738,6 @@ vector <Lessons> DBManager::GetLessons( vector <Lessons>& lessons )
         ErrorDialog errDialog("Помилка виконання");
         errDialog.exec();
     }
-    //else
-        //throw std::runtime_error( QString("Select from lessons error!").toStdString() );
 
     qDebug() << __func__ << " -";
 
@@ -844,10 +766,6 @@ vector <Hometask> DBManager::GetHometask( QDate day )
     vector <Hometask> result;
     QSqlQuery query( m_db );
 
-    //тут if - try, если нет - catch
-        //відкриття бази даних: витягання "Домашнє завдання"
-
-    //if( query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(12);
@@ -863,6 +781,7 @@ vector <Hometask> DBManager::GetHometask( QDate day )
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("Select from lessons error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -870,8 +789,6 @@ vector <Hometask> DBManager::GetHometask( QDate day )
         ErrorDialog errDialog("Помилка виконання");
         errDialog.exec();
     }
-    //else
-        //throw std::runtime_error( QString("Select from lessons error!").toStdString() );
 
     qDebug() << __func__ << " -";
 
@@ -890,17 +807,13 @@ void DBManager::AddLesson( Lessons &item )
                            arg( item.name ).arg( item.week_day ).
                            arg( item.lesson_number );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: додавання предмету до розкладу
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(13);
-        //throw std::runtime_error( QString("AddLesson error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("AddLesson error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -926,17 +839,13 @@ void DBManager::AddHometask( Hometask &item )
                            arg( item.name ).arg( QDateTime( item.delivery_day ).toSecsSinceEpoch() ).
                            arg( item.completed ? 1 : 0 );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: додавання домашнього завдання
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(13);
-        //throw std::runtime_error( QString("AddHometask error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("AddHometask error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -964,17 +873,13 @@ void DBManager::ModifyLesson( Lessons &item )
                            arg( item.name ).arg( item.week_day ).
                            arg( item.lesson_number ).arg( item.id );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: змінення предемету у розкладі
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(15);
-        //throw std::runtime_error( QString("ModifyLesson error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("ModifyLesson error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -1000,17 +905,13 @@ void DBManager::ModifyHometask( Hometask &item )
                            arg( item.name ).arg( QDateTime( item.delivery_day ).toSecsSinceEpoch() ).
                            arg( item.completed ? 1 : 0 ).arg( item.id );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: змінення домашнього завдання
-
-    //if( !query.exec( str ) )
     try
     {
         if (!query.exec( str )) throw Exception(15);
-        //throw std::runtime_error( QString("ModifyHometask error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("ModifyHometask error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -1031,16 +932,13 @@ void DBManager::DeleteLesson( Lessons &item )
     QString str = QString( "delete from Schedule"
                            " where ID = %1" ).arg( item.id );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: видалення предемету з розкладу
-
     try
     {
         if (!query.exec( str )) throw Exception(14);
-        //throw std::runtime_error( QString("DeleteLesson error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("DeleteLesson error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -1061,16 +959,13 @@ void DBManager::DeleteHometask( Hometask &item )
     QString str = QString( "delete from Hometask"
                            " where ID = %1" ).arg( item.id );
 
-    //тут try {query.exec( str );}, если нет - catch
-        //відкриття бази даних: видалення домашнього завдання
-
     try
     {
         if (!query.exec( str )) throw Exception(14);
-        //throw std::runtime_error( QString("DeleteHometask error!").toStdString() );
     }
     catch (Exception &e)
     {
+        //throw std::runtime_error( QString("DeleteHometask error!").toStdString() );
         e.show();
     }
     catch (runtime_error)
@@ -1117,19 +1012,12 @@ void DBManager::ExportData_CSV( const QString &file_name, QChar delimeter )
 
     QSqlQuery query( m_db );
 
-    //тут if - try, где else - catch
-        //відкриття бази даних: експорт у файл CSV
-
     try
     {
         if (!query.exec( str )) throw Exception(18);
         QFile file( file_name );
 
-        //тут try {file.open(QIODevice::WriteOnly | QIODevice::Text);}, если нет - catch
-            //помилка відкриття файлу
-
         if ( !file.open(QIODevice::WriteOnly | QIODevice::Text) ) throw Exception(19);
-//                throw std::runtime_error( QString("ExportData_CSV: OpenFile error for %1!").arg( file_name ).toStdString() );
 
         QTextStream out( &file );
 
@@ -1164,8 +1052,6 @@ void DBManager::ExportData_CSV( const QString &file_name, QChar delimeter )
         ErrorDialog errDialog("Помилка виконання");
         errDialog.exec();
     }
-    //else
-        //throw std::runtime_error( QString("ExportData_CSV error!").toStdString() );
 
     qDebug() << __func__ << " -";
 }
@@ -1204,19 +1090,12 @@ void DBManager::ExportData_JSON( const QString& file_name )
 
     QSqlQuery query( m_db );
 
-    //тут if - try, где else - catch
-        //відкриття бази даних: експорт у файл JSON
-
     try
     {
         if (!query.exec( str )) throw Exception(18);
         QFile file( file_name );
 
-        //тут try {file.open(QIODevice::WriteOnly | QIODevice::Text);}, если нет - catch
-            //помилка відкриття файлу
-
         if ( !file.open(QIODevice::WriteOnly | QIODevice::Text) ) throw Exception(19);
-                //throw std::runtime_error( QString("ExportData_JSON: OpenFile error for %1!").arg( file_name ).toStdString() );
 
         QTextStream out( &file );
 
@@ -1256,10 +1135,6 @@ void DBManager::ExportData_JSON( const QString& file_name )
         ErrorDialog errDialog("Помилка виконання");
         errDialog.exec();
     }
-    //else
-    //{
-      //  throw std::runtime_error( QString("ExportData_JSON error!").toStdString() );
-    //}
 
     qDebug() << __func__ << " -";
 }

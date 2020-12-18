@@ -1,4 +1,5 @@
 #include "exception.h"
+#include <QCoreApplication>
 
 Exception::Exception(int err)
 {
@@ -7,6 +8,7 @@ Exception::Exception(int err)
 void Exception::show()
 {
     QString msg;
+    bool needed_close = false;
     switch (error_number)
     {
         case 1:
@@ -16,6 +18,7 @@ void Exception::show()
             msg = "Подію не знайдено";
             break;
         case 3:
+            needed_close = true;
             msg = "Вихід за границю масиву";
             break;
         case 4:
@@ -34,25 +37,29 @@ void Exception::show()
             msg = "Задача ще не активована";
             break;
         case 9:
+            needed_close = true;
             msg = "Відкриття бази даних";
             break;
         case 10:
+            needed_close = true;
             msg = "Витягання пріоритетів з БД";
             break;
         case 11:
+            needed_close = true;
             msg = "Витягання типів подій з БД";
             break;
         case 12:
-            msg = "Витягання подій з БД";
+            needed_close = true;
+            msg = "Витягання інформації з БД";
             break;
         case 13:
-            msg = "Додавання події до БД";
+            msg = "Додавання інформації до БД";
             break;
         case 14:
-            msg = "Видалення події з БД";
+            msg = "Видалення інформації з БД";
             break;
         case 15:
-            msg = "Змінення події у БД";
+            msg = "Змінення інформації у БД";
             break;
         case 16:
             msg = "Активація задачі у БД";
@@ -69,4 +76,6 @@ void Exception::show()
     }
     ErrorDialog errDialog(msg);
     errDialog.exec();
+    if( needed_close )
+        QCoreApplication::exit( error_number );
 }
