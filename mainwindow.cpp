@@ -27,7 +27,6 @@ MainWindow::MainWindow(QWidget *parent)
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), SLOT(slotUpdateDateTime()));
     timer->start(1000);
-    //slotUpdateDateTime();
 
     dbm = new DBManager();
 
@@ -68,30 +67,20 @@ MainWindow::MainWindow(QWidget *parent)
    }
 
 
-    ui->tableHomeWork->setColumnCount(2);
-    ui->tableHomeWork->setColumnWidth(0,125);
-    ui->tableHomeWork->setColumnWidth(1,50);
-    ui->tableHomeWork->setHorizontalHeaderLabels({"Завдання","Стан"});
+    ui->tableHomeWork->setColumnCount(1);
+    ui->tableHomeWork->setColumnWidth(0,175);
+    ui->tableHomeWork->setHorizontalHeaderLabels({"Завдання"});
     ui->tableHomeWork->horizontalHeader()->setVisible(true);
     ui->tableHomeWork->verticalHeader()->setVisible(false);
 
-    //vector <Hometask> current_hometask = dbm->GetHometask(ui->dateEdit->date());
-//    int rowCount = 4;//DB loading ДОБАВИТЬ КОЛ-ВО ДЗ ИЗ БД
-//    ui->tableHomeWork->setRowCount(rowCount);
-
-//    for(int i = 0; i < rowCount; i++){
-//        ui->tableHomeWork->setCellWidget(i, 1, new QCheckBox);
-//    }//добавляем check box к каждой ячейке
-
-
-    ui->tableTodayPesonalLife->setColumnCount(3);
-    ui->tableTodayPesonalLife->setColumnWidth(0,100);
-    ui->tableTodayPesonalLife->setColumnWidth(1,100);
-    ui->tableTodayPesonalLife->setColumnWidth(2,100);
-    ui->tableTodayPesonalLife->setHorizontalHeaderLabels({"Час","Подія","Місце"});
+    ui->tableTodayPesonalLife->setColumnCount(4);
+    ui->tableTodayPesonalLife->setColumnWidth(0,75);
+    ui->tableTodayPesonalLife->setColumnWidth(1,75);
+    ui->tableTodayPesonalLife->setColumnWidth(2,75);
+    ui->tableTodayPesonalLife->setColumnWidth(3,75);
+    ui->tableTodayPesonalLife->setHorizontalHeaderLabels({"Початок","Подія","Місце", "Кінець"});
     ui->tableTodayPesonalLife->horizontalHeader()->setVisible(true);
     ui->tableTodayPesonalLife->verticalHeader()->setVisible(false);
-    //ui->tableTodayPesonalLife->setRowCount(int(today_meet.size())+int(today_bd.size())); //DB loading
     ui->tableTodayPesonalLife->setRowCount(8);
 
     for (int i=0; i<int(today_meet.size()); i++)
@@ -112,7 +101,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTodayBusiness->setHorizontalHeaderLabels({"Час","Заняття", "Місце"});
     ui->tableTodayBusiness->horizontalHeader()->setVisible(true);
     ui->tableTodayBusiness->verticalHeader()->setVisible(false);
-    //ui->tableTodayUniversity->setRowCount(int(today_study.size())); //DB loading
 
     ui->tableTodayBusiness->setRowCount(8);
 
@@ -144,17 +132,17 @@ MainWindow::MainWindow(QWidget *parent)
         ui->tableTasks->setItem(i, 2, new QTableWidgetItem(w_time));
     }
 
-    ui->tablePersonalLifeEvents->setColumnCount(3);
-    ui->tablePersonalLifeEvents->setColumnWidth(0,100);
-    ui->tablePersonalLifeEvents->setColumnWidth(1,100);
-    ui->tablePersonalLifeEvents->setColumnWidth(2,100);
-    ui->tablePersonalLifeEvents->setHorizontalHeaderLabels({"Час","Подія", "Місце"});
+    ui->tablePersonalLifeEvents->setColumnCount(4);
+    ui->tablePersonalLifeEvents->setColumnWidth(0,75);
+    ui->tablePersonalLifeEvents->setColumnWidth(1,75);
+    ui->tablePersonalLifeEvents->setColumnWidth(2,75);
+    ui->tablePersonalLifeEvents->setColumnWidth(3,75);
+    ui->tablePersonalLifeEvents->setHorizontalHeaderLabels({"Початок","Подія", "Місце","Кінець"});
     ui->tablePersonalLifeEvents->horizontalHeader()->setVisible(true);
     ui->tablePersonalLifeEvents->verticalHeader()->setVisible(false);
     ui->textEdit->setText(QDate::currentDate().toString("dd.MM.yyyy"));
-    //ui->dateEdit->setMinimumDate(QDate::currentDate());
-     ui->dateEdit->setMinimumDate(QDate(2020,12,3));
-    ui->tablePersonalLifeEvents->setRowCount(5);
+    ui->dateEdit->setMinimumDate(QDate::currentDate());
+    ui->calendarPersonalLife->setSelectedDate(QDate::currentDate());
 }
 
 MainWindow::~MainWindow()
@@ -630,4 +618,13 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
             ui->tableTodayBusiness->setItem(i, 2, new QTableWidgetItem(today_study[i].getPlace()));
         }
     }
+}
+
+void MainWindow::on_buttonAddHomeWork_clicked()
+{
+   AddHomeWork d;
+   if(d.exec()==QDialog::Accepted){
+       //QString = d.get_homeWork();
+       //QDate = d.get_date();
+   }
 }

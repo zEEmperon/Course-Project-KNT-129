@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     addeventdialog.cpp \
+    addhomework.cpp \
     dbmanager.cpp \
     errordialog.cpp \
     event.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
 
 HEADERS += \
     addeventdialog.h \
+    addhomework.h \
     db_data.h \
     dbmanager.h \
     errordialog.h \
@@ -33,6 +35,7 @@ HEADERS += \
 
 FORMS += \
     addeventdialog.ui \
+    addhomework.ui \
     errordialog.ui \
     mainwindow.ui \
     notificationdialog.ui

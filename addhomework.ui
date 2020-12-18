@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AddHomeWork</class>
+ <widget class="QDialog" name="AddHomeWork">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>309</width>
+    <height>160</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Add homework</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QDialog {
+background-color: white;
+}</string>
+  </property>
+  <widget class="QLineEdit" name="leHomeWork">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>50</y>
+     <width>271</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLineEdit:enabled{
+border: 1px solid #ff911c;
+ border-radius:10px;
+ background-color: palette(base);
+}
+
+QLineEdit:disabled{
+ border-radius:10px;
+border: 1px solid #CCCCCC; 
+background-color: palette(base);
+}</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="label">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>10</y>
+     <width>281</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>14</pointsize>
+     <weight>50</weight>
+     <bold>false</bold>
+     <underline>false</underline>
+    </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QLabel {
+color: #ff911c;
+}</string>
+   </property>
+   <property name="text">
+    <string>ДОДАТИ ДОМАШНЄ ЗАВДАННЯ</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="btnOK">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>30</x>
+     <y>120</y>
+     <width>231</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="cursor">
+    <cursorShape>PointingHandCursor</cursorShape>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton {
+     color: #ffffff;
+     font-weight: bold;
+     border: 1px solid #8f8f91;
+     border-radius: 6px;
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0 #ffebb0, stop: 1  #ff911c);
+     min-width: 80px;
+ }
+
+ QPushButton:pressed {
+     background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                       stop: 0  #ff911c, stop: 1 #ffebb0);
+ }
+
+ QPushButton:flat {
+     border: none; /* для плоской кнопки границы нет */
+ }
+
+ QPushButton:default {
+     border-color: navy; /* делаем кнопку по умолчанию выпуклой */
+ }
+
+
+</string>
+   </property>
+   <property name="text">
+    <string>OK</string>
+   </property>
+  </widget>
+  <widget class="QWidget" name="">
+   <property name="geometry">
+    <rect>
+     <x>20</x>
+     <y>80</y>
+     <width>271</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <widget class="QLabel" name="label_2">
+      <property name="text">
+       <string>Дата: </string>
+      </property>
+     </widget>
+    </item>
+    <item>
+     <widget class="QDateEdit" name="dateEdit">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
+        <horstretch>0</horstretch>
+        <verstretch>3</verstretch>
+       </sizepolicy>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">QDateEdit:enabled {
+ border: 1px solid #ff911c;
+ border-radius: 5px;
+ background-color: white;
+ }
+QDateEdit:disabled {
+ border: 1px solid #CCCCCC;
+ border-radius: 5px;
+ background-color: white;
+ }
+
+QDateEdit::up-arrow:enabled { 
+border-left: 3px solid none;
+border-right: 3px solid none;
+ border-bottom: 3px solid black; 
+width: 0px;
+ height: 0px; 
+}
+QDateEdit::up-arrow:disabled { 
+border-left: 3px solid none;
+border-right: 3px solid none;
+ border-bottom: 3px solid black; 
+width: 0px;
+ height: 0px; 
+}
+
+
+QDateEdit::up-button:enabled {
+ width: 14px; 
+height: 9px; 
+background-color: #FF911C;
+}
+QDateEdit::up-button:disabled {
+ width: 14px; 
+height: 9px; 
+background-color: #CCCCCC;
+}
+
+QDateEdit::up-button:hover {
+ background-color: #FFD65E;
+ border-top-right-radius: 5px; /* same radius as the QComboBox */
+}
+ 
+QDateEdit::down-arrow:enabled { 
+border-left: 3px solid none;
+border-right: 3px solid none; 
+border-top: 3px solid black; 
+width: 0px; 
+height: 0px; 
+}
+
+QDateEdit::down-arrow:disabled { 
+border-left: 3px solid none;
+border-right: 3px solid none; 
+border-top: 3px solid black; 
+width: 0px; 
+height: 0px; 
+}
+
+
+QDateEdit::down-button:enabled { 
+width: 14px; 
+height: 9px;
+ background-color: #FF911C;
+}
+QDateEdit::down-button:disabled { 
+width: 14px; 
+height: 9px;
+ background-color: #CCCCCC;
+}
+QDateEdit::down-button:hover {
+ background-color: #FFD65E;
+ border-bottom-right-radius: 3px;
+}
+
+QDateEdit::up-arrow:hover { 
+border-left: 3px solid none;
+border-right: 3px solid none;
+ border-bottom: 3px solid black;
+ width: 0px; 
+height: 0px; 
+}
+QDateEdit::down-arrow:hover {
+ border-left: 3px solid none;
+border-right: 3px solid none;
+ border-top: 3px solid black;
+ width: 0px;
+ height: 0px; 
+}</string>
+      </property>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

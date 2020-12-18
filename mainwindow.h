@@ -8,6 +8,7 @@
 #include <QTimer>
 #include "notificationdialog.h"
 #include "errordialog.h"
+#include "addhomework.h"
 
 #include <QTableWidget>
 
@@ -46,6 +47,8 @@ private slots:
     void on_tabWidget_tabBarClicked(int index);
 
     void on_buttonRemoveHomeWork_clicked();
+
+    void on_buttonAddHomeWork_clicked();
 
 private:
     void displayTime();
