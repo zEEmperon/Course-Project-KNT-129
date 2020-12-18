@@ -426,10 +426,14 @@ quint64 Schedule::DeleteStudy(int i)
     try {
         if (i>int(study_arr.size())) throw Exception(3);
         quint64 id = study_arr[i].GetID();
-        if (i == int(study_arr.size())-1) study_arr.pop_back();
-        for (int j=i; j<int(study_arr.size())-1; j++)
-            study_arr[j] = study_arr[j+1];
-        study_arr.pop_back();
+        if (i == int(study_arr.size())-1)
+            study_arr.pop_back();
+        else
+        {
+            for (int j=i; j<int(study_arr.size())-1; j++)
+                study_arr[j] = study_arr[j+1];
+            study_arr.pop_back();
+        }
         return id;
     }
     catch (bad_alloc)
@@ -449,10 +453,14 @@ quint64 Schedule::DeleteMeet(int i)
     try {
         if (i>int(meet_arr.size())) throw Exception(3);
         quint64 id = meet_arr[i].GetID();
-        if (i == int(meet_arr.size())-1) meet_arr.pop_back();
-        for (int j=i; j<int(meet_arr.size())-1; j++)
-            meet_arr[j] = meet_arr[j+1];
-        meet_arr.pop_back();
+        if (i == int(meet_arr.size())-1)
+            meet_arr.pop_back();
+        else
+        {
+            for (int j=i; j<int(meet_arr.size())-1; j++)
+                meet_arr[j] = meet_arr[j+1];
+            meet_arr.pop_back();
+        }
         return id;
     }
     catch (bad_alloc)
@@ -472,10 +480,14 @@ quint64 Schedule::DeleteTask(int i)
     try {
         if (i>int(task_arr.size())) throw Exception(3);
         quint64 id = task_arr[i].GetID();
-        if (i == int(task_arr.size())-1) task_arr.pop_back();
-        for (int j=i; j<int(task_arr.size())-1; j++)
-            task_arr[j] = task_arr[j+1];
-        task_arr.pop_back();
+        if (i == int(task_arr.size())-1)
+            task_arr.pop_back();
+        else
+        {
+            for (int j=i; j<int(task_arr.size())-1; j++)
+                task_arr[j] = task_arr[j+1];
+            task_arr.pop_back();
+        }
         return id;
     }
     catch (bad_alloc)
@@ -495,10 +507,14 @@ quint64 Schedule::DeleteBD(int i)
     try {
         if (i>int(bd_arr.size())) throw Exception(3);
         quint64 id = bd_arr[i].GetID();
-        if (i == int(bd_arr.size())-1) bd_arr.pop_back();
-        for (int j=i; j<int(bd_arr.size())-1; j++)
-            bd_arr[j] = bd_arr[j+1];
-        bd_arr.pop_back();
+        if (i == int(bd_arr.size())-1)
+            bd_arr.pop_back();
+        else
+        {
+            for (int j=i; j<int(bd_arr.size())-1; j++)
+                bd_arr[j] = bd_arr[j+1];
+            bd_arr.pop_back();
+        }
         return id;
     }
     catch (bad_alloc)
