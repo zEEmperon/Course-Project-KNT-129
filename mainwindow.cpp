@@ -444,7 +444,7 @@ void MainWindow::on_buttonEndDo_clicked()
     }
 
     vector<Task> task; sch->GetTask(task);
-    ui->tableTasks->clear();
+    ui->tableTasks->clearContents();
     for (int i=0; i<int(task.size()); i++)
     {
         ui->tableTasks->setItem(i, 0, new QTableWidgetItem(task[i].getName()));

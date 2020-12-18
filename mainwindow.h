@@ -45,6 +45,8 @@ private slots:
 
     void on_tabWidget_tabBarClicked(int index);
 
+    void on_buttonRemoveHomeWork_clicked();
+
 private:
     void displayTime();
 };
