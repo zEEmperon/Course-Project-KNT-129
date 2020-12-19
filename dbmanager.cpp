@@ -7,7 +7,7 @@
 #include <stdexcept>
 
 //----------------------------------------------------------------------------
-DBManager::DBManager()
+DBManager::DBManager() : m_is_valid(false)
 {
     qDebug() << __func__ << " +";
 
@@ -19,6 +19,7 @@ DBManager::DBManager()
     try
     {
         if( !m_db.open() ) throw Exception(9);
+        m_is_valid = true;
     }
     catch (Exception &e)
     {
@@ -46,13 +47,19 @@ DBManager::~DBManager()
 }
 
 //----------------------------------------------------------------------------
+bool DBManager::IsValid( void )
+{
+    return m_is_valid;
+}
+
+//----------------------------------------------------------------------------
 vector <PriorityData> DBManager::GetPriorityList( void )
 {
     qDebug() << __func__ << " +";
 
     vector <PriorityData> result;
 
-    QString str = "select id, weight, name from Priority order by weight asc";
+    QString str = "sselect id, weight, name from Priority order by weight asc";
 
     QSqlQuery query( m_db );
 

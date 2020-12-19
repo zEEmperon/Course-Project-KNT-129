@@ -9,6 +9,12 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWindow w;
-    w.show();
-    return a.exec();
+
+    if( w.IsValid() )
+    {
+        w.show();
+        return a.exec();
+    }
+    else
+        return 1;
 }

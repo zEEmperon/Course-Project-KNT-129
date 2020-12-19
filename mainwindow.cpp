@@ -13,8 +13,12 @@
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    :QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , m_is_valid(false)
+    , dbm(nullptr)
+    , timer(nullptr)
+    , sch(nullptr)
 {
     ui->setupUi(this);
     this->setFixedSize(this->size());//фіксований розмір вікна
@@ -23,12 +27,17 @@ MainWindow::MainWindow(QWidget *parent)
     ui->labelTodayDate->setText("Сьогодні "+QDate::currentDate().toString("dd.MM.yyyy"));
     displayTime();
 
+    dbm = new DBManager();
+    if( dbm && !dbm->IsValid() )
+        dbm = nullptr;
+
+    if( !dbm  )
+        return;
+
     //timer
     timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), SLOT(slotUpdateDateTime()));
     timer->start(1000);
-
-    dbm = new DBManager();
 
     QDate d = QDate::currentDate();
     QDateTime start = QDateTime::currentDateTime().addYears(-30);
@@ -146,11 +155,18 @@ MainWindow::MainWindow(QWidget *parent)
     ui->textEdit->setText(QDate::currentDate().toString("dd.MM.yyyy"));
     ui->dateEdit->setMinimumDate(QDate::currentDate());
     ui->calendarPersonalLife->setSelectedDate(QDate::currentDate());
+
+    m_is_valid = true;
 }
 
 MainWindow::~MainWindow()
 {
+    if( sch )
     delete sch;
+
+    if( timer )
+        delete timer;
+
     if( dbm )
     {
         delete dbm;
@@ -158,7 +174,11 @@ MainWindow::~MainWindow()
         QSqlDatabase::removeDatabase( "tasklist" );
     }
     delete ui;
-    delete timer;
+}
+
+bool MainWindow::IsValid( void )
+{
+    return m_is_valid;
 }
 
 // Обробник натискання дати у календарі

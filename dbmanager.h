@@ -10,11 +10,13 @@
 class DBManager
 {
 private:
+    bool m_is_valid;
     QSqlDatabase m_db;
 
 public:
     DBManager();
     ~DBManager();
+    bool IsValid( void );
 
     vector <PriorityData> GetPriorityList( void );
     vector <TypeData> GetTypeTask( void );

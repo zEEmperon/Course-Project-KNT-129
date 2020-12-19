@@ -22,6 +22,7 @@ class MainWindow : public QMainWindow
 
 private:
     Ui::MainWindow *ui;
+    bool m_is_valid;
     Schedule* sch;
     DBManager* dbm;
     QTimer*timer;
@@ -30,6 +31,7 @@ private:
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    bool IsValid( void );
 
 private slots:
     void on_calendarPersonalLife_clicked(const QDate &date);
