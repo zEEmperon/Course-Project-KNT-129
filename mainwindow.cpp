@@ -31,8 +31,8 @@ MainWindow::MainWindow(QWidget *parent)
     dbm = new DBManager();
 
     QDate d = QDate::currentDate();
-    QDateTime start = QDateTime::currentDateTime().addDays(-30);
-    QDateTime end = QDateTime::currentDateTime().addDays(30);
+    QDateTime start = QDateTime::currentDateTime().addYears(-30);
+    QDateTime end = QDateTime::currentDateTime().addYears(30);
 
     sch = new Schedule(dbm->GetStudy(start, end), dbm->GetMeet(start, end), dbm->GetTask(start, end), dbm->GetBirthday(start, end));
 
