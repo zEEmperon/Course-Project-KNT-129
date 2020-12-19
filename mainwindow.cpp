@@ -413,20 +413,6 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
         e.show();
     }
 }
-
-
-void MainWindow::on_actionExport_triggered()
-{
-    QString fileName = QFileDialog::getSaveFileName(this,
-            tr("Save DataBase"), "dataBase",
-            tr("CSV file (*.csv);;JSON file (*.json)"));
-    if(fileName.contains(".csv")){
-        dbm->ExportData_CSV( fileName, ',' );
-    }
-    else if(fileName.contains(".json")){
-        dbm->ExportData_JSON( fileName);
-    }
-}
 void MainWindow::slotUpdateDateTime(){
 
     if(timer->isActive()){
@@ -635,6 +621,25 @@ void MainWindow::displayTime(){
     ui->lcdSecondsLIT->display(QTime::currentTime().second()%10);
 }
 
+void MainWindow::exportDB(QString fileExtension)
+{
+    QString fileExt;
+
+    if(fileExtension=="CSV") fileExt = "CSV file (*.csv)";
+    else if(fileExtension == "JSON")fileExt =  "JSON file (*.json)";
+    else return;
+
+    QString fileName = QFileDialog::getSaveFileName(this,
+            tr("Save DataBase"), "dataBase",
+            fileExt);
+    if(fileName.contains(".csv")){
+        dbm->ExportData_CSV( fileName, ',' );
+    }
+    else if(fileName.contains(".json")){
+        dbm->ExportData_JSON( fileName);
+    }
+}
+
 
 void MainWindow::on_tableScheduleUniversity_cellChanged(int row, int column)
 {
@@ -704,4 +709,14 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
             ui->tableTodayBusiness->setItem(i, 3, new QTableWidgetItem(today_study[i].getPlace()));
         }
     }
+}
+
+void MainWindow::on_actionExportJSON_triggered()
+{
+    exportDB("JSON");
+}
+
+void MainWindow::on_actionExportCSV_triggered()
+{
+    exportDB("CSV");
 }

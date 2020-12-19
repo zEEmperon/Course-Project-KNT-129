@@ -1623,22 +1623,31 @@ QTableWidget::item:selected{
     <property name="title">
      <string>Меню</string>
     </property>
-    <addaction name="actionExport"/>
+    <widget class="QMenu" name="menu_2">
+     <property name="geometry">
+      <rect>
+       <x>468</x>
+       <y>103</y>
+       <width>143</width>
+       <height>94</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Експорт БД</string>
+     </property>
+     <property name="separatorsCollapsible">
+      <bool>false</bool>
+     </property>
+     <addaction name="actionExportCSV"/>
+     <addaction name="actionExportJSON"/>
+    </widget>
+    <addaction name="menu_2"/>
     <addaction name="actionHelp"/>
     <addaction name="actionAboutUs"/>
    </widget>
    <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionExport">
-   <property name="icon">
-    <iconset resource="resource.qrc">
-     <normaloff>:/rc/export.png</normaloff>:/rc/export.png</iconset>
-   </property>
-   <property name="text">
-    <string>Експорт БД</string>
-   </property>
-  </action>
   <action name="actionHelp">
    <property name="icon">
     <iconset resource="resource.qrc">
@@ -1655,6 +1664,24 @@ QTableWidget::item:selected{
    </property>
    <property name="text">
     <string>Про нас</string>
+   </property>
+  </action>
+  <action name="actionExportCSV">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/rc/csv image.png</normaloff>:/rc/csv image.png</iconset>
+   </property>
+   <property name="text">
+    <string>CSV</string>
+   </property>
+  </action>
+  <action name="actionExportJSON">
+   <property name="icon">
+    <iconset resource="resource.qrc">
+     <normaloff>:/rc/json icon.png</normaloff>:/rc/json icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>JSON</string>
    </property>
   </action>
  </widget>

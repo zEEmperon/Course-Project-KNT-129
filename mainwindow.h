@@ -37,7 +37,6 @@ private slots:
     void on_calendarPersonalLife_clicked(const QDate &date);
     void on_buttonRemovePersonalLife_clicked();
     void on_buttonAddPersonalLife_clicked();
-    void on_actionExport_triggered();
     void slotUpdateDateTime();
     void on_buttonBeginDo_clicked();
     void on_buttonEndDo_clicked();
@@ -45,14 +44,14 @@ private slots:
     void on_buttonShowHomework_clicked();
     void on_tableHomeWork_cellChanged(int row, int column);
     void on_tableScheduleUniversity_cellChanged(int row, int column);
-
     void on_tabWidget_tabBarClicked(int index);
-
     void on_buttonRemoveHomeWork_clicked();
-
     void on_buttonAddHomeWork_clicked();
+    void on_actionExportJSON_triggered();
+    void on_actionExportCSV_triggered();
 
 private:
     void displayTime();
+    void exportDB(QString fileExtension);
 };
 #endif // MAINWINDOW_H
