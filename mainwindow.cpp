@@ -90,7 +90,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTodayPesonalLife->setHorizontalHeaderLabels({"Початок", "Кінець","Подія","Місце"});
     ui->tableTodayPesonalLife->horizontalHeader()->setVisible(true);
     ui->tableTodayPesonalLife->verticalHeader()->setVisible(false);
-    ui->tableTodayPesonalLife->setRowCount(8);
+    ui->tableTodayPesonalLife->setRowCount(20);
 
     for (int i=0; i<int(today_meet.size()); i++)
     {
@@ -113,7 +113,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTodayBusiness->horizontalHeader()->setVisible(true);
     ui->tableTodayBusiness->verticalHeader()->setVisible(false);
 
-    ui->tableTodayBusiness->setRowCount(8);
+    ui->tableTodayBusiness->setRowCount(20);
 
     for (int i=0; i<int(today_study.size()); i++)
     {
@@ -130,7 +130,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTasks->setHorizontalHeaderLabels({"Задача","Дедлайн","Витрачено часу"});
     ui->tableTasks->horizontalHeader()->setVisible(true);
     ui->tableTasks->verticalHeader()->setVisible(false);
-    ui->tableTasks->setRowCount(12); //DB loading ЗАГРУЗКА ЗАДАЧ
+    ui->tableTasks->setRowCount(20); //DB loading ЗАГРУЗКА ЗАДАЧ
 
     for (int i=0; i<int(task.size()); i++)
     {
@@ -157,6 +157,35 @@ MainWindow::MainWindow(QWidget *parent)
     ui->calendarPersonalLife->setSelectedDate(QDate::currentDate());
 
     m_is_valid = true;
+
+    QString scrollbarSettings = QString::fromUtf8("QScrollBar:vertical {"
+                                                  "    border: 1px solid #ffffff;"
+                                                  "    background:white;"
+                                                  "    width:10px;    "
+                                                  "    margin: 0px 0px 0px 0px;"
+                                                  "}"
+                                                  "QScrollBar::handle:vertical {"
+                                                  "    background: #FFD65E;"
+                                                  "    min-height: 0px;"
+                                                  "}"
+                                                  "QScrollBar::add-line:vertical {"
+                                                  "    background: #C4A872;"
+                                                  "    height: 0px;"
+                                                  "    subcontrol-position: bottom;"
+                                                  "    subcontrol-origin: margin;"
+                                                  "}"
+                                                  "QScrollBar::sub-line:vertical {"
+                                                  "    background: #FFD65E;"
+                                                  "    height: 0 px;"
+                                                  "    subcontrol-position: top;"
+                                                  "    subcontrol-origin: margin;"
+                                                  "}"
+                                                  );
+    ui->tableHomeWork->verticalScrollBar()->setStyleSheet(scrollbarSettings);
+    ui->tablePersonalLifeEvents->verticalScrollBar()->setStyleSheet(scrollbarSettings);
+    ui->tableTasks->verticalScrollBar()->setStyleSheet(scrollbarSettings);
+    ui->tableTodayBusiness->verticalScrollBar()->setStyleSheet(scrollbarSettings);
+    ui->tableTodayPesonalLife->verticalScrollBar()->setStyleSheet(scrollbarSettings);
 }
 
 MainWindow::~MainWindow()

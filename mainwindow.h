@@ -9,7 +9,7 @@
 #include "notificationdialog.h"
 #include "errordialog.h"
 #include "addhomework.h"
-
+#include <QScrollBar>
 #include <QTableWidget>
 
 QT_BEGIN_NAMESPACE

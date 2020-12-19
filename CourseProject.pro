@@ -15,6 +15,7 @@ SOURCES += \
     errordialog.cpp \
     event.cpp \
     exception.cpp \
+    infodialog.cpp \
     main.cpp \
     mainwindow.cpp \
     notificationdialog.cpp \
@@ -29,6 +30,7 @@ HEADERS += \
     event.h \
     eventsEnum.h \
     exception.h \
+    infodialog.h \
     mainwindow.h \
     notificationdialog.h \
     schedule.h
@@ -37,6 +39,7 @@ FORMS += \
     addeventdialog.ui \
     addhomework.ui \
     errordialog.ui \
+    infodialog.ui \
     mainwindow.ui \
     notificationdialog.ui
 
