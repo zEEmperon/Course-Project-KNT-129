@@ -214,13 +214,13 @@ void MainWindow::on_buttonRemovePersonalLife_clicked()
        to_delete.push_back(sch->DeleteBD(i));
    }
 
-   int amount = int(selItemsList.size())/3;
+   int amount = int(selItemsList.size())/4;
    int current = 0;
 
    for (int l = 0; l<amount; l++)
    {
        QString str_time = selItemsList[current]->text();
-       QString name = selItemsList[current+1]->text();
+       QString name = selItemsList[current+2]->text();
 
        int dot = str_time.indexOf(":", 0);
        QString hour =  str_time.left(dot);
