@@ -720,3 +720,16 @@ void MainWindow::on_actionExportCSV_triggered()
 {
     exportDB("CSV");
 }
+
+void MainWindow::on_actionAboutUs_triggered()
+{
+    InfoDialog d("ПРО НАС");
+    d.exec();
+}
+
+void MainWindow::on_actionHelp_triggered()
+{
+    InfoDialog d("ДОПОМОГА");
+    d.exec();
+
+}

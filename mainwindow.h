@@ -11,6 +11,7 @@
 #include "addhomework.h"
 #include <QScrollBar>
 #include <QTableWidget>
+#include "infodialog.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -49,6 +50,10 @@ private slots:
     void on_buttonAddHomeWork_clicked();
     void on_actionExportJSON_triggered();
     void on_actionExportCSV_triggered();
+
+    void on_actionAboutUs_triggered();
+
+    void on_actionHelp_triggered();
 
 private:
     void displayTime();
