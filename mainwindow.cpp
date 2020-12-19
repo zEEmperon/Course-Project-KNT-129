@@ -78,7 +78,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableTodayPesonalLife->setColumnWidth(1,75);
     ui->tableTodayPesonalLife->setColumnWidth(2,75);
     ui->tableTodayPesonalLife->setColumnWidth(3,75);
-    ui->tableTodayPesonalLife->setHorizontalHeaderLabels({"Початок","Подія","Місце", "Кінець"});
+    ui->tableTodayPesonalLife->setHorizontalHeaderLabels({"Початок", "Кінець","Подія","Місце"});
     ui->tableTodayPesonalLife->horizontalHeader()->setVisible(true);
     ui->tableTodayPesonalLife->verticalHeader()->setVisible(false);
     ui->tableTodayPesonalLife->setRowCount(8);
@@ -86,19 +86,21 @@ MainWindow::MainWindow(QWidget *parent)
     for (int i=0; i<int(today_meet.size()); i++)
     {
         ui->tableTodayPesonalLife->setItem(i, 0, new QTableWidgetItem(today_meet[i].getTimeBeg().toString("HH:mm")));
-        ui->tableTodayPesonalLife->setItem(i, 1, new QTableWidgetItem(today_meet[i].getName()));
-        ui->tableTodayPesonalLife->setItem(i, 2, new QTableWidgetItem(today_meet[i].getPlace()));
+        ui->tableTodayPesonalLife->setItem(i, 1, new QTableWidgetItem(today_meet[i].getTimeEnd().toString("HH:mm")));
+        ui->tableTodayPesonalLife->setItem(i, 2, new QTableWidgetItem(today_meet[i].getName()));
+        ui->tableTodayPesonalLife->setItem(i, 3, new QTableWidgetItem(today_meet[i].getPlace()));
     }
     for (int i=0; i<int(today_bd.size()); i++)
     {
-        ui->tableTodayPesonalLife->setItem(int(today_meet.size())+i, 1, new QTableWidgetItem(today_bd[i].getName()));
+        ui->tableTodayPesonalLife->setItem(int(today_meet.size())+i, 2, new QTableWidgetItem(today_bd[i].getName()));
     }
 
-    ui->tableTodayBusiness->setColumnCount(3);
-    ui->tableTodayBusiness->setColumnWidth(0,100);
-    ui->tableTodayBusiness->setColumnWidth(1,100);
-    ui->tableTodayBusiness->setColumnWidth(2,100);
-    ui->tableTodayBusiness->setHorizontalHeaderLabels({"Час","Заняття", "Місце"});
+    ui->tableTodayBusiness->setColumnCount(4);
+    ui->tableTodayBusiness->setColumnWidth(0,75);
+    ui->tableTodayBusiness->setColumnWidth(1,75);
+    ui->tableTodayBusiness->setColumnWidth(2,75);
+    ui->tableTodayBusiness->setColumnWidth(3,75);
+    ui->tableTodayBusiness->setHorizontalHeaderLabels({"Початок", "Кінець","Заняття", "Місце"});
     ui->tableTodayBusiness->horizontalHeader()->setVisible(true);
     ui->tableTodayBusiness->verticalHeader()->setVisible(false);
 
@@ -107,8 +109,9 @@ MainWindow::MainWindow(QWidget *parent)
     for (int i=0; i<int(today_study.size()); i++)
     {
         ui->tableTodayBusiness->setItem(i, 0, new QTableWidgetItem(today_study[i].getTimeBeg().toString("HH:mm")));
-        ui->tableTodayBusiness->setItem(i, 1, new QTableWidgetItem(today_study[i].getName()));
-        ui->tableTodayBusiness->setItem(i, 2, new QTableWidgetItem(today_study[i].getPlace()));
+        ui->tableTodayBusiness->setItem(i, 1, new QTableWidgetItem(today_study[i].getTimeEnd().toString("HH:mm")));
+        ui->tableTodayBusiness->setItem(i, 2, new QTableWidgetItem(today_study[i].getName()));
+        ui->tableTodayBusiness->setItem(i, 3, new QTableWidgetItem(today_study[i].getPlace()));
     }
 
     ui->tableTasks->setColumnCount(3);
@@ -137,7 +140,7 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tablePersonalLifeEvents->setColumnWidth(1,75);
     ui->tablePersonalLifeEvents->setColumnWidth(2,75);
     ui->tablePersonalLifeEvents->setColumnWidth(3,75);
-    ui->tablePersonalLifeEvents->setHorizontalHeaderLabels({"Початок","Подія", "Місце","Кінець"});
+    ui->tablePersonalLifeEvents->setHorizontalHeaderLabels({"Початок", "Кінець", "Подія", "Місце"});
     ui->tablePersonalLifeEvents->horizontalHeader()->setVisible(true);
     ui->tablePersonalLifeEvents->verticalHeader()->setVisible(false);
     ui->textEdit->setText(QDate::currentDate().toString("dd.MM.yyyy"));
@@ -163,7 +166,7 @@ void MainWindow::on_calendarPersonalLife_clicked(const QDate &date)
 {
     ui->textEdit->setText(date.toString("dd.MM.yyyy"));
 
-    ui->tablePersonalLifeEvents->clearContents();//тут стирает
+    ui->tablePersonalLifeEvents->clearContents();
 
     vector<Study> study;
     sch->GetStudy(study, date);
@@ -177,18 +180,20 @@ void MainWindow::on_calendarPersonalLife_clicked(const QDate &date)
     for (int i=0; i<int(study.size()); i++)
     {
         ui->tablePersonalLifeEvents->setItem(i, 0, new QTableWidgetItem(study[i].getTimeBeg().toString("HH:mm")));
-        ui->tablePersonalLifeEvents->setItem(i, 1, new QTableWidgetItem(study[i].getName()));
-        ui->tablePersonalLifeEvents->setItem(i, 2, new QTableWidgetItem(study[i].getPlace()));
+        ui->tablePersonalLifeEvents->setItem(i, 1, new QTableWidgetItem(study[i].getTimeEnd().toString("HH:mm")));
+        ui->tablePersonalLifeEvents->setItem(i, 2, new QTableWidgetItem(study[i].getName()));
+        ui->tablePersonalLifeEvents->setItem(i, 3, new QTableWidgetItem(study[i].getPlace()));
     }
     for (int i=0; i<int(meet.size()); i++)
     {
         ui->tablePersonalLifeEvents->setItem(int(study.size())+i, 0, new QTableWidgetItem(meet[i].getTimeBeg().toString("HH:mm")));
-        ui->tablePersonalLifeEvents->setItem(int(study.size())+i, 1, new QTableWidgetItem(meet[i].getName()));
-        ui->tablePersonalLifeEvents->setItem(int(study.size())+i, 2, new QTableWidgetItem(meet[i].getPlace()));
+        ui->tablePersonalLifeEvents->setItem(int(study.size())+i, 1, new QTableWidgetItem(meet[i].getTimeEnd().toString("HH:mm")));
+        ui->tablePersonalLifeEvents->setItem(int(study.size())+i, 2, new QTableWidgetItem(meet[i].getName()));
+        ui->tablePersonalLifeEvents->setItem(int(study.size())+i, 3, new QTableWidgetItem(meet[i].getPlace()));
     }
     for (int i=0; i<int(bd.size()); i++)
     {
-        ui->tablePersonalLifeEvents->setItem(int(study.size())+int(meet.size())+i, 1, new QTableWidgetItem(bd[i].getName()));
+        ui->tablePersonalLifeEvents->setItem(int(study.size())+int(meet.size())+i, 2, new QTableWidgetItem(bd[i].getName()));
     }
 }
 
@@ -541,6 +546,36 @@ void MainWindow::on_buttonRemoveHomeWork_clicked()
    }
 }
 
+void MainWindow::on_buttonAddHomeWork_clicked()
+{
+   AddHomeWork d;
+   if(d.exec()==QDialog::Accepted){
+       QString descript = d.get_homework();
+       QDate date = d.get_date();
+       Hometask hmtsk;
+       hmtsk.name= descript;
+       hmtsk.delivery_day = date;
+       hmtsk.completed = false;
+       dbm->AddHometask(hmtsk);
+
+       if (date == ui->dateEdit->date())
+       {
+           vector <Hometask> current_hometask = dbm->GetHometask(ui->dateEdit->date());
+
+           ui->tableHomeWork->clearContents();
+           ui->tableHomeWork->model()->removeRows(0, ui->tableHomeWork->rowCount());
+
+           for(int i = 0; i < (int)current_hometask.size();i++){
+              ui->tableHomeWork->insertRow ( ui->tableHomeWork->rowCount() );
+              ui->tableHomeWork->setItem   ( ui->tableHomeWork->rowCount()-1, 0, new QTableWidgetItem(current_hometask[i].name));
+              ui->tableHomeWork->setCellWidget(i, 1, new QCheckBox);
+              QTableWidgetItem* pItem(ui->tableHomeWork->item(ui->tableHomeWork->rowCount()-1,0));
+              pItem->setCheckState(Qt::CheckState(current_hometask[i].completed));
+          }
+       }
+   }
+}
+
 void MainWindow::displayTime(){
 
     ui->lcdHoursBIG->display((int)QTime::currentTime().hour()/10);
@@ -604,27 +639,20 @@ void MainWindow::on_tabWidget_tabBarClicked(int index)
         for (int i=0; i<int(today_meet.size()); i++)
         {
             ui->tableTodayPesonalLife->setItem(i, 0, new QTableWidgetItem(today_meet[i].getTimeBeg().toString("HH:mm")));
-            ui->tableTodayPesonalLife->setItem(i, 1, new QTableWidgetItem(today_meet[i].getName()));
-            ui->tableTodayPesonalLife->setItem(i, 2, new QTableWidgetItem(today_meet[i].getPlace()));
+            ui->tableTodayPesonalLife->setItem(i, 1, new QTableWidgetItem(today_meet[i].getTimeEnd().toString("HH:mm")));
+            ui->tableTodayPesonalLife->setItem(i, 2, new QTableWidgetItem(today_meet[i].getName()));
+            ui->tableTodayPesonalLife->setItem(i, 3, new QTableWidgetItem(today_meet[i].getPlace()));
         }
         for (int i=0; i<int(today_bd.size()); i++)
         {
-            ui->tableTodayPesonalLife->setItem(int(today_meet.size())+i, 1, new QTableWidgetItem(today_bd[i].getName()));
+            ui->tableTodayPesonalLife->setItem(int(today_meet.size())+i, 2, new QTableWidgetItem(today_bd[i].getName()));
         }
         for (int i=0; i<int(today_study.size()); i++)
         {
             ui->tableTodayBusiness->setItem(i, 0, new QTableWidgetItem(today_study[i].getTimeBeg().toString("HH:mm")));
-            ui->tableTodayBusiness->setItem(i, 1, new QTableWidgetItem(today_study[i].getName()));
-            ui->tableTodayBusiness->setItem(i, 2, new QTableWidgetItem(today_study[i].getPlace()));
+            ui->tableTodayBusiness->setItem(i, 1, new QTableWidgetItem(today_study[i].getTimeEnd().toString("HH:mm")));
+            ui->tableTodayBusiness->setItem(i, 2, new QTableWidgetItem(today_study[i].getName()));
+            ui->tableTodayBusiness->setItem(i, 3, new QTableWidgetItem(today_study[i].getPlace()));
         }
     }
-}
-
-void MainWindow::on_buttonAddHomeWork_clicked()
-{
-   AddHomeWork d;
-   if(d.exec()==QDialog::Accepted){
-       //QString = d.get_homeWork();
-       //QDate = d.get_date();
-   }
 }
