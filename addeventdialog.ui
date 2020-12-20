@@ -823,6 +823,9 @@ border-right: 3px solid none;
         <property name="locale">
          <locale language="Ukrainian" country="Ukraine"/>
         </property>
+        <property name="displayFormat">
+         <string>M/d/yyyy h:mm </string>
+        </property>
        </widget>
       </item>
      </layout>
