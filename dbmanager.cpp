@@ -59,7 +59,7 @@ vector <PriorityData> DBManager::GetPriorityList( void )
 
     vector <PriorityData> result;
 
-    QString str = "sselect id, weight, name from Priority order by weight asc";
+    QString str = "select id, weight, name from Priority order by weight asc";
 
     QSqlQuery query( m_db );
 
