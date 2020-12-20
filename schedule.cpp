@@ -310,20 +310,13 @@ int Schedule::FindStudy(QString n, QTime time, QDate date)
         }
         i--;
         if (!found)
-        {
-            throw Exception(2);
-        }
+            return -1;
         return i;
     }
     catch (bad_alloc)
     {
         ErrorDialog errDialog("Allocation failure!");
         errDialog.exec();
-        return -1;
-    }
-    catch (Exception &e)
-    {
-        e.show();
         return -1;
     }
 }
@@ -341,20 +334,13 @@ int Schedule::FindMeet(QString n, QTime time, QDate date)
         }
         i--;
         if (!found)
-        {
-            throw Exception(2);
-        }
+            return -1;
         return i;
     }
     catch (bad_alloc)
     {
         ErrorDialog errDialog("Allocation failure!");
         errDialog.exec();
-        return -1;
-    }
-    catch (Exception &e)
-    {
-        e.show();
         return -1;
     }
 }
@@ -372,20 +358,13 @@ int Schedule::FindTask(QString n, QDate tdl)
         }
         i--;
         if (!found)
-        {
-            throw Exception(2);
-        }
+            return -1;
         return i;
     }
     catch (bad_alloc)
     {
         ErrorDialog errDialog("Allocation failure!");
         errDialog.exec();
-        return -1;
-    }
-    catch (Exception &e)
-    {
-        e.show();
         return -1;
     }
 }

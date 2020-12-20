@@ -266,6 +266,8 @@ void MainWindow::on_buttonRemovePersonalLife_clicked()
    int amount = int(selItemsList.size())/4;
    int current = 0;
 
+   try {
+
    for (int l = 0; l<amount; l++)
    {
        QString str_time = selItemsList[current]->text();
@@ -285,6 +287,8 @@ void MainWindow::on_buttonRemovePersonalLife_clicked()
            if (i!=-1)
                to_delete.push_back(sch->DeleteMeet(i));
        }
+       if (i == -1) throw Exception(2);
+
        current += 3;
     }
 
@@ -295,6 +299,11 @@ void MainWindow::on_buttonRemovePersonalLife_clicked()
    {
         ui->tablePersonalLifeEvents->removeRow(selectedRows[0].row());
         selectedRows = ui->tablePersonalLifeEvents->selectionModel()->selectedRows();
+   }
+   }
+   catch (Exception &e)
+   {
+       e.show();
    }
 }
 

@@ -33,7 +33,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="tabToday">
      <attribute name="title">
@@ -1616,7 +1616,7 @@ QTableWidget::item:selected{
      <x>0</x>
      <y>0</y>
      <width>681</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -1628,7 +1628,7 @@ QTableWidget::item:selected{
       <rect>
        <x>468</x>
        <y>103</y>
-       <width>143</width>
+       <width>193</width>
        <height>94</height>
       </rect>
      </property>
