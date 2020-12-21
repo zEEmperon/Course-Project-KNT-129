@@ -83,10 +83,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableHomeWork->verticalHeader()->setVisible(false);
 
     ui->tableTodayPesonalLife->setColumnCount(4);
-    ui->tableTodayPesonalLife->setColumnWidth(0,55);
-    ui->tableTodayPesonalLife->setColumnWidth(1,55);
-    ui->tableTodayPesonalLife->setColumnWidth(2,95);
-    ui->tableTodayPesonalLife->setColumnWidth(3,95);
+    ui->tableTodayPesonalLife->setColumnWidth(0,61);
+    ui->tableTodayPesonalLife->setColumnWidth(1,61);
+    ui->tableTodayPesonalLife->setColumnWidth(2,89);
+    ui->tableTodayPesonalLife->setColumnWidth(3,89);
     ui->tableTodayPesonalLife->setHorizontalHeaderLabels({"Початок", "Кінець","Подія","Місце"});
     ui->tableTodayPesonalLife->horizontalHeader()->setVisible(true);
     ui->tableTodayPesonalLife->verticalHeader()->setVisible(false);
@@ -105,10 +105,10 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     ui->tableTodayBusiness->setColumnCount(4);
-    ui->tableTodayBusiness->setColumnWidth(0,55);
-    ui->tableTodayBusiness->setColumnWidth(1,55);
-    ui->tableTodayBusiness->setColumnWidth(2,95);
-    ui->tableTodayBusiness->setColumnWidth(3,95);
+    ui->tableTodayBusiness->setColumnWidth(0,61);
+    ui->tableTodayBusiness->setColumnWidth(1,61);
+    ui->tableTodayBusiness->setColumnWidth(2,89);
+    ui->tableTodayBusiness->setColumnWidth(3,89);
     ui->tableTodayBusiness->setHorizontalHeaderLabels({"Початок", "Кінець","Заняття", "Місце"});
     ui->tableTodayBusiness->horizontalHeader()->setVisible(true);
     ui->tableTodayBusiness->verticalHeader()->setVisible(false);
@@ -145,10 +145,10 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     ui->tablePersonalLifeEvents->setColumnCount(4);
-    ui->tablePersonalLifeEvents->setColumnWidth(0,55);
-    ui->tablePersonalLifeEvents->setColumnWidth(1,55);
-    ui->tablePersonalLifeEvents->setColumnWidth(2,95);
-    ui->tablePersonalLifeEvents->setColumnWidth(3,95);
+    ui->tablePersonalLifeEvents->setColumnWidth(0,61);
+    ui->tablePersonalLifeEvents->setColumnWidth(1,61);
+    ui->tablePersonalLifeEvents->setColumnWidth(2,89);
+    ui->tablePersonalLifeEvents->setColumnWidth(3,89);
     ui->tablePersonalLifeEvents->setHorizontalHeaderLabels({"Початок", "Кінець", "Подія", "Місце"});
     ui->tablePersonalLifeEvents->horizontalHeader()->setVisible(true);
     ui->tablePersonalLifeEvents->verticalHeader()->setVisible(false);
@@ -363,7 +363,7 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
                sch->AddTask(QDateTime(), eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
 
                vector<Task> task; sch->GetTask(task);
-               ui->tableTasks->clear();
+               ui->tableTasks->clearContents();
                for (int i=0; i<int(task.size()); i++)
                {
                    ui->tableTasks->setItem(i, 0, new QTableWidgetItem(task[i].getName()));
