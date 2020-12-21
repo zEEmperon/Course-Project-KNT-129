@@ -1,4 +1,5 @@
 #include "schedule.h"
+#include "db_data.h"
 #include <iostream>
 using namespace std;
 
@@ -76,8 +77,17 @@ void Schedule::SetID( quint64 id, quint64 t_event_id, int i )
 {
     switch( t_event_id )
     {
-        case 1:
+        case EVENT_TASK:
             task_arr[i].SetID( id );
+            break;
+        case EVENT_STUDY:
+            study_arr[i].SetID( id );
+            break;
+        case EVENT_MEET:
+            meet_arr[i].SetID( id );
+            break;
+        case EVENT_BIRTHDAY:
+            bd_arr[i].SetID( id );
             break;
     }
 }

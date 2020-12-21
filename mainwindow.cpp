@@ -344,6 +344,7 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
                if (isB) throw Exception(1);
                dbm->AddStudy(s);
                sch->AddStudy(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, EVENT_STUDY);
+               sch->SetID( s.GetID(), s.GetTypeID(), sch->FindStudy( eventDescription, eventStartTime, eventDate.date() ) );
                break;
            }
            case Events::TASK:
@@ -362,7 +363,7 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
                dbm->AddTask(t);
                sch->AddTask(QDateTime(), eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
 
-               sch->SetID( t.GetID(), t.GetTypeID(), sch->FindTask(eventDescription, eventDeadlineTime.date()) );
+               sch->SetID( t.GetID(), t.GetTypeID(), sch->FindTask( eventDescription, eventDeadlineTime.date()) );
 
                vector<Task> task; sch->GetTask(task);
                ui->tableTasks->clearContents();
@@ -395,6 +396,9 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
                if (isB) throw Exception(1);
                dbm->AddMeet(m);
                sch->AddMeet(eventDate, eventStartTime, eventEndTime, eventDescription, eventLocation, eventDateAndNotificationTime, EVENT_MEET);
+
+               sch->SetID( m.GetID(), m.GetTypeID(), sch->FindMeet( eventDescription, eventStartTime, eventDate.date() ) );
+
                break;
            }
            case Events::BIRTHDAY:
@@ -407,6 +411,9 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
                Birthday bd(eventDate, eventDescription, eventDateAndNotificationTime, EVENT_BIRTHDAY);
                dbm->AddBirthday(bd);
                sch->AddBD(eventDate, eventDescription, eventDateAndNotificationTime, EVENT_BIRTHDAY);
+
+               sch->SetID( bd.GetID(), bd.GetTypeID(), sch->FindBD( eventDescription ) );
+
                break;
            }
            case Events::NONE:
