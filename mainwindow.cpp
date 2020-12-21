@@ -362,6 +362,8 @@ void MainWindow::on_buttonAddPersonalLife_clicked()
                dbm->AddTask(t);
                sch->AddTask(QDateTime(), eventDeadlineTime, weight, eventDescription, eventDateAndNotificationTime, EVENT_TASK, eventNumPriority);
 
+               sch->SetID( t.GetID(), t.GetTypeID(), sch->FindTask(eventDescription, eventDeadlineTime.date()) );
+
                vector<Task> task; sch->GetTask(task);
                ui->tableTasks->clearContents();
                for (int i=0; i<int(task.size()); i++)

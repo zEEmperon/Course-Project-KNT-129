@@ -72,6 +72,16 @@ void Schedule::AddBD(QDateTime d, QString n, QDateTime notific, quint64 t_event_
     SortBD(0, int(bd_arr.size())-1);
 }
 
+void Schedule::SetID( quint64 id, quint64 t_event_id, int i )
+{
+    switch( t_event_id )
+    {
+        case 1:
+            task_arr[i].SetID( id );
+            break;
+    }
+}
+
 bool Schedule::isBusy(QDate d, QTime b, QTime e)
 {
     int n = int(study_arr.size());

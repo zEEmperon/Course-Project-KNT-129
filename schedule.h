@@ -24,6 +24,8 @@ public:
     void AddTask(QDateTime d, QDateTime tdl, quint16 p, QString n, QDateTime notific, quint64 t_event_id, quint64 p_id);
     void AddBD(QDateTime d, QString n, QDateTime notific, quint64 t_event_id);
 
+    void SetID( quint64 id, quint64 t_event_id, int i );
+
     //перевірка, чи вільний обраний проміжок часу
     bool isBusy(QDate d, QTime b, QTime e);
 
